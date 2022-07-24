@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ELECTRON EX</title>
+        <meta charset="utf-8">
+        <link href="css/weather.css" rel="stylesheet">
+        <link href="css/sticker.css" rel="stylesheet">
+    </head>
+    <body >
+
+        <br>
+        <div class="sibal">
+        <div class="container">
+        <h1>Today's Weather</h1>
+        <img id="icon">
+        <p id="weather"></p>
+        </div>
+        </div>
+        
+        <div id="messages">
+            messages
+        </div>
+
+        <div id="sticker" style="position: absolute; right: 20px; bottom: 20px;">
+            <img id="stickerImg" src = "memo_module/img/sticker.png" widht="200px" height="200px">
+        </div>
+
+        <!--script type="module" src="option_add.js"></script-->
+        <script type="module" src="app.js"></script>
+        <script src="mqttio.js"></script>
+        <!--
+        <script>
+            const weather = require('./weather_module/weather.js');
+            function f1(){
+                weather();
+            }
+        </script>
+        -->
+    </body>
+</html>

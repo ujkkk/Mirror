@@ -1,0 +1,4 @@
+#spadeA { z-index :-3; left : 10px; top : 20px; }
+#spade2 { z-index : 2; left : 40px; top : 30px; }
+#spade3 { z-index : 3; left : 80px; top : 40px; }
+#spade7 { z-index : 7; left : 120px; top : 50px; }
