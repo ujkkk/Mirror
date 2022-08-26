@@ -163,10 +163,10 @@ const addUser = (name) => new Promise((resolve, reject) => {
     createColumns('user', data)
         .then(result => {
             if (result) {
-                selectColumns('user_id', 'user', `name='${name}'`)
+                selectColumns('id', 'user', `name='${name}'`)
                     .then(value => {
-                        console.log('dv: ' + parseInt(value[value.length - 1].user_id));
-                        resolve(String(value[value.length - 1].user_id));
+                        console.log('dv: ' + parseInt(value[value.length - 1].id));
+                        resolve(String(value[value.length - 1].id));
                     });
             }
             else {
@@ -178,7 +178,7 @@ const addUser = (name) => new Promise((resolve, reject) => {
 dbAccess.addUser = addUser;
 
 /* 메모 생성하는 함수 (memo table에 새로운 columns insert) */
-dbAccess.addMemo = function (user_id, from, contents, store) {
+dbAccess.addMemo = function (id, from, contents, store) {
     // db 연결 설정이 제대로 안됐을 경우 
     if (!pool) {
         console.log('error');
@@ -194,7 +194,7 @@ dbAccess.addMemo = function (user_id, from, contents, store) {
     var time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
 
     // memo table 제작에 필요한 column을 데이터 객체로 형성
-    var data = { user_id: user_id, from: from, contents: contents, store: store, delete_time: time };
+    var data = { id: id, from: from, contents: contents, store: store, delete_time: time };
     // memo 행 제작
     createColumns('memo', data);
 }
@@ -208,16 +208,16 @@ dbAccess.userId = userId;
 let userName;
 
 /* user id 설정과 user id에 따른 name 설정 */
-dbAccess.setUser = function (user_id) {
-    dbAccess.userId = user_id;
-    selectColumns('name', 'user', `user_id=${user_id}`)
+dbAccess.setUser = function (id) {
+    dbAccess.userId = id;
+    selectColumns('name', 'user', `id=${id}`)
         .then(value => {
             userName = value[0].name;
             console.log('userName1:' + userName);
             // 모듈로 name도 사용 하기 위해 dbAccess에 추가
             dbAccess.userName = userName;
             console.log('setUSUser: '+userId+" | "+userName);
-            document.location.href=`index.html?${user_id}`
+            document.location.href=`index.html?${id}`
         })
 }
 

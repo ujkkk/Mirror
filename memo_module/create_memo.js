@@ -3,6 +3,7 @@
 const dbAccess = require('../mirror_db.js')
 const mqtt = require('mqtt');
 const { default: axios } = require('axios');
+const { ConsoleWriter } = require('istanbul-lib-report');
 
 
 /* Section2. 변수 초기화 및 이벤트 리스너 추가 */
@@ -68,12 +69,12 @@ client.on('message', function (topic, message) { // 메시지 받았을 때 call
 
 function setIsAddableDB(){ // 메모를 DB에 추가할 수 있는지 여부 설정
     isAddableDB = true;
+    isClicked = false;
     document.getElementsByClassName("blur_effect")[0].style.filter =  "blur(0px)";       
     document.getElementsByClassName("blur_effect")[1].style.filter =  "blur(0px)";    
     document.getElementById("memoDiv").style.visibility = "hidden";
     document.getElementById("memo").innerHTML = "";
     document.getElementById("memo").style.visibility = "hidden";
-    isClicked = false;
     modalOff();
 }
 
@@ -84,16 +85,17 @@ let index;
 // User DB 접근 및 users 초기화
 function submitMemo(){ 
     
-    let startOtherIndex;
-    let checkConnectedUser = [];
-
+    console.log("이벤트 리스너가 불려지고 있음");
+    console.log("isClicked의 값은 : "+isClicked);
     if(isClicked == false){
+        let startOtherIndex;
+        let checkConnectedUser = [];
         isClicked = true;
-        dbAccess.select('user_id, name', 'user', `user_id <> ${dbAccess.userId}`) // 현재 사용자가 아닌 다른 사용자 User DB 정보 불러오기
+        dbAccess.select('id, name', 'user', `id <> ${dbAccess.userId}`) // 현재 사용자가 아닌 다른 사용자 User DB 정보 불러오기
             .then(value => { // users에 값 넣기
                     let i=0;
                     for (i = 0; i < value.length; i++) { // 미러내 유저
-                        users[i] = { "user_id":value[i].user_id, "name":value[i].name, "connect":0};
+                        users[i] = { "id":value[i].id, "name":value[i].name, "connect":0};
                     } 
                     
                     startOtherIndex = i;
@@ -108,6 +110,7 @@ function submitMemo(){
                         }
                     )
                     .then(()=>{
+                        console.log("여기가 먼저 불려야함");
                         axios({
                             method:'post',
                             url:'http://localhost:9000/connect/user',
@@ -116,6 +119,8 @@ function submitMemo(){
                             }
                         })
                         .then(response=>{
+                            console.log("여기가 나중에 불려야함");
+                            console.log("response 확인해봄 : "+ response.data.result[0]);
                             let results = response.data.result;
                             for(let i=0;i<results.length;i++,startOtherIndex++){
                                 if (users[startOtherIndex].id == results[i].user)
@@ -126,6 +131,7 @@ function submitMemo(){
                     })
                     .catch(
                         ()=>{
+                            console.log("설마 여기가 들어오겠어..?");
                             showOtherUsers();
                         }
                     ); 
@@ -137,6 +143,7 @@ function submitMemo(){
 
 // 메모 전송 가능한 user 목록 보여주기
 function showOtherUsers(){ 
+    modal.style.display = "flex";
     modal.style.visibility = "visible";
     console.log("showOtherUsers 호출됨");
     while (ul.hasChildNodes()) { // UI 초기화
@@ -176,7 +183,7 @@ function showOtherUsers(){
             isConnect.style.fontSize = "15px";
             isConnect.innerHTML = "Offline";
             isConnect.style.float = "right"
-            isConnect.style.marginTop = "3px";
+            isConnect.style.marginTop = "2px";
             isConnect.style.marginRight = "100px";
             isConnect.appendChild(circle);
 
@@ -216,7 +223,7 @@ function showOtherUsers(){
                 isConnect.style.fontSize = "15px";
                 isConnect.innerHTML = "Online";
                 isConnect.style.float = "right"
-                isConnect.style.marginTop = "3px";
+                isConnect.style.marginTop = "2px";
                 isConnect.style.marginRight = "100px";
                 isConnect.appendChild(circle);
 
@@ -237,7 +244,7 @@ function showOtherUsers(){
                 isConnect.style.fontSize = "15px";
                 isConnect.innerHTML = "Offline";
                 isConnect.style.float = "right"
-                isConnect.style.marginTop = "3px";
+                isConnect.style.marginTop = "2px";
                 isConnect.style.marginRight = "100px";
                 isConnect.appendChild(circle);
 
@@ -271,7 +278,6 @@ function insertOtherUserDB(user){
 }
 
 
-
 //modal 관련 js
 function modalOn() {
     modal.style.display = "flex"
@@ -281,6 +287,8 @@ function isModalOn() {
 }
 function modalOff() {
     modal.style.display = "none"
+    isClicked = false;
+    inside.checked = true;
 }
 
 const closeBtn = modal.querySelector(".close-area")
