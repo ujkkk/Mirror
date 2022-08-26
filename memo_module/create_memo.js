@@ -151,7 +151,7 @@ function showOtherUsers(){
             let li = document.createElement("li");
             const textNode = document.createTextNode(users[i].name);
             const userImg = document.createElement("img");
-            userImg.setAttribute("src","./image/user.png");
+            userImg.setAttribute("src","./image/index/user.png");
             userImg.setAttribute("width","25px");
             userImg.setAttribute("height","25px");
             userImg.style.marginLeft = "35px";
@@ -192,7 +192,7 @@ function showOtherUsers(){
          
             const textNode = document.createTextNode(users[i].name);
             const userImg = document.createElement("img");
-            userImg.setAttribute("src","./image/user.png");
+            userImg.setAttribute("src","./image/index/user.png");
             userImg.setAttribute("width","25px");
             userImg.setAttribute("height","25px");
             userImg.style.marginLeft = "35px";
