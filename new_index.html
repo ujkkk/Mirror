@@ -9,7 +9,9 @@
     <link href="css/new_clock.css" rel="stylesheet">
     <link href="css/new_index.css" rel="stylesheet">
     <script src="new_app.js"></script>
-    <!-- <script>
+    <script>
+        
+
         function setMemoDeleteBtn(e){
             let deleteBtns = document.getElementsByClassName("memoDeleteBtn");
 
@@ -22,7 +24,7 @@
                         deleteBtns[i].style.visibility = "hidden";
             }
         }
-    </script> -->
+    </script>
 </head>
 <body>
     <article id="container">
@@ -39,8 +41,21 @@
     </article>
     <!-- end of weather & clock & time -->
     <div id="bar_container">
-        <button class="bar_button"><img class="bar_icon" src="./image/init/bar_message.png"></button>
+        <button class="bar_button" id="bar_phone_button" onclick="barPhone()"><img class="bar_icon" src="./image/index/bar_phone.png"></button>
+        <button class="bar_button" id="bar_callbook_button" onclick="barCallBook()"><img class="bar_icon" src="./image/index/bar_callbook.png"></button>
+        <button class="bar_button" id="bar_message_button" onclick="barMessage()"><img class="bar_icon" src="./image/index/bar_message2.png"></button>
+        <button class="bar_button" id="bar_memmo_button" onclick="barMemo()"><img class="bar_icon" src="./image/index/bar_memo.png"></button>
     </div>
+    <!-- <div id="message_option_container" style="display: none;">
+        <button class="option_button" id="text_option_button" onclick="textMessage()"><img class="bar_icon" src="./image/index/option_text2.png"></button>
+        <button class="option_button" id="image_option_button" onclick="imageMessage()"><img class="bar_icon" src="./image/index/option_image.png"></button>
+        <button class="option_button" id="record_option_button" onclick="recordMessage()"><img class="bar_icon" src="./image/index/option_record.png"></button>
+    </div> -->
+    <!-- end of menu bar -->
+    <div id="message_container">
+        
+    </div>
+
     <div id="memo_ui" class="blur_effect">
         <div id="myMemo"></div><div id="sendMemo"></div>
     </div>
@@ -63,4 +78,35 @@
     </div> -->
 </body>
 <script src = "new_clock.js"></script>
+<script>
+    var message_click_cnt = 0;
+    var message_option_container = document.getElementById("message_option_container");
+    
+    var text_option_button = document.getElementById("text_option_button");
+    var image_option_button = document.getElementById("image_option_button");
+    var record_option_button = document.getElementById("record_option_button");
+
+    function barMessage(){
+        console.log("barMessage click");
+        // message_click_cnt++;
+        // if(message_click_cnt%2==1) message_option_container.style.display = "block";
+        // else{
+        //     message_option_container.style.display = "none";
+        //     message_click_cnt=0;
+        // } 
+        
+    }
+
+    function textMessage(){
+
+    }
+
+    function imageMessage(){
+
+    }
+
+    function recordMessage(){
+
+    }
+</script>
 </html>
