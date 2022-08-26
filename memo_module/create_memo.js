@@ -91,11 +91,11 @@ function submitMemo(){
         let startOtherIndex;
         let checkConnectedUser = [];
         isClicked = true;
-        dbAccess.select('user_id, name', 'user', `user_id <> ${dbAccess.userId}`) // 현재 사용자가 아닌 다른 사용자 User DB 정보 불러오기
+        dbAccess.select('id, name', 'user', `id <> ${dbAccess.userId}`) // 현재 사용자가 아닌 다른 사용자 User DB 정보 불러오기
             .then(value => { // users에 값 넣기
                     let i=0;
                     for (i = 0; i < value.length; i++) { // 미러내 유저
-                        users[i] = { "user_id":value[i].user_id, "name":value[i].name, "connect":0};
+                        users[i] = { "id":value[i].id, "name":value[i].name, "connect":0};
                     } 
                     
                     startOtherIndex = i;
