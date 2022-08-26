@@ -20,8 +20,8 @@ function createWindow() {
     const win = new BrowserWindow(options);
 
     //win.webContents.openDevTools();  
+    win.loadFile("new_index.html");
     // win.loadFile("index.html");
-    win.loadFile("index.html");
 }
 
 app.whenReady().then(() => {

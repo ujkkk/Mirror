@@ -53,6 +53,29 @@
     background: transparent;
 } */
 
-#message_container{
-    
+#radio_container{
+    position: absolute;
+    bottom: 20%;
+    left: 5%;
+    width: 66%;
+    height: 3%;
+    display: flex;
+    background:rgba(255, 255, 255, 0.2);
+    border-radius: 0px 0px 10px 10px;
+}
+
+label {
+    flex: 1;
+    font-size: 0.8rem;
+    text-align: center;
+    vertical-align: center;
+}
+
+input[type="radio"]{
+    display: none;
+}
+
+input[type="radio"]:checked + label {
+    color:white;
+    /* font-weight: bold; */
 }
