@@ -1,0 +1,17 @@
+.bar_container {
+    width: 88%;
+    height: 6%;
+    background: #FFFFFF;
+    opacity: 0.2;
+    border-radius: 10px;
+}
+
+.bar_button {
+    background: transparent;
+    border: none;
+}
+
+.bar_icon {
+    width: 3rem;
+    height: 3rem;
+}

@@ -7,8 +7,8 @@
     <link href="css/sticker.css" rel="stylesheet">
     <link href="css/weather-icons.min.css" rel="stylesheet">
     <link href="css/new_clock.css" rel="stylesheet">
+    <link href="css/new_index.css" rel="stylesheet">
     <script src="new_app.js"></script>
-    
     <!-- <script>
         function setMemoDeleteBtn(e){
             let deleteBtns = document.getElementsByClassName("memoDeleteBtn");
@@ -37,28 +37,10 @@
             <div id="date"></div>
         </div>
     </article>
-    <!-- <br>
-    <article id="container" class = "blur_effect">
-        <div class="weather_ui">
-            <div id="CurrIcon"></div>
-            <div id="temp"></div>
-            <i class="wi wi-degrees"></i>
-            <div id="weather_option">
-                
-                <div id="temp_max"></div><i class="wi wi-degrees"></i>
-                <div id="temp_min"></div><i class="wi wi-degrees"></i> <br>
-                <div id="humidity"></div> <i class="wi wi-humidity"></i>
-                <p id="weather"></p>
-            </div>    
-        </div><div id="clock_ui">
-            <div>
-                <span id="time"></span><span id="second"></span>
-            </div>
-            
-        </div>
-
-    </article> -->
-
+    <!-- end of weather & clock & time -->
+    <div id="bar_container">
+        <button class="bar_button"><img class="bar_icon" src="./image/init/bar_message.png"></button>
+    </div>
     <div id="memo_ui" class="blur_effect">
         <div id="myMemo"></div><div id="sendMemo"></div>
     </div>
@@ -74,16 +56,11 @@
                 </ul>
             </div>
         </div>
-    </div>  
-
-
+    </div>
     <!-- <div id="sticker">
         <img id="stickerImg" ondblclick="setMemoDeleteBtn(event)" onclick="setMemoDeleteBtn(event)" src="memo_module/img/sticker.png">
         <img id="callImg" src="memo_module/img/call.png">
     </div> -->
-    
-    
-    
 </body>
 <script src = "new_clock.js"></script>
 </html>
