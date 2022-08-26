@@ -1,0 +1,42 @@
+#userNameText{
+    color: white;
+    margin-left: 30%;
+    
+}
+div{
+    color: white;
+}
+th{
+    color: white;
+    border: 1px solid #ffffff;
+}
+td{
+    align-content: center;
+    border: 1px solid #ffffff;
+}
+tr{
+    align-content: center;
+    color: white;
+    
+}
+table {
+    width: 100%;
+    
+}
+.btn{
+    width: 40vw;
+    padding: 10px;
+    border: solid 3px white;
+    border-radius: 12px;
+    background-color:transparent;
+    color: white;
+    /* font-size: 5vw; */
+    font-size: xx-large;
+    /* font-weight: bold; */
+    /* font-family: 'Do Hyeon', sans-serif; */
+}
+.btn:active{
+    border: solid 3px gray;
+    color: gray;
+    background-color: white;
+}

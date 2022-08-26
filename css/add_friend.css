@@ -1,0 +1,100 @@
+label {
+    color: white;
+}
+
+#add_friend_container {
+    width: 50%;
+    position: relative;
+
+    top: 30%;
+
+    text-align: center;
+    /* margin-top: 50%; */
+}
+
+
+.btnDiv {
+    margin: 1%;
+}
+
+.btn {
+
+    width: 70px;
+    height: 30px;
+    /* padding: 10px; */
+    border: solid 1px white;
+    border-radius: 10%;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    /* font-size: 5vw; */
+    /* font-size: xx-large;
+                /* font-weight: bold; */
+    /* font-family: 'Do Hyeon', sans-serif; */
+}
+
+input {
+    vertical-align: middle;
+}
+
+input.form-text {
+    border: 1px solid #bcbcbc;
+    height: 28px;
+}
+
+input.img-button {
+    background: url("../image/dod.png") no-repeat;
+    border-radius: 20%;
+    border: none;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+#confirm {
+
+    height: 20vsh;
+    visibility: hidden;
+    border: 1px solid #bcbcbc;
+    margin: 5%;
+}
+
+#confirm-btnDiv {
+    display: inline-block;
+    margin: 1%;
+}
+
+.addBtn {
+    width: 70px;
+    height: 30px;
+    /* padding: 10px; */
+    border: solid 3px rgb(35, 99, 229);
+    border-radius: 10%;
+    background-color: rgb(35, 99, 229);
+    color: rgb(228, 237, 253);
+    border: solid 1px white;
+}
+
+th {
+    color: white;
+    border: 1px solid #ffffff;
+}
+
+td {
+    text-align: center;
+
+}
+
+tr {
+    align-content: center;
+    color: white;
+
+}
+
+table {
+
+    border: 1px solid #ffffff;
+}
+
+.row {
+    margin-top: 100px;
+}

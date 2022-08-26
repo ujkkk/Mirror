@@ -1,0 +1,134 @@
+<html>
+    <head>
+        <link href="css/inputtype.css" rel="stylesheet">
+        <link rel="stylesheet" href="./delete.css" />
+    </head>
+    <body>
+        <title>Create New Account</title>
+        <br>
+        <h1 style="color:white; text-align: center; margin-top: 15%;">Delete</h1>
+       
+           <br><br>
+
+        <div class="row">
+            <table id="table-1" width="100%" class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                    </tr>
+                </thead>
+                <tbody id ='htmlTbody'>				
+                    
+                </tbody>
+            </table>
+            <div class="btnDiv" id="loginDiv">
+                <button class="btn" id="deleteBtn" onclick="deleteUser()">삭제</button>
+                <button class="returnBtn" onclick="returnToLogin()">Return</button>
+            </div>
+            <div class="col-lg-12" id="ex1_Result1" >
+                
+            </div> 
+            <div class="col-lg-12" id="text" ></div> 
+        </div>
+            
+
+       
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+       
+        <script>
+            function returnToLogin(){
+                document.location.href="init.html";
+            }
+            //const getSeq = require('./getSeq')
+            let _db = require('./mirror_db')
+            let _delete = require('./delete')
+            let deleteName = null
+            let ids = new Array()
+            let names = new Array()
+            window.onload = getUserInfo();
+            
+           
+
+           
+            function getUserInfo(){
+               
+                _db.select('*', 'user', 'user_id is not null')
+                .then(users =>{
+                    users.forEach(user => {
+                        console.log('user_id : ' + user.user_id)
+                        ids.push(user.user_id)
+                        names.push(user.name)
+                        
+                    });
+                    createTable(ids, names)
+                })
+            }
+        
+            function HighLightTR(target) {
+                console.log('하이라이트 호출')
+                    //var tbody = document.getElementById('')
+                    var trs = document.getElementsByTagName('tr')
+                    for ( var i = 0; i < trs.length; i++ ) {
+                        if ( trs[i] != target ) {
+                        trs[i].style.backgroundColor = '#000000';
+                        trs[i].style.color = '#ffffff';
+                        } else {
+                    trs[i].style.backgroundColor = '#ffffff';
+                    trs[i].style.color = '#000000';
+                    }
+                } // endfor i
+            }
+            function createTable(ids, names){
+                const hTbody = document.getElementById('htmlTbody');
+                hTbody.innerHTML =''
+                names.forEach(name =>{
+
+                    let tr = document.createElement("tr")
+                    let td = document.createElement("td")
+                    td.innerHTML = name
+                    tr.setAttribute('onClick', "HighLightTR(this)")
+                    tr.appendChild(td)
+                    hTbody.appendChild(tr)
+       
+                    console.log(hTbody)
+                    //hTbody.innerHTML += '<tr>' + newCell0 + '</tr>'
+                }); 
+                rowEvent()
+                
+            }
+
+            
+            function deleteUser()
+                if(deleteName != null){
+                    index = names.indexOf(deleteName, 0)
+                    id = ids[index]
+                    
+
+                    //삭제하기
+                    _delete.deleteClick(id)
+                }
+            
+
+        function rowEvent(){
+             // 테이블의 Row 클릭시 값 가져오기
+            $("#table-1 tr").mousedown(function(){ 	
+
+                // 현재 클릭된 Row(<tr>)
+                var tr = $(this);
+                var td = tr.children();
+
+                // tr.text()는 클릭된 Row 즉 tr에 있는 모든 값을 가져온다.
+                console.log("클릭한 Row의 모든 데이터 : "+tr.text());
+
+                // td.eq(index)를 통해 값을 가져올 수도 있다.
+                var name = td.eq(0).text();
+                deleteName = name
+                console.log('change deleteName : '+ deleteName)
+
+            });
+            
+        }
+       
+        </script>
+    </body>
+</html>

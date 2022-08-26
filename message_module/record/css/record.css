@@ -1,0 +1,86 @@
+#container {
+    position:absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+#btnDiv{
+    top:60%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+#stopBtn{
+    /* display: none;
+    position: relative;
+    top:60%;
+    text-align: center; */
+    display: block;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1;
+}
+.recordBtn{
+    width: 20vw;
+    /* padding-top: 1vw;
+    padding-bottom: 1vw; */
+    padding: 1vw;
+    border: solid 2px white;
+    border-radius: 12px;
+    /* background-color:transparent; */
+    background-color: red;
+    color: white;
+    font-size: 1rem;
+}
+/* #settingDiv{
+    
+} */
+.settingBtn{
+    width: 15vw;
+    padding: 1vw;
+    margin: 1vw;
+    /* border: solid 2px white; */
+    /* border-radius: 12px; */
+    /* background-color:transparent; */
+    /* color: white */
+    font-size: 1rem;
+}
+#saveBtn{
+    background-color:transparent;
+    border: solid 2px white;
+    border-radius: 12px;
+    color: white;
+}
+#sendBtn{
+    background-color: white;
+    color: black;
+    border-radius: 12px;
+}
+#backBtn{
+    background-color: transparent;
+    border-bottom: solid 2px white;
+    /* border: solid 2px white; */
+    color: white;
+}
+Button:active{
+    border-color: gray;
+    color: gray;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+.blur_effect {
+    filter: blur(0px);
+}
+/* .containerAudio{
+    
+} */
+audio{
+    position: relative;
+    top: 60%;
+    margin: 2vw;
+}

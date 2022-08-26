@@ -1,0 +1,26 @@
+{
+  "name": "cw",
+  "version": "1.0.0",
+  "description": "this is mirror MQTT for distance",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@electron/remote": "^0.0.1",
+    "@types/socket.io-client": "^3.0.0",
+    "axios": "^0.27.2",
+    "date-utils": "^1.2.21",
+    "electron": "^6.1.12",
+    "fs": "^0.0.1-security",
+    "mqtt": "^4.3.7",
+    "mysql": "^2.18.1",
+    "node-record-lpcm16": "^1.0.1",
+    "os": "^0.1.2",
+    "socker.io": "^0.0.0-alpha-beta",
+    "socket.io": "^4.5.1"
+  }
+}
