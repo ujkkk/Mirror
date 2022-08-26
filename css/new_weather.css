@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Gowun+Batang&family=IBM+Plex+Sans+KR&display=swap');
+* {
+    padding: 0;
+    margin: 0;
+}
+
+#container{
+    position: absolute;
+    margin-top: 7%;
+    margin-left: 7%;
+    width: 18%;
+    height: 10%;
+    /* border: solid 2px red;  */
+}
+
+.weather_ui {
+    /* float: left; */
+    /* margin-top: 40px; */
+    /* margin-left: 40px; */
+    /* text-align: center; */
+    display: flex;
+    height: 45%;
+    width: 100%;
+    color:white;
+    /* background-color: black; */
+    /* border: solid 2px blue;  */
+}
+
+#weather_icon {
+    /* position: absolute; */
+    /* float: left; */
+    width: 40%;
+    height: 100%;
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border: solid 2px skyblue; */
+}
+
+#temp {
+    width: 60%;
+    height: 100%;
+    margin-left: 5%;
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 2;
+    /* border: solid 2px hotpink; */
+}
+
+.wi-degrees {
+    font-size: 100px;
+    padding-right: 10px;
+    margin-left: -5px;
+}
+
+.wi-humidity {
+    font-size: 20px;
+}
+
+#weather {
+    margin-top: 3px;
+    padding-right: 5px;
+    font-size: 15px;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+}

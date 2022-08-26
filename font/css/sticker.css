@@ -1,0 +1,158 @@
+.blur_effect {
+    filter: blur(0px);
+}
+
+#sticker {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    display:inline-block;
+}
+
+#stickerImg {
+    width: 200px;
+    height: 200px;
+}
+
+#callImg {
+    transform: scaleX(-1);
+    visibility: hidden;
+    position: absolute;
+    bottom: 180px;
+    right: 180px;
+    width: 90px;
+    height: 90px;
+}
+
+#contents {
+    position: absolute;
+    bottom: 250px;
+    width: 100%;
+    text-align: center;
+}
+
+#memo {   
+    width:40%;
+    height:100px;
+    line-height:100px;
+    font-size: 28px;
+    color: #FFF; 
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 10px; 
+    border: 2px solid white;
+    /* background-color: rgba(206, 198, 178, 0.26); */
+    visibility:hidden;
+    overflow: scroll;
+}
+
+#user_list{
+    position: absolute;
+    width:200px;
+    top: 200px;
+    left: 0;
+    right: 0;
+    margin:auto; 
+    transform: translateX(-113px);
+    list-style-type: none;
+    border-radius: 10px 10px 10px 10px;
+}
+
+#user_list ul li{
+    list-style-type: none;
+    text-align: center;
+    height:35px;
+    font-size: 25px;
+    margin-bottom:2px;
+    border-left:1px solid white;
+    border-right:1px solid white;
+    border-top:1px solid white;
+    background-color: #353735;
+    padding-top:8px;
+}
+
+#user_list ul li:first-child {
+    border-radius: 10px 10px 0 0 ;
+}
+
+#user_list ul li:last-child {
+    border-radius: 0 0 10px 10px;
+    border-bottom:1px solid white;
+}
+
+#user_list ul li:first-child:nth-last-child(1) {
+    border-radius: 10px 10px 10px 10px;
+    border-bottom:1px solid white;
+}
+
+
+#memoDiv {
+    /* position: absolute;
+    bottom: 230px;
+    width: 100%; */
+    margin-top:15px;
+    /* border: 2px solid blue; */
+    text-align: center;
+    visibility: hidden;
+}
+
+#memo_ui {
+    position: absolute;
+    display: block;
+    top: 300px;
+    width: 100%;
+}
+
+#memo_ui div {
+    display: inline-block;
+}
+
+#myMemo div, #sendMemo div {
+    font-size: 20px;
+    height: 30px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2px solid white;
+    border-radius: 40px 40px 40px 40px;
+    background-color: rgba(255, 253, 253, 0.058);
+    text-align: center;
+    overflow: scroll;
+}
+
+#myMemo div {
+    width: 40%;
+    margin-left:10%;
+    margin-top: 15px;
+    float: left;
+}
+
+#sendMemo div, #sendMemo span{
+    width: 40%;
+    margin-right: 10%;
+    float: right;
+}
+
+#sendMemo span  {
+    font-size: 15px;
+    text-align: left;
+}
+
+
+
+#memo_ui div::-webkit-scrollbar, #memo::-webkit-scrollbar, #memo_ui::-webkit-scrollbar {
+    display: none;
+}
+
+input[type="button"]{
+    background-color: #353735;
+    border: 2px solid white;
+    color: white;
+    width:200px;
+    height:40px;
+    margin:10px;
+    border-radius: 10px 10px 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 25px;
+}

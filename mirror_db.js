@@ -3,7 +3,7 @@ let dbAccess = {};
 
 // mysql 모듈 불러오기
 var mysql = require('mysql');
-//require('date-utils');
+require('date-utils');
 
 /* 연결 설정 */
 var pool = mysql.createPool({
@@ -12,15 +12,14 @@ var pool = mysql.createPool({
     user: 'root',
     password: '1234',
     database: 'mirror_db',
-    debug: false,
-    dateStrings : 'date'
+    debug: false
 });
 
 
 /* 테이블 columns 제작 (insert 문) */
 const createColumns = (table_name, data) => new Promise((resolve, reject) => {
 
-    console.log('sql call');
+    console.log('SQL call');
     // 커넥션 풀에 연결 객체 가져오기
     pool.getConnection(function (err, conn) {
         if (err) {
@@ -29,7 +28,6 @@ const createColumns = (table_name, data) => new Promise((resolve, reject) => {
             }
             // db연결 실패 함수 reject 호출
             reject(err);
-
         }
         console.log("insert || data base connected id: " + conn.threadId);
 
@@ -165,7 +163,7 @@ const addUser = (name) => new Promise((resolve, reject) => {
     createColumns('user', data)
         .then(result => {
             if (result) {
-                selectColumns('id', 'user', `name='${name}'`)
+                selectColumns('user_id', 'user', `name='${name}'`)
                     .then(value => {
                         console.log('dv: ' + parseInt(value[value.length - 1].user_id));
                         resolve(String(value[value.length - 1].user_id));
@@ -191,9 +189,9 @@ dbAccess.addMemo = function (user_id, from, contents, store) {
 
     /* delete time 설정 */
     // 현재 시간 가져오기
-    // var newDate = new Date();
-    // // delecte_time 형식 지정
-    // var time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
+    var newDate = new Date();
+    // delecte_time 형식 지정
+    var time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
 
     // memo table 제작에 필요한 column을 데이터 객체로 형성
     var data = { user_id: user_id, from: from, contents: contents, store: store, delete_time: time };
@@ -202,29 +200,27 @@ dbAccess.addMemo = function (user_id, from, contents, store) {
 }
 
 // mirror 사용자 id
-let id = 1001;
+let userId = 1;
 // 모듈로 userId도 사용 하기 위해 dbAccess에 추가
-dbAccess.id = id;
+dbAccess.userId = userId;
 
 // mirror 사용자 이름
 let userName;
 
 /* user id 설정과 user id에 따른 name 설정 */
-dbAccess.setUser = function (id) {
-    dbAccess.id = id;
-    selectColumns('name', 'user', `id=${id}`)
+dbAccess.setUser = function (user_id) {
+    dbAccess.userId = user_id;
+    selectColumns('name', 'user', `user_id=${user_id}`)
         .then(value => {
             userName = value[0].name;
             console.log('userName1:' + userName);
             // 모듈로 name도 사용 하기 위해 dbAccess에 추가
             dbAccess.userName = userName;
-            console.log('setUSUser: '+id+" | "+userName);
-            //document.location.href='index.html'
+            console.log('setUSUser: '+userId+" | "+userName);
+            document.location.href=`index.html?${user_id}`
         })
 }
-dbAccess.getId = () => id;
 
 
-dbAccess.setUser('1001');
 /* dbAccess 객체를 모듈화 */
 module.exports = dbAccess;

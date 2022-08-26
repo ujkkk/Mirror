@@ -1,0 +1,41 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: black;
+    color: white;
+}
+
+.weather_ui {
+    float: left;
+    margin-top: 40px;
+    margin-left: 40px;
+    text-align: center;
+}
+
+#temp,
+#CurrIcon {
+    display: inline-block;
+}
+
+.wi-celsius {
+    font-size: 100px;
+    padding-right: 10px;
+    margin-left: -5px;
+}
+
+#temp {
+    font-size: 100px;
+    transform: translateY(-10%);
+}
+
+#CurrIcon {
+    font-size: 100px;
+    padding-bottom: -100px;
+}
+
+#weather {
+    font-size: 30px;
+}

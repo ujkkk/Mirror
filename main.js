@@ -1,26 +1,27 @@
-
-
+//DISPLAY=:0 xrandr --output HDMI-1 --rotate right
 const { app, BrowserWindow } = require("electron");
 
 function createWindow() {
     let options = {
-    webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
-        enableRemoteModule: true
-    },
-    backgroundColor:"#000000"
+        // width: 1200,
+        // height: 1900,
+        width: 270*2,
+        height: 480*2,
+        x: 0,
+        y: 0,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
+        backgroundColor: "#000000"
     }
-   // options.fullscreen = true;
+    // options.fullscreen = true;
     options.autoHideMenuBar = true;
     const win = new BrowserWindow(options);
-    
+
     //win.webContents.openDevTools();  
-    //win.loadFile("addFriend/list.html");
-    win.loadFile("index.html");
-    //win.loadFile("keyboard/keyboard-kr.html");
-    // win.loadFile("message_module/messegeSend/testMain.html");
-   //win.loadFile("message_module/message.html");
+    // win.loadFile("index.html");
+    win.loadFile("new_index.html");
 }
 
 app.whenReady().then(() => {

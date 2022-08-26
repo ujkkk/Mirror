@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>ELECTRON EX</title>
+    <title>new_index</title>
     <meta charset="utf-8">
-    <link href="css/weather.css" rel="stylesheet">
+    <link href="css/new_weather.css" rel="stylesheet">
     <link href="css/sticker.css" rel="stylesheet">
     <link href="css/weather-icons.min.css" rel="stylesheet">
-    <link href="css/clock.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/modal.css">
-    <script>
+    <link href="css/new_clock.css" rel="stylesheet">
+    <script src="new_app.js"></script>
+    
+    <!-- <script>
         function setMemoDeleteBtn(e){
             let deleteBtns = document.getElementsByClassName("memoDeleteBtn");
 
@@ -22,11 +22,22 @@
                         deleteBtns[i].style.visibility = "hidden";
             }
         }
-    </script>
+    </script> -->
 </head>
-
 <body>
-    <br>
+    <article id="container">
+        <div class="weather_ui">
+            <div id="weather_icon"></div>
+            <div id="temp"></div>
+        </div>
+        <div id="clock_ui">
+            <div id="time"></div>
+        </div>
+        <div id="date_ui">
+            <div id="date"></div>
+        </div>
+    </article>
+    <!-- <br>
     <article id="container" class = "blur_effect">
         <div class="weather_ui">
             <div id="CurrIcon"></div>
@@ -46,7 +57,7 @@
             
         </div>
 
-    </article>
+    </article> -->
 
     <div id="memo_ui" class="blur_effect">
         <div id="myMemo"></div><div id="sendMemo"></div>
@@ -59,42 +70,20 @@
             <input id= "apply" type="button" value="전송">
             <input id = "cancle" type="button" value="닫기">
             <div id="user_list">
-                <!-- <ul id="otherUserList">
-                </ul> -->
-            </div>
-        </div>
-    </div>  
-<!-- modal 새로 넣은 부분 -->
-    <div id="modal" class="modal-overlay">
-        <div class="modal-window">
-            <div class="title">
-                <h3>Mirror user</h3>
-            </div>
-            <div class="close-area">✕</div>
-            <div id="user-select">
-                <div id="select-left">
-                    <input type="radio" name="user" id="inside" checked><label for="inside">미러 내부 사용자</label>
-                    <div id="inside-selected" class="selected-div"></div>
-                </div>
-                <div id = "select-right">
-                    <input type="radio" name = "user" id="outside"><label for="outside">미러 외부 사용자</label>
-                    <div id="outside-selected" class="selected-div"></div>
-                </div>
-            </div>
-            <div id = "modal-contents">
                 <ul id="otherUserList">
                 </ul>
             </div>
         </div>
-    </div>
-<!-- modal 새로 넣은 부분 여기까지 -->
-    <div id="sticker">
+    </div>  
+
+
+    <!-- <div id="sticker">
         <img id="stickerImg" ondblclick="setMemoDeleteBtn(event)" onclick="setMemoDeleteBtn(event)" src="memo_module/img/sticker.png">
         <img id="callImg" src="memo_module/img/call.png">
-    </div>
-    <script src="app.js"></script>
-    <script src = "clock.js"></script>
+    </div> -->
+    
+    
     
 </body>
-
+<script src = "new_clock.js"></script>
 </html>

@@ -1,4 +1,218 @@
-#spadeA { z-index :-3; left : 10px; top : 20px; }
-#spade2 { z-index : 2; left : 40px; top : 30px; }
-#spade3 { z-index : 3; left : 80px; top : 40px; }
-#spade7 { z-index : 7; left : 120px; top : 50px; }
+/*sticker.css*/
+.blur_effect {
+    filter: blur(0px);
+}
+
+#sticker {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    display:inline-block;
+}
+
+#stickerImg {
+    width: 200px;
+    height: 200px;
+}
+
+#callImg {
+    transform: scaleX(-1);
+    visibility: hidden;
+    position: absolute;
+    bottom: 180px;
+    right: 180px;
+    width: 90px;
+    height: 90px;
+}
+
+#contents {
+    position: absolute;
+    bottom: 250px;
+    width: 100%;
+    text-align: center;
+}
+
+
+#user_list{
+    position: absolute;
+    width:200px;
+    top: 200px;
+    left: 0;
+    right: 0;
+    margin:auto; 
+    transform: translateX(-113px);
+    list-style-type: none;
+    border-radius: 10px 10px 10px 10px;
+}
+
+#user_list ul li{
+    list-style-type: none;
+    text-align: center;
+    height:35px;
+    font-size: 25px;
+    margin-bottom:2px;
+    border-left:1px solid white;
+    border-right:1px solid white;
+    border-top:1px solid white;
+    background-color: #353735;
+    padding-top:8px;
+}
+
+#user_list ul li:first-child {
+    border-radius: 10px 10px 0 0 ;
+}
+
+#user_list ul li:last-child {
+    border-radius: 0 0 10px 10px;
+    border-bottom:1px solid white;
+}
+
+#user_list ul li:first-child:nth-last-child(1) {
+    border-radius: 10px 10px 10px 10px;
+    border-bottom:1px solid white;
+}
+
+
+#memo {   
+    width:40%;
+    height:100px;
+    line-height:100px;
+    font-size: 28px;
+    color: #FFF; 
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 10px; 
+    border: 2px solid white;
+    /* background-color: rgba(206, 198, 178, 0.26); */
+    visibility:hidden;
+    overflow: scroll;
+}
+
+
+#memoDiv {
+    /* position: absolute;
+    bottom: 230px;
+    width: 100%; */
+    margin-top:15px;
+    /* border: 2px solid blue; */
+    text-align: center;
+    visibility: hidden;
+}
+
+#memo_ui {
+    position: absolute;
+    display: block;
+    top: 210px;
+    width: 100%;
+    height: 50%;
+    overflow: scroll;
+}
+
+#memo_ui div {
+    display: inline-block;
+    width: 50%;
+    height: 100%;
+}
+
+#myMemo div, #sendMemo div {
+    font-size: 20px;
+    height: 30px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2px solid white;
+    border-radius: 40px 40px 40px 40px;
+    background-color: rgba(255, 253, 253, 0.058);
+    text-align: center;
+    /* overflow: scroll; */
+}
+
+#myMemo div {
+    width: 40%;
+    margin-top: 10px;
+    margin-right: 0%;
+    margin-left:10%;
+    float: left;
+}
+
+/* #myMemo div:hover {
+    position:relative;animation:ddd .5s infinite;}
+    @keyframes ddd {
+            from{left:-1px}
+            to{left:1px}
+    } */
+
+#sendMemo div, #sendMemo span{
+    width: 40%;
+    margin-left: 0%;
+    margin-right: 10%;
+    float: right;
+}
+
+#sendMemo span  {
+    font-size: 15px;
+    transform:translateX(10);
+}
+
+#storeIcon {
+    width: 15px;
+    height: 15px;
+    float: left;
+}
+
+ #memo::-webkit-scrollbar, #memo_ui::-webkit-scrollbar, #myMemo div span::-webkit-scrollbar, #sendMemo div span::-webkit-scrollbar {
+    display: none;
+}
+
+input[type="button"]{
+    background-color: #353735;
+    border: 2px solid white;
+    color: white;
+    width:200px;
+    height:40px;
+    margin:10px;
+    border-radius: 10px 10px 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+}
+
+#myMemo div p, #sendMemo div p {
+    display:inline-block;
+    width:10%;
+    height:100%;
+    /* background-color: aqua; */
+    float:left;
+} 
+
+ #myMemo div div, #sendMemo div div {
+    /* background-color: red; */
+    border-radius: 0px 20px 20px 0px;
+    background:none;
+    width:2%;
+    font-size: 20px;
+    border:none;
+    transform: translateY(-12px);
+    height: 100%;
+    margin:0px;
+    float:none;
+    text-align:center;
+    display:absolute;
+ }
+
+ #myMemo div span, #sendMemo div span{
+    display:inline-block;
+    /* transform: translateY(-12px); */
+    /* background-color: blueviolet; */
+    width:76%;
+    overflow: scroll;
+    margin:0;
+    padding:0;
+    float:none;
+    font-size:20px;
+    height:100%;
+ }
+
+ 
+/* .icon-animated-bell{display:inline-block;-moz-animation:ringing 2s 9999 ease 1s;-webkit-animation:ringing 2s 9999 ease 1s;-o-animation:ringing 2s 9999 ease 1s;-ms-animation:ringing 2s 9999 ease 1s;animation:ringing 2s 9999 ease 1s;-moz-transform-origin:50% 0;-webkit-transform-origin:50% 0;-o-transform-origin:50% 0;-ms-transform-origin:50% 0;transform-origin:50% 0}@-moz-keyframes ringing{0%{-moz-transform:rotate(-15deg)}2%{-moz-transform:rotate(15deg)}4%{-moz-transform:rotate(-18deg)}6%{-moz-transform:rotate(18deg)}8%{-moz-transform:rotate(-22deg)}10%{-moz-transform:rotate(22deg)}12%{-moz-transform:rotate(-18deg)}14%{-moz-transform:rotate(18deg)}16%{-moz-transform:rotate(-12deg)}18%{-moz-transform:rotate(12deg)}20%{-moz-transform:rotate(0deg)}}@-webkit-keyframes ringing{0%{-webkit-transform:rotate(-15deg)}2%{-webkit-transform:rotate(15deg)}4%{-webkit-transform:rotate(-18deg)}6%{-webkit-transform:rotate(18deg)}8%{-webkit-transform:rotate(-22deg)}10%{-webkit-transform:rotate(22deg)}12%{-webkit-transform:rotate(-18deg)}14%{-webkit-transform:rotate(18deg)}16%{-webkit-transform:rotate(-12deg)}18%{-webkit-transform:rotate(12deg)}20%{-webkit-transform:rotate(0deg)}}@-ms-keyframes ringing{0%{-ms-transform:rotate(-15deg)}2%{-ms-transform:rotate(15deg)}4%{-ms-transform:rotate(-18deg)}6%{-ms-transform:rotate(18deg)}8%{-ms-transform:rotate(-22deg)}10%{-ms-transform:rotate(22deg)}12%{-ms-transform:rotate(-18deg)}14%{-ms-transform:rotate(18deg)}16%{-ms-transform:rotate(-12deg)}18%{-ms-transform:rotate(12deg)}20%{-ms-transform:rotate(0deg)}}@keyframes ringing{0%{transform:rotate(-15deg)}2%{transform:rotate(15deg)}4%{transform:rotate(-18deg)}6%{transform:rotate(18deg)}8%{transform:rotate(-22deg)}10%{transform:rotate(22deg)}12%{transform:rotate(-18deg)}14%{transform:rotate(18deg)}16%{transform:rotate(-12deg)}18%{transform:rotate(12deg)}20%{transform:rotate(0deg)}} */
+
