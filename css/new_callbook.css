@@ -1,0 +1,167 @@
+
+#modal.modal-overlay {
+    /* visibility: hidden; */
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+#modal .modal-window {
+    background: rgba(0,0,0,0.85);
+    -webkit-backdrop-filter: blur( 13.5px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    width: 500px;
+    height: 400px;
+    position: relative;
+    top: -100px;
+    padding: 10px;
+}
+
+#modal .title {
+    padding-left: 10px;
+    display: inline;
+    text-shadow: 1px 1px 2px gray;
+    color: white;    
+}
+
+#modal .title h3 {
+    display: inline;
+}
+
+#modal .close-area {
+    display: inline;
+    float: right;
+    padding-right: 10px;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px gray;
+    color: white;
+}
+
+#modal .content {
+    margin-top: 20px;
+    padding: 0px 10px;
+    text-shadow: 1px 1px 2px gray;
+    color: white;
+}
+
+/* 임의의 영역 생성 */
+.scrollBar { 
+    width: 200px;
+    height: 200px;
+    overflow-y: scroll;
+}
+
+/* 아래의 모든 코드는 영역::코드로 사용 */
+
+.scrollBar::-webkit-scrollbar {
+    width: 10px;  /* 스크롤바의 너비 */
+}
+
+.scrollBar::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+    background: #217af4; /* 스크롤바의 색상 */
+    
+    border-radius: 10px;
+}
+
+.scrollBar::-webkit-scrollbar-track {
+    background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+}
+/* 여기부터 내 코드 */
+input[type="radio"]{
+    display: none;
+}
+#user-select {
+    display:flex;
+}
+
+#user-select > div{
+    margin-top:10px;
+    margin-bottom:10px;
+    display: inline-block;
+    text-align: center;
+    padding-top:10px;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+}
+
+#select-left {
+    flex:1;
+}
+#select-right {
+    flex:1;
+}
+
+.selected-div {
+    visibility: hidden;
+    margin: 0 auto;
+    height:5px;
+    width:60%;
+    margin-top:5px;
+    background-color: white;
+}
+
+input[type="radio"]:checked + label {
+    color:white;
+    font-weight: bold;
+}
+
+label{
+    color:white;
+}
+
+#modal-contents ul li{
+    list-style-type: none;
+    height:35px;
+    font-size: 20px;
+    margin-bottom:2px;
+    border-bottom:1px solid white;
+    background-color:rgba(53,55,53,0.6);
+    padding-top:8px;
+}
+
+#search-friend-div {
+    margin-top:10px;
+   text-align: center;
+}
+
+#serach-input {
+    color: white;
+    border:none;
+    /* border-radius: 10px; */
+    background-color: transparent;
+    /* background-color: rgba(209, 205, 205, 0.2); */
+    border-bottom: 1px solid rgba(161, 158, 158, 0.8);
+    display: inline-block;
+    width:70%;
+    height: 30px;
+    
+}
+
+#serach-input:focus {
+   outline: none;
+  
+}
+
+#serach-input::placeholder{
+    padding-left:10px;
+    font-size:15px;
+}
+
+#search-btn {
+    display: inline-block;
+    margin-left:10px;
+    font-size: 50px;
+}

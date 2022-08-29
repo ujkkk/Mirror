@@ -9,6 +9,7 @@
     <link href="css/new_clock.css" rel="stylesheet">
     <link href="css/new_recording_button.css" rel="stylesheet">
     <link href="css/new_index.css" rel="stylesheet">
+    <link  href="css/new_callbook.css" rel="stylesheet">
     <script src="new_app.js"></script>
     <script>
         
@@ -43,7 +44,7 @@
     <!-- end of weather & clock & time -->
     <div id="bar_container">
         <button class="bar_button" id="bar_phone_button" onclick="barPhone()"><img class="bar_icon" src="./image/index/bar_phone.png"></button>
-        <button class="bar_button" id="bar_callbook_button" onclick="barCallBook()"><img class="bar_icon" src="./image/index/bar_callbook.png"></button>
+        <button class="bar_button" id="bar_callbook_button"><img class="bar_icon" src="./image/index/bar_callbook.png"></button>
         <button class="bar_button" id="bar_message_button" onclick="barMessage()"><img class="bar_icon" src="./image/index/bar_message2.png"></button>
         <button class="bar_button" id="bar_memmo_button" onclick="barMemo()"><img class="bar_icon" src="./image/index/bar_memo.png"></button>
     </div>
@@ -80,8 +81,33 @@
         <img id="stickerImg" ondblclick="setMemoDeleteBtn(event)" onclick="setMemoDeleteBtn(event)" src="memo_module/img/sticker.png">
         <img id="callImg" src="memo_module/img/call.png">
     </div> -->
+
+    <div id="modal" class="modal-overlay">
+        <div class="modal-window">
+            <div class="title">
+                <h3>연락처</h3>
+            </div>
+            <div class="close-area">✕</div>
+            <div id="user-select">
+                <div id="select-left">
+                    <input type="radio" name="user" id="friend-list" checked><label for="friend-list">Mirror 친구 목록</label>
+                    <div id="inside-selected" class="selected-div"></div>
+                </div>
+                <div id = "select-right">
+                    <input type="radio" name = "user" id="find-friend"><label for="find-friend">Mirror 친구 추가</label>
+                    <div id="outside-selected" class="selected-div"></div>
+                </div>
+            </div>
+            <div id = "modal-contents">
+                <ul id="otherUserList">
+                </ul>
+                <div id = "search-friend-div"></div>
+            </div>
+        </div>
+    </div>
 </body>
 <script src = "new_clock.js"></script>
+<script src="new_callbook.js"></script>
 <script>
     var message_click_cnt = 0; // 하단 bar 의 메시지 아이콘 몇 번 눌렀는지 확인
     var message_memo_container = document.getElementById("message_memo_container");
