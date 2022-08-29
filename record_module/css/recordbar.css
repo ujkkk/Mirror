@@ -7,13 +7,13 @@
     justify-content: center;
     z-index: 1;
 } */
-#recordingContainer{
+/* #recordingContainer{
     display: none;
     justify-content: center;
     align-items: center;
-}
-#barsDiv{
-    display: block;
+} */
+#recordbars_div{
+    /* display: block; */
     position: absolute;
     top: 50%;
     left: 50%;

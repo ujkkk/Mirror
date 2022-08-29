@@ -2954,8 +2954,8 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        width: 40px;
-        height: 40px;
+        width: 20px;
+        height: 20px;
         /* margin: -30px -30px; */
     }
 
@@ -2964,8 +2964,8 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        width: 44px;
-        height: 44px;
+        width: 24px;
+        height: 24px;
         /* margin: -32px -32px; */
     }
 }
@@ -2976,8 +2976,8 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        width: 40px;
-        height: 40px;
+        width: 20px;
+        height: 20px;
         /* margin: -30px -30px; */
     }
 
@@ -2986,8 +2986,8 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        width: 44px;
-        height: 44px;
+        width: 24px;
+        height: 24px;
         /* margin: -32px -32px; */
     }
 }
@@ -2998,8 +2998,8 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        width: 40px;
-        height: 40px;
+        width: 20px;
+        height: 20px;
         /* margin: -30px -30px; */
     }
 
@@ -3008,8 +3008,8 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        width: 44px;
-        height: 44px;
+        width: 24px;
+        height: 24px;
         /* margin: -32px -32px; */
     }
 }
@@ -3019,9 +3019,9 @@
         border-radius: 6px;
         position: absolute;
         left: 50%;
-        top: 50%;
-        width: 40px;
-        height: 40px;
+        top: 75%;
+        width: 18px;
+        height: 18px;
         /* margin: -30px -30px; */
     }
 
@@ -3029,24 +3029,19 @@
         border-radius: 6px;
         position: absolute;
         left: 50%;
-        top: 50%;
-        width: 44px;
-        height: 44px;
+        top: 75%;
+        width: 22px;
+        height: 22px;
         /* margin: -32px -32px; */
     }
 }
-
-/* body {
-    overflow: hidden;
-    background: #000;
-} */
 
 .record_button_container {
     position: absolute;
     left: 50%;
     top: 70%;
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     transform: translate(-50%, -50%);
     border: solid 1px green;
     /* margin: -35px -35px; */
@@ -3059,13 +3054,13 @@
 .record_button_container #record_button+#record_button_label:before {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 75%;
     /* width: 130px;
     height: 130px; */
     /* width: 80px;
     height: 80px; */
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
     transform: translate(-50%, -50%);
     /* margin: -15px -15px; */
     content: "";
@@ -3073,16 +3068,16 @@
     -ms-transform: translate(-6px, -6px);
     transform: translate(-6px, -6px); */
     border-radius: 50%;
-    border: 3px solid #fff;
+    border: 1.5px solid #fff;
     cursor: pointer;
 }
 
 .record_button_container #record_button+#record_button_label:after {
     position: absolute;
     left: 50%;
-    top: 50%;
-    width: 60px;
-    height: 60px;
+    top: 75%;
+    width: 30px;
+    height: 30px;
     transform: translate(-50%, -50%);
     /* margin: -50px -50px; */
     content: "";
@@ -3158,11 +3153,12 @@
 .record_button_container .record_time>* {
     display: inline-block;
     width: 50%;
-    margin: -2px;
+    /* margin: -2px; */
     color: #a2a2a2;
-    font-family: "Fjalla One", sans-serif;
-    font-size: 1.3em;
+    /* font-family: "Fjalla One", sans-serif; */
+    font-size: 0.7rem;
 }
+
 
 .record_button_container .record_time .h_m:after {
     float: right;

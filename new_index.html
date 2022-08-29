@@ -7,7 +7,8 @@
     <link href="css/sticker.css" rel="stylesheet">
     <link href="css/weather-icons.min.css" rel="stylesheet">
     <link href="css/new_clock.css" rel="stylesheet">
-    <link href="css/new_recording_button.css" rel="stylesheet">
+    <link href="record_module/css/recordbar.css" rel="stylesheet">
+    <link href="record_module/css/new_recording_button.css" rel="stylesheet">
     <link href="css/new_index.css" rel="stylesheet">
     <link  href="css/new_callbook.css" rel="stylesheet">
     <script src="new_app.js"></script>
@@ -107,7 +108,11 @@
     </div>
 </body>
 <script src = "new_clock.js"></script>
+
 <script src="new_callbook.js"></script>
+
+<script src="record_module/new_record.js"></script>
+
 <script>
     var message_click_cnt = 0; // 하단 bar 의 메시지 아이콘 몇 번 눌렀는지 확인
     var message_memo_container = document.getElementById("message_memo_container");
@@ -127,13 +132,33 @@
         }
     }
 
+    function showRecordBar(){
+
+    }
+
     function record(){
+        var recordbars_div = document.createElement("div");
+        recordbars_div.setAttribute("id", "recordbars_div");
+        recordbars_div.setAttribute("style","display: none;");
+
+        var bars = document.createElement("div");
+        bars.setAttribute("id", "bars");
+        
+        for(let i=0; i<10; i++){
+            var bar = document.createElement("div");
+            bar.setAttribute("class", "bar");
+            bars.appendChild(bar);
+        }
+        recordbars_div.appendChild(bars);
+
+
         var record_button_container = document.createElement("div");
         record_button_container.setAttribute("class", "record_button_container");
-        
+
         var record_checkbox = document.createElement("input");
         record_checkbox.setAttribute("type", "checkbox");
         record_checkbox.setAttribute("id","record_button");
+        record_checkbox.setAttribute("onClick", "showRecordBar()");
         
         var record_label = document.createElement("label");
         record_label.setAttribute("for","record_button");
@@ -153,10 +178,14 @@
         record_button_container.appendChild(record_checkbox);
         record_button_container.appendChild(record_label);
         record_button_container.appendChild(record_time);
+
+        var player = documnet.createElement("audio");
+        player.setAttribute("id","player");
+        player.setAttribute("controls");
+        player.setAttribute("style", "display: none;");
         
+        select_content.appendChild(recordbars_div);
         select_content.appendChild(record_button_container);
-
-
 
         // <div class="record_button_container">
         //     <input type="checkbox" id="record_button"/>
@@ -208,7 +237,7 @@
             //
         }
         else { // sel_type == "record"
-            record_store();
+            // record_store();
         }
     }
 </script>

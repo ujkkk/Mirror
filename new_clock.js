@@ -14,7 +14,7 @@ function getTime(){
     const hour = time.getHours();
     const minutes = time.getMinutes();
     time_ui.innerHTML = `${hour<10 ? `0${hour}`:hour}:${minutes<10 ? `0${minutes}`:minutes}`;
-    date_ui.innerHTML = `${week[day]}, ${date} ${mon[month+1]} `;
+    date_ui.innerHTML = `${week[day]}, ${date} ${mon[month]} `;
 }
 
 // refresh
