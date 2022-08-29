@@ -16,6 +16,7 @@
     -webkit-backdrop-filter: blur(1.5px);
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
+    overflow: hidden;
 }
 #modal .modal-window {
     background: rgba(0,0,0,0.85);
@@ -163,5 +164,6 @@ label{
 #search-btn {
     display: inline-block;
     margin-left:10px;
-    font-size: 50px;
+    width:10%;
+    height:30px;
 }
