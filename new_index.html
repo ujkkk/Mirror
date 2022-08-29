@@ -7,6 +7,7 @@
     <link href="css/sticker.css" rel="stylesheet">
     <link href="css/weather-icons.min.css" rel="stylesheet">
     <link href="css/new_clock.css" rel="stylesheet">
+    <link href="css/new_recording_button.css" rel="stylesheet">
     <link href="css/new_index.css" rel="stylesheet">
     <script src="new_app.js"></script>
     <script>
@@ -46,19 +47,20 @@
         <button class="bar_button" id="bar_message_button" onclick="barMessage()"><img class="bar_icon" src="./image/index/bar_message2.png"></button>
         <button class="bar_button" id="bar_memmo_button" onclick="barMemo()"><img class="bar_icon" src="./image/index/bar_memo.png"></button>
     </div>
-    <!-- <div id="message_option_container" style="display: none;">
-        <button class="option_button" id="text_option_button" onclick="textMessage()"><img class="bar_icon" src="./image/index/option_text2.png"></button>
-        <button class="option_button" id="image_option_button" onclick="imageMessage()"><img class="bar_icon" src="./image/index/option_image.png"></button>
-        <button class="option_button" id="record_option_button" onclick="recordMessage()"><img class="bar_icon" src="./image/index/option_record.png"></button>
-    </div> -->
     <!-- end of menu bar -->
-    <div id="radio_container">
-        <input type="radio" name="option" id="text" checked><label for="text">Text</label>
-        <input type="radio" name="option" id="image"><label for="image">Image</label>
-        <input type="radio" name="option" id="record"><label for="record">Record</label>
+    <div id="message_memo_container" style="display: none;">
+        <div id="radio_container">
+            <input type="radio" name="option" id="text" value="text" checked><label class="menu" for="text">Text</label>
+            <input type="radio" name="option" id="image" value="image"><label class="menu" for="image">Image</label>
+            <input type="radio" name="option" id="record" value="record"><label class="menu" for="record">Record</label>
+        </div>
+        <div id="content">
+            <button class="option_button" id="write_button" onclick="showWrite()"><img class="option_icon" src="./image/index/write_icon.png"></button>
+            <button class="option_button" id="back_button" onclick="showStore()" style="display: none;"><img class="option_icon" src="./image/index/back_icon.png"></button>
+            <div id="select_content"></div>
+        </div>
     </div>
-
-    <div id="memo_ui" class="blur_effect">
+    <!-- <div id="memo_ui" class="blur_effect">
         <div id="myMemo"></div><div id="sendMemo"></div>
     </div>
 
@@ -73,7 +75,7 @@
                 </ul>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- <div id="sticker">
         <img id="stickerImg" ondblclick="setMemoDeleteBtn(event)" onclick="setMemoDeleteBtn(event)" src="memo_module/img/sticker.png">
         <img id="callImg" src="memo_module/img/call.png">
@@ -81,34 +83,107 @@
 </body>
 <script src = "new_clock.js"></script>
 <script>
-    var message_click_cnt = 0;
-    var message_option_container = document.getElementById("message_option_container");
-    
-    var text_option_button = document.getElementById("text_option_button");
-    var image_option_button = document.getElementById("image_option_button");
-    var record_option_button = document.getElementById("record_option_button");
+    var message_click_cnt = 0; // 하단 bar 의 메시지 아이콘 몇 번 눌렀는지 확인
+    var message_memo_container = document.getElementById("message_memo_container");
 
+    var write_button = document.getElementById("write_button");
+    var back_button = document.getElementById("back_button");
+    var select_content = document.getElementById("select_content");
+
+    // 하단 bar 의 메시지 아이콘 눌렀을 때
     function barMessage(){
         console.log("barMessage click");
-        // message_click_cnt++;
-        // if(message_click_cnt%2==1) message_option_container.style.display = "block";
-        // else{
-        //     message_option_container.style.display = "none";
-        //     message_click_cnt=0;
-        // } 
+        message_click_cnt++;
+        if(message_click_cnt%2==1) message_memo_container.style.display = "block";
+        else{
+            message_memo_container.style.display = "none";
+            message_click_cnt=0;
+        }
+    }
+
+    function record(){
+        var record_button_container = document.createElement("div");
+        record_button_container.setAttribute("class", "record_button_container");
         
+        var record_checkbox = document.createElement("input");
+        record_checkbox.setAttribute("type", "checkbox");
+        record_checkbox.setAttribute("id","record_button");
+        
+        var record_label = document.createElement("label");
+        record_label.setAttribute("for","record_button");
+        record_label.setAttribute("id","record_button_label");
+        
+        var record_time = document.createElement("div");
+        record_time.setAttribute("class","record_time");
+
+        var record_hm = document.createElement("div");
+        record_hm.setAttribute("class","h_m");
+        var record_sms = document.createElement("div");
+        record_sms.setAttribute("class","s_ms");
+
+        record_time.appendChild(record_hm);
+        record_time.appendChild(record_sms);
+
+        record_button_container.appendChild(record_checkbox);
+        record_button_container.appendChild(record_label);
+        record_button_container.appendChild(record_time);
+        
+        select_content.appendChild(record_button_container);
+
+        
+
+        // <div class="record_button_container">
+        //     <input type="checkbox" id="record_button"/>
+        //     <label for="record_button" id="record_button_label"></label>
+        //     <div class="record_time">
+        //         <div class="h_m"></div > 
+        //         <div class="s_ms"></div>
+        //     </div>
+        // </div>
     }
 
-    function textMessage(){
+    function showWrite(){
+        write_button.style.display = "none";
+        back_button.style.display = "block";
 
+        // 라디오 버튼 체크 확인
+        var radio = document.getElementsByName("option");
+        var sel_type = null;
+        for(var i=0;i<radio.length;i++){
+            if(radio[i].checked == true) sel_type = radio[i].value;
+        }
+
+        if(sel_type == "text"){
+            //
+        }
+        else if(sel_type == "image"){
+            //
+        }
+        else { // sel_type == "record"
+            record();
+        }
     }
 
-    function imageMessage(){
+    function showStore(){
+        write_button.style.display = "block";
+        back_button.style.display = "none";
 
-    }
+        // 라디오 버튼 체크 확인
+        var radio = document.getElementsByName("option");
+        var sel_type = null;
+        for(var i=0;i<radio.length;i++){
+            if(radio[i].checked == true) sel_type = radio[i].value;
+        }
 
-    function recordMessage(){
-
+        if(sel_type == "text"){
+            //
+        }
+        else if(sel_type == "image"){
+            //
+        }
+        else { // sel_type == "record"
+            record_store();
+        }
     }
 </script>
 </html>
