@@ -66,11 +66,11 @@
     vertical-align: center;
 }
 
-input[type="radio"]{
+.option_radio{
     display: none;
 }
 
-input[type="radio"]:checked + label {
+.option_radio:checked + .menu {
     color:white;
     /* font-weight: bold; */
 }
