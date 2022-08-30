@@ -1,3 +1,6 @@
+
+let mirror_db = require('./mirror_db');
+
 let callBookBtn = document.getElementById("bar_callbook_button");
 callBookBtn.addEventListener("click",showUserMirrorBook);
 let modal = document.getElementById('modal');
@@ -7,6 +10,15 @@ let findFriend = document.getElementById("find-friend");
 findFriend.addEventListener("change",showUserMirrorBook);
 let serachFriendDiv = document.getElementById("search-friend-div");
 let ul = document.getElementById('otherUserList');
+let searchBtn = document.getElementById('search-btn');
+searchBtn.addEventListener('click',userCheck);
+
+
+let add_name = null;
+let add_id = null;
+let delete_id =null;
+let delete_name = null;
+let id =null;
 
 function modalOn() {
     modal.style.display = "flex"
@@ -30,37 +42,98 @@ function showUserMirrorBook(){
     modal.style.display="flex";
     modal.style.visibility = "visible";
 
-    serachFriendDiv.innerHTML ="";
-    while (serachFriendDiv.hasChildNodes()) { // UI 초기화
-        serachFriendDiv.removeChild(serachFriendDiv.firstChild);
-    } 
-
     if(friendList.checked == true){
+        serachFriendDiv.style.visibility = "hidden";
         document.getElementById("inside-selected").style.visibility = "visible";
         document.getElementById("outside-selected").style.visibility = "hidden";
         
     }
 
     else {
+        serachFriendDiv.style.visibility = "visible";
         ul.style.display = "none";
         document.getElementById("inside-selected").style.visibility = "hidden";
         document.getElementById("outside-selected").style.visibility = "visible";
 
-        let serachInput = document.createElement("input");
-        serachInput.type = "text";
-        serachInput.placeholder="친구 Mirror ID";
-        serachInput.id = "serach-input"
-        
-        let serachBtn = document.createElement("input");
-        serachBtn.type="button";
-        serachBtn.value="검색";
-        serachBtn.id = "search-btn"
-
-        serachFriendDiv.appendChild(serachInput);
-        serachFriendDiv.appendChild(serachBtn);
     }
 }
 
+function userCheck(){
+    let friend_id = document.getElementById('serach-input').value;
+    if(friend_id == null || friend_id=='')
+        return;
 
+    if(friend_id  == mirror_db.getId()){
+        console.log('본인이 본인 검색');
+        document.getElementById('text').innerHTML = `<h3>본인 입니다.</h3>`;
+        return;
+    }
+
+    //친구 목록에 있는지 확인
+    mirror_db.select('*', 'friend', `friend_id=${friend_id}`)
+    .then(values =>{
+        //친구목록에 이미 추가된 유저이면 추가 안함
+        if(values.length>0){
+            document.getElementById('text').innerHTML = `<h3>이미 등록된 유저입니다.</h3>`
+            id = null
+            add_id = null;
+            add_name = null;
+            console.log("이미 있는 유저임!!!!");
+            return;
+        }
+
+        //친구목록에 없는 유저를 추가할 때
+        axios({
+            url : 'http://localhost:9000/get/name',
+            method : 'post',
+            data : {
+                id : friend_id,
+            }
+        })
+        .then(res =>{
+            if(res.data != ""){
+                document.getElementById('text').innerHTML = `${res.data}`
+                
+
+                add_id = friend_id;
+                add_name = res.data;
+                console.log("여기 들어옴!!!!"+add_name);
+            }
+            else{
+                document.getElementById('text').innerHTML = `<h3>존재하지 않습니다.</h3>`
+                add_id = null;
+                add_name = null;
+                console.log("친구가 존재하지 않음!!");
+            }
+        })
+    })
+
+
+}
+
+//추가 버튼을 클릭하면 on
+function addFriendDB(){
+    console.log('add_id : ' +add_id +  ', add_name: ' +add_name);
+    if(add_id != null && add_name != null){
+        var data = {id: mirror_db.getId(), name: add_name, friend_id : add_id};
+        mirror_db.createColumns('friend', data)
+        .then(result => {
+            if (result) {
+                document.getElementById('text').innerHTML = `<h3>추가 되었습니다.</h3>`
+                getUserInfo();
+                add_id = null;
+                add_name =null;
+            }
+            else {
+                reject(null);
+                document.getElementById('text').innerHTML = `<h3>추가 하지 못헀습니다.</h3>`
+            }
+        });
+        
+    }
+    else{
+        document.getElementById('text').innerHTML = `<h3>추가할 수 없습니다.</h3>`;
+    }
+}
 
 
