@@ -1,7 +1,7 @@
 
 #modal.modal-overlay {
-    /* visibility: hidden; */
-    width: 100%;
+    visibility: hidden;
+    /* width: 100%;
     height: 100%;
     position: absolute;
     left: 0;
@@ -16,17 +16,19 @@
     -webkit-backdrop-filter: blur(1.5px);
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
-    overflow: hidden;
+    overflow: hidden; */
 }
 #modal .modal-window {
-    background: rgba(0,0,0,0.85);
+    background: rgba(113,113,113,0.85);
     -webkit-backdrop-filter: blur( 13.5px );
     border-radius: 10px;
-    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    /* border: 1px solid rgba( 225, 225, 225, 0.8 ); */
     width: 500px;
     height: 400px;
-    position: relative;
-    top: -100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     padding: 10px;
 }
 
@@ -34,11 +36,12 @@
     padding-left: 10px;
     display: inline;
     text-shadow: 1px 1px 2px gray;
-    color: white;    
+    color: white; 
 }
 
 #modal .title h3 {
     display: inline;
+    font-size: 20px;
 }
 
 #modal .close-area {
@@ -46,6 +49,7 @@
     float: right;
     padding-right: 10px;
     cursor: pointer;
+    font-size: 30px;
     text-shadow: 1px 1px 2px gray;
     color: white;
 }
@@ -86,11 +90,13 @@ input[type="radio"]{
 }
 #user-select {
     display:flex;
+    margin-top:10px;
 }
 
 #user-select > div{
+    width:100%;
     margin-top:10px;
-    margin-bottom:10px;
+    margin-bottom:20px;
     display: inline-block;
     text-align: center;
     padding-top:10px;
@@ -106,7 +112,7 @@ input[type="radio"]{
 }
 
 .selected-div {
-    visibility: hidden;
+    /* visibility: hidden; */
     margin: 0 auto;
     height:5px;
     width:60%;
@@ -144,21 +150,21 @@ label{
     /* border-radius: 10px; */
     background-color: transparent;
     /* background-color: rgba(209, 205, 205, 0.2); */
-    border-bottom: 1px solid rgba(161, 158, 158, 0.8);
+    border-bottom: 1px solid rgba(225, 225, 225, 0.8);
     display: inline-block;
     width:70%;
     height: 30px;
-    
+    font-size:20px;
 }
 
 #serach-input:focus {
    outline: none;
-  
 }
 
 #serach-input::placeholder{
     padding-left:10px;
-    font-size:15px;
+    color: rgba(225,225,225,0.8);
+    font-size:20px;
 }
 
 #search-btn {
