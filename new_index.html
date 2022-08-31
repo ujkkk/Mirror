@@ -13,8 +13,6 @@
     <link  href="css/new_callbook.css" rel="stylesheet">
     <script src="new_app.js"></script>
     <script>
-        
-
         function setMemoDeleteBtn(e){
             let deleteBtns = document.getElementsByClassName("memoDeleteBtn");
 
@@ -105,7 +103,11 @@
                 <div id = "search-friend-div">
                     <input type="text" id="serach-input" placeholder="친구 Mirror ID">
                     <input type="button" id="search-btn" value="검색">
-                    <p id="text" style="font-size:10px"></p>
+                    <div id="find-result-div">
+                        <img id = "user-img" src="./image/index/user.png" width="20" height="20">
+                        <p id="find-result" style="color:white"></p>
+                        <input id="add-friend-btn" type="button" value="추가">
+                    </div>
                 </div>
             </div>
         </div>

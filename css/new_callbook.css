@@ -173,3 +173,32 @@ label{
     width:10%;
     height:30px;
 }
+
+#find-result-div {
+    width:85%;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 10px;
+    background-color: rgba(87, 87, 87, 0.8)
+}
+
+#user-img {
+    display: none;
+    margin: 0 auto;
+    margin-top:40px;
+    width:80px;
+    height: 80px;
+}
+
+#find-result {
+    width:70%;
+    margin: 0 auto;
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+#add-friend-btn {
+   display: none;
+    width: 30%;
+    margin-top: 10px;
+}

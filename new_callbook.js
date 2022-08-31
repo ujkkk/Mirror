@@ -41,6 +41,10 @@ function showUserMirrorBook(){
 
     modal.style.display="flex";
     modal.style.visibility = "visible";
+    document.getElementById('serach-input').value = "";
+    document.getElementById('find-result').innerHTML = "";
+    document.getElementById('user-img').style.display = "none";
+    document.getElementById('add-friend-btn').style.display = "none";
 
     if(friendList.checked == true){
         serachFriendDiv.style.visibility = "hidden";
@@ -59,13 +63,15 @@ function showUserMirrorBook(){
 }
 
 function userCheck(){
+    document.getElementById('user-img').style.display = "none";
+    document.getElementById('add-friend-btn').style.display = "none";
     let friend_id = document.getElementById('serach-input').value;
     if(friend_id == null || friend_id=='')
         return;
 
     if(friend_id  == mirror_db.getId()){
         console.log('본인이 본인 검색');
-        document.getElementById('text').innerHTML = `<h3>본인 입니다.</h3>`;
+        document.getElementById('find-result').innerHTML = `<h3>본인 입니다.</h3>`;
         return;
     }
 
@@ -74,7 +80,7 @@ function userCheck(){
     .then(values =>{
         //친구목록에 이미 추가된 유저이면 추가 안함
         if(values.length>0){
-            document.getElementById('text').innerHTML = `<h3>이미 등록된 유저입니다.</h3>`
+            document.getElementById('find-result').innerHTML = "이미 등록된 유저입니다.";
             id = null
             add_id = null;
             add_name = null;
@@ -84,7 +90,7 @@ function userCheck(){
 
         //친구목록에 없는 유저를 추가할 때
         axios({
-            url : 'http://localhost:9000/get/name',
+            url : 'http://223.194.159.229:9000/get/name',
             method : 'post',
             data : {
                 id : friend_id,
@@ -92,15 +98,15 @@ function userCheck(){
         })
         .then(res =>{
             if(res.data != ""){
-                document.getElementById('text').innerHTML = `${res.data}`
-                
-
+                document.getElementById('user-img').style.display = "block";
+                document.getElementById('add-friend-btn').style.display = "inline-block";
+                document.getElementById('find-result').innerHTML = `${res.data}`
                 add_id = friend_id;
                 add_name = res.data;
                 console.log("여기 들어옴!!!!"+add_name);
             }
             else{
-                document.getElementById('text').innerHTML = `<h3>존재하지 않습니다.</h3>`
+                document.getElementById('find-result').innerHTML = "존재하지 않는 사용자입니다."
                 add_id = null;
                 add_name = null;
                 console.log("친구가 존재하지 않음!!");
