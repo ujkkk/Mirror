@@ -7,8 +7,8 @@
     <link href="css/sticker.css" rel="stylesheet">
     <link href="css/weather-icons.min.css" rel="stylesheet">
     <link href="css/new_clock.css" rel="stylesheet">
-    <link href="record_module/css/recordbar.css" rel="stylesheet">
-    <link href="record_module/css/new_recording_button.css" rel="stylesheet">
+    <link href="css/new_recordbar.css" rel="stylesheet">
+    <link href="css/new_recording_button.css" rel="stylesheet">
     <link href="css/new_index.css" rel="stylesheet">
     <link  href="css/new_callbook.css" rel="stylesheet">
     <script src="new_app.js"></script>
@@ -83,7 +83,7 @@
         <img id="callImg" src="memo_module/img/call.png">
     </div> -->
 
-    <div id="modal" class="modal-overlay">
+    <!-- <div id="modal" class="modal-overlay">
         <div class="modal-window">
             <div class="title">
                 <h3>연락처</h3>
@@ -105,7 +105,7 @@
                 <div id = "search-friend-div"></div>
             </div>
         </div>
-    </div>
+    </div> -->
 </body>
 <script src = "new_clock.js"></script>
 
@@ -137,6 +137,7 @@
     }
 
     function record(){
+        // 레코드 진행 상황을 보여주는 bar들 
         var recordbars_div = document.createElement("div");
         recordbars_div.setAttribute("id", "recordbars_div");
         recordbars_div.setAttribute("style","display: none;");
@@ -151,7 +152,7 @@
         }
         recordbars_div.appendChild(bars);
 
-
+        // 레코드 버튼
         var record_button_container = document.createElement("div");
         record_button_container.setAttribute("class", "record_button_container");
 
@@ -186,6 +187,7 @@
         
         select_content.appendChild(recordbars_div);
         select_content.appendChild(record_button_container);
+        select_content.appendChild(player);
 
         // <div class="record_button_container">
         //     <input type="checkbox" id="record_button"/>
@@ -215,6 +217,7 @@
             //
         }
         else { // sel_type == "record"
+            console.log(sel_type);
             record();
         }
     }
