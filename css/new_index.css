@@ -151,7 +151,7 @@
 }
 
 #select_content {
-    border: solid 1px yellow;
+    /* border: solid 1px yellow; */
     position: absolute;
     width: 690px;
     height: 720px;
