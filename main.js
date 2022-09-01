@@ -21,8 +21,12 @@ function createWindow() {
     const win = new BrowserWindow(options);
 
     // win.webContents.openDevTools();  
+<<<<<<< HEAD
     win.loadFile("./init.html");
 
+=======
+    win.loadFile("new_index.html");
+>>>>>>> parent of 56d0339 (전화 추가)
     // win.loadFile("test.html");
     
     let screenElectron = electron.screen;

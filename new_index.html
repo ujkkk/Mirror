@@ -42,7 +42,7 @@
     </article>
     <!-- end of weather & clock & time -->
     <div id="bar_container">
-        <button class="bar_button" id="bar_phone_button"><img class="bar_icon" src="./image/index/bar_phone.png"></button>
+        <button class="bar_button" id="bar_phone_button" onclick="barPhone()"><img class="bar_icon" src="./image/index/bar_phone.png"></button>
         <button class="bar_button" id="bar_callbook_button"><img class="bar_icon" src="./image/index/bar_callbook.png"></button>
         <button class="bar_button" id="bar_message_button" onclick="barMessage()"><img class="bar_icon" src="./image/index/bar_message2.png"></button>
         <button class="bar_button" id="bar_memmo_button" onclick="barMemo()"><img class="bar_icon" src="./image/index/bar_memo.png"></button>
@@ -80,59 +80,6 @@
         <img id="stickerImg" ondblclick="setMemoDeleteBtn(event)" onclick="setMemoDeleteBtn(event)" src="memo_module/img/sticker.png">
         <img id="callImg" src="memo_module/img/call.png">
     </div> -->
-
-
-<!-- call UI ////////////////////////////////////////////////////////////////// -->
-
-
-    <!-- 전화 아이콘 클릭시 보이는 창 -->
-    <div id="bar_phone_container" style="display: none">
-        <div id="record-set-component">
-            <button class="record-set-button" id="all-record-button">all</button><button class="record-set-button" id="absensce-button">absensce</button>
-        </div>
-        
-        <div class="call-conponent" id="call-record"></div>
-        <div class="call-conponent" id="call-address-book" style="display: none"></div>
-        <button class="call_button" id="record-button"><img id="record-icon" src="./image/index/call_record_icon.png"></button><button class="call_button" id="call-address-button"><img id="call-address-icon" src="./image/index/bar_callbook.png"></button>
-    </div>
-
-    <!-- 전화 걸기위한 input과 button -> 눈에 보이진 않음 따로 대처방법 생각중 -->
-    <div id="room-selection-container" style="display: none">
-        <input id="room-input" type="text" />
-        <button id="connect-button">CONNECT</button>
-    </div>
-
-    <!-- 음성 통화 창 -->
-    <div id="audio-chat-container" style="display: none">
-        <div class="caller">김경미</div>
-        <button class="disconnect-button"><img class="disconnect-icon" src="./image/index/end_call_icon.png"></button>
-    </div>
-
-    <!-- 영상 통화 창 -->
-    <div id="video-chat-container" style="display: none">
-        <div class="caller">김경미</div>
-        <div id="video-container">
-            <video id="local-video" autoplay="autoplay"></video>
-            <video id="remote-video" autoplay="autoplay"></video>
-        </div>
-        <button class="disconnect-button"><img class="disconnect-icon" src="./image/index/end_call_icon.png"></button>
-    </div>
-
-    <!-- 전화 거절 당했을 때 alert -->
-    <div id="call-refusal-container" style="display: none">
-        <div class="close-area" onclick="callRefusalAlertOff()">✕</div>
-        <div class="caller">김경미</div>
-        <div id="call-refusal-alert">전화를 받을 수 없습니다</div>
-    </div>
-    
-    <!-- 누군가가 전화를 걸었을 때 수락창 -->
-    <div id="caller-accept-container" style="display: none">
-        <div id="caller-alert">경미님의 영상통화</div>
-        <button class="call_button" id="accept"><img class="call-accept-icon" id="accept-icon" src="./image/index/start_call_icon.png"></button><button class="call_button" id="dont-accept"><img class="call-accept-icon" id="dont-accept-icon" src="./image/index/end_call_icon.png"></button>
-    </div>
-
-    <script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
-<!-- call UI ////////////////////////////////////////////////////////////////// -->
 
     <div id="modal" class="modal-overlay">
         <div class="modal-window">
