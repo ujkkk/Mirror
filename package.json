@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@google-cloud/speech": "^4.10.2",
+    "axios": "^0.27.2",
     "cookie-parser": "^1.4.6",
     "cucumber": "^6.0.7",
     "date-utils": "^1.2.21",

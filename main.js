@@ -18,10 +18,16 @@ function createWindow() {
     //options.fullscreen = true
     //options.autoHideMenuBar = true
     const win = new BrowserWindow(options)
+ 
 
-    //win.webContents.openDevTools()  
-    win.loadFile("./init.html")
-    //require('./stt')
+    win.loadFile("new_index.html");
+    // win.loadFile("test.html");
+    
+    let screenElectron = electron.screen;
+    let mainScreen = screenElectron.getPrimaryDisplay();
+    console.log(mainScreen);
+    
+
 }
 
 app.whenReady().then(() => {
