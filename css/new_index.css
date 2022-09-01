@@ -1,4 +1,15 @@
 #bar_container {
+
+    position: absolute;
+    width: 88%;
+    height: 6vh;
+    bottom: 2vh;
+    left: 50%;
+    transform: translate(-50%);
+    background:rgba(255, 255, 255, 0.2);
+    border-radius: 1vh;
+    display: flex;
+/* 
     display: flex;
     position: absolute;
     width: 960px;
@@ -6,7 +17,7 @@
     left: 60px;
     top: 1716px;
 
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.4); */
     border-radius: 15px;
     /* position: absolute;
     width: 88%;
@@ -35,9 +46,12 @@
 }
 
 .bar_icon {
+
+    height: 3.5vh;
+    width: 3,5vh;
     /* border: solid 1px red; */
-    height: 80px;
-    width: 80px;
+    /* height: 80px;
+    width: 80px; */
     /* padding-left: 7%;
     padding-right: 7%; */
 }

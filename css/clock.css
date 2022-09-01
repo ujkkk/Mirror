@@ -1,21 +1,29 @@
-#clock_ui {  
-    display: inline-block;
-    height: 150px;
-    width: 50%;
-    padding-top: 35px;
-}
-
-#clock_ui div {
-
-    float: right;
+#clock_ui {
+    color: white;
+    height: 5vh;
+    width: 100%;
+    /* border: solid 2px yellow; */
 }
 
 #time {
-    display: inline-block;
-    font-size: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-size: 4vh;
 }
 
-#second{
-    display: inline-block;
-    font-size: 50px;
+#date_ui {
+    color: white;
+    height: 3vh;
+    width: 100%;
+    /* border: solid 2px rgb(255, 0, 111); */
+}
+
+#date {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* line-height: 1; */
+    font-size: 1.3vh;
 }
