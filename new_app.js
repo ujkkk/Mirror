@@ -1,6 +1,12 @@
-const receivedData = location.href.split('?')[1];
-let mirrorDB = require('./mirror_db');
-mirrorDB.userId = 1001;//receivedData;
+const callAccess = require('./call_module/call')
+
+const receivedData = location.href.split('?')[1]
+let mirrorDB = require('./mirror_db')
+mirrorDB.setUser(receivedData)
+.then((user) => {
+    callAccess.setCall(user.id, user.name)
+})
+
 require('./weather_module/new_weather');
 
 /* 여기서 서버에 접근 + DB에 받아오기 */
@@ -26,7 +32,7 @@ axios.get(`http://localhost:9000/check/${mirrorDB.userId}`)
         }
 
         // memo 제작
-        require('./memo_module/create_memo');
+        // require('./memo_module/create_memo');
         // memo ui 설정
         require('./memo_module/sticker');
         
@@ -35,7 +41,7 @@ axios.get(`http://localhost:9000/check/${mirrorDB.userId}`)
         ()=>{
             console.log("app.js axios test | server connect failed")
             // memo 제작
-            require('./memo_module/create_memo');
+            // require('./memo_module/create_memo');
             // memo ui 설정
             require('./memo_module/sticker');
         }
