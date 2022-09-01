@@ -22,6 +22,7 @@ function createWindow() {
 
     // win.webContents.openDevTools();  
     win.loadFile("./init.html");
+
     // win.loadFile("test.html");
     
     let screenElectron = electron.screen;
