@@ -1,7 +1,16 @@
-const receivedData = location.href.split('?')[1];
-let mirrorDB = require('./mirror_db');
-mirrorDB.userId = 1001;//receivedData;
-require('./weather_module/weather');
+// 통화 모듈
+const callAccess = require('./call_module/call')
+
+// 날씨 모듈 불러오기
+require('./weather_module/new_weather')
+
+const receivedData = location.href.split('?')[1]
+let mirrorDB = require('./mirror_db')
+mirrorDB.setUser(receivedData)
+.then((user) => {
+    callAccess.setCall(user.id, user.name)
+})
+
 
 /* 여기서 서버에 접근 + DB에 받아오기 */
 const { default: axios } = require('axios');

@@ -56,6 +56,10 @@ function stt(data) {
     ? `${data.results[0].alternatives[0].transcript}\n`
     : '\n\nReached transcription time limit, press Ctrl+C\n'
   if (create_memo == 0) {
+    if (value.includes("전화")) {
+      mqttClient.publish('call_request', "call")
+      return `받은 내용: ${value} -> 전화 호출\n`
+    }
     if (value.includes("메모")) {
       create_memo = 1;
       //publish('create_memo',"create");

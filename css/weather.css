@@ -4,46 +4,52 @@
     margin: 0;
 }
 
-body {
-    background-color: black;
-    color: white;
+#container{
+    position: absolute;
+    margin-top: 3vh;
+    margin-left: 4vw;
+    width: 12vh;
+    height: 13vh;
+    /* border: solid 2px red;  */
 }
 
 .weather_ui {
-    float: left;
-    margin-top: 40px;
-    margin-left: 40px;
-    text-align: center;
-    height: 150px;
+    /* float: left; */
+    /* margin-top: 40px; */
+    /* margin-left: 40px; */
+    /* text-align: center; */
+    display: flex;
+    height: 5vh;
+    width: 100%;
+    color:white;
+    /* background-color: black; */
+    /* border: solid 2px blue;  */
 }
 
-.weather_ui div {
-    display: inline-block;
+#weather_icon {
+    /* position: absolute; */
+    /* float: left; */
+    width: 40%;
+    height: 100%;
+    margin-left: 1.1vh;
+    font-size: 3.8vh;
+    transform: translateY(0.3vh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border: solid 2px skyblue; */
 }
 
-#weather_option {
-    text-align: right;
-    display: inline-block;
-    height: 30px;
-    font-size: 20px;
-    transform: translateY(-50%);
-    
-}
-
-#weather_option div {
-    font-family: 'Crimson Text', serif;
-}
-
-
-#weather_option .wi-degrees {
-    font-size: 20px;
-    margin-right: -10px;
-    margin-left: 0px;
-}
-
-#temp,
-#CurrIcon {
-    display: inline-block;
+#temp {
+    width: 60%;
+    height: 100%;
+    margin-left: 0.5vh;
+    font-size: 3.8vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 2;
+    /* border: solid 2px hotpink; */
 }
 
 .wi-degrees {
@@ -54,17 +60,6 @@ body {
 
 .wi-humidity {
     font-size: 20px;
-
-}
-
-#temp {
-    font-size: 100px;
-    transform: translateY(-10%);
-}
-
-#CurrIcon {
-    font-size: 100px;
-    padding-bottom: -100px;
 }
 
 #weather {

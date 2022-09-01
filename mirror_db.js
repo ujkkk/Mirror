@@ -210,17 +210,23 @@ dbAccess.userId = userId;
 let userName;
 
 /* user id 설정과 user id에 따른 name 설정 */
-dbAccess.setUser = function (id) {
-    dbAccess.id = id;
+
+dbAccess.setUser = (id) => new Promise((resolve, reject) => {
+    dbAccess.userId = id
+
     selectColumns('name', 'user', `id=${id}`)
         .then(value => {
-            userName = value[0].name;
-            console.log('userName1:' + userName);
+            userName = value[0].name
+            console.log('userName1:' + userName)
             // 모듈로 name도 사용 하기 위해 dbAccess에 추가
-            dbAccess.userName = userName;
-            console.log('setUSUser: '+userId+" | "+userName);
-            document.location.href=`index.html?${id}`
+            dbAccess.userName = userName
+            resolve({id: dbAccess.userId, name: userName})
         })
+}) 
+
+
+dbAccess.setMirror = function (id) {
+    document.location.href=`new_index.html?${id}`
 }
 dbAccess.getId = () => id;
 dbAccess.getMirror_id = () => mirror_id;
