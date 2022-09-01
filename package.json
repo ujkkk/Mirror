@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@google-cloud/speech": "^4.10.2",
+    "axios": "^0.27.2",
     "cookie-parser": "^1.4.6",
     "cucumber": "^6.0.7",
     "date-utils": "^1.2.21",
@@ -32,6 +33,7 @@
     "node-record-lpcm16": "^1.0.1",
     "path": "^0.12.7",
     "socket.io": "^4.5.1",
+    "socket.io-client": "^4.5.1",
     "uuid": "^8.3.2",
     "ws": "^8.8.1",
     "xmlhttprequest": "^1.8.0"

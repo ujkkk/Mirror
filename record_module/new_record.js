@@ -1,6 +1,6 @@
 const file = require('File');
-const fs = require('fs');
-const axios = require('axios');
+// const fs = require('fs');
+// const axios = require('axios');
 require('date-utils'); // new Date().toFormat 을 위한 require
 
 let blob;

@@ -11,9 +11,9 @@ require('date-utils');
 /* 연결 설정 */
 var pool = mysql.createPool({
     connectionLimit: 10,
-    host: 'localhost',
+    host: '223.194.134.63',
     user: 'root',
-    password: '11111111',
+    password: '1234',
     database: 'mirror_db',
     debug: false
 });

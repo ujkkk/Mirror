@@ -2,7 +2,7 @@
 /* Section1. 변수 및 모달 관련 */
 
 /* HTML UI */
-let mirror_db = require('./mirror_db');
+// let mirror_db = require('./mirror_db');
 let callBookBtn = document.getElementById("bar_callbook_button");
 let modal = document.getElementById('modal');
 let friendList = document.getElementById("friend-list");
@@ -134,7 +134,7 @@ function userCheck(){
 
         //친구목록에 없는 유저를 추가할 때
         axios({
-            url : 'http://223.194.159.229:9000/get/name',
+            url : 'http://localhost:9000/get/name',
             method : 'post',
             data : {
                 id : friend_id,
