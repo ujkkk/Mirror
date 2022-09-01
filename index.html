@@ -8,6 +8,7 @@
     <link href="css/sticker.css" rel="stylesheet">
     <link href="css/weather-icons.min.css" rel="stylesheet">
     <link href="css/clock.css" rel="stylesheet">
+    <link href="css/message.css" rel="stylesheet">
     <link rel="stylesheet" href="css/modal.css">
     <script>
         function setMemoDeleteBtn(e){
@@ -47,6 +48,22 @@
         </div>
 
     </article>
+    <div class="message-box">
+        <div id="parent">
+          <div class='text-div' id="message-text-div">Message</div>
+          <div id='message-contents'></div>
+        </div>
+    </div>
+
+    <div id="message-detail-box">
+        <div id="message-detail-div">
+          <div id="message-sender"></div>
+          <div id="message-content"></div>
+          <div id="message-time"></div>
+          <img src="" style="display: none;">
+        </div>
+    </div>
+
 
     <div id="memo_ui" class="blur_effect">
         <div id="myMemo"></div><div id="sendMemo"></div>
@@ -92,9 +109,13 @@
         <img id="stickerImg" ondblclick="setMemoDeleteBtn(event)" onclick="setMemoDeleteBtn(event)" src="memo_module/img/sticker.png">
         <img id="callImg" src="memo_module/img/call.png">
     </div>
-    <script src="app.js"></script>
+    <!-- <script src="app.js"></script> -->
     <script src = "clock.js"></script>
-    
+    <script src="./message_module/message.js"></script>
+    <script src="./message_module/message_socket.js"></script>
+    <script>
+        window.onload = initMessages()
+    </script>
 </body>
 
 </html>

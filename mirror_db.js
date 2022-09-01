@@ -4,6 +4,8 @@ let dbAccess = {};
 // mysql 모듈 불러오기
 var mysql = require('mysql');
 require('date-utils');
+let id = 1001;
+let mirror_id = 100;
 
 /* 연결 설정 */
 var pool = mysql.createPool({
@@ -73,7 +75,7 @@ const practiceSql = (sql) => new Promise((resolve, reject) => {
             reject(err);
 
         }
-        console.log("data base connected id: " + conn.threadId);
+        //console.log("data base connected id: " + conn.threadId);
 
         //sql문 실행
         var exec = conn.query(sql, function (err, result) {
@@ -157,7 +159,7 @@ const addUser = (name) => new Promise((resolve, reject) => {
     console.log('addUser call');
 
     // user table 제작에 필요한 column을 데이터 객체로 형성
-    var data = { name: name };
+    var data = { name: name  , mirror_id : mirror_id};
 
     // user 행 제작
     createColumns('user', data)
@@ -209,7 +211,7 @@ let userName;
 
 /* user id 설정과 user id에 따른 name 설정 */
 dbAccess.setUser = function (id) {
-    dbAccess.userId = id;
+    dbAccess.id = id;
     selectColumns('name', 'user', `id=${id}`)
         .then(value => {
             userName = value[0].name;
@@ -220,7 +222,9 @@ dbAccess.setUser = function (id) {
             document.location.href=`index.html?${id}`
         })
 }
+dbAccess.getId = () => id;
 
+dbAccess.getMirror_id = () => mirror_id;
 
 /* dbAccess 객체를 모듈화 */
 module.exports = dbAccess;

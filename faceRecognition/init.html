@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Init</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="../css/init.css">
+        <link rel="stylesheet" type="text/css" href="../css/loading.css">
+        
+    </head>
+    <body>
+        <div id="loadingDiv">
+            <div id="loading" style="display: none;"></div>
+        </div>
+        <div id="loginMessage"></div>
+        <div class="container">
+            <div class="btnDiv" id="loginDiv"><button class="btn" id="loginBtn" onclick="login()">Login</button></div>
+            <div class="btnDiv" id="signUpDiv"><button class="btn" id="signUpBtn" onclick="signUp()">Sign Up</button></div>
+            <div class="btnDiv" id="deleteDiv"><button class="btn" id="deleteBtn" onclick="deleteUser()">Delte</button></div>
+            <div class="btnDiv" id="modelDiv"><button class="btn" id="modelBtn" onclick="model()">Train</button></div>
+        </div>
+        <div id="message"></div>
+
+        <script src="loading.js"></script>
+        <script>   
+            const client = require("./mqtt");
+            const _db = require('../mirror_db')
+            client.publish('mirror_id', String(_db.getMirror_id()))
+            let loginBtnFlag = false;
+            let signUpBtnFlag = false;
+
+            let btn; // 눌린 버튼 정보 저장
+            let btnText="";
+
+            client.subscribe('error'); // face not found를 위한 토픽 : "error"
+            client.on('message', (topic, message, packet) =>{
+                if(topic == "error"){
+                    var msg = String(message);
+                    const warningText = "Face Not Found";
+
+                    if(loginBtnFlag){ // Login 버튼을 눌렀는데 얼굴이 안 보일 경우
+                        btn = document.getElementById("loginBtn");
+                        btnText = "Login";
+                        loginBtnFlag = false;
+                    }
+                    else if(signUpBtnFlag){ // Sign Up 버튼을 눌렀는데 얼굴이 안 보일 경우
+                        btn = document.getElementById("signUpBtn");
+                        btnText = "Sign Up";
+                        signUpBtnFlag = false;
+                    }
+
+                    if(msg == "notFound"){ // 그 버튼에 Error 문구 띄우기
+                        btn.textContent  = warningText;
+                        btn.setAttribute("style", "color: red; border: solid 3px red; box-shadow: 0 0 25px red;");
+                    }
+                    else { // 얼굴을 찾았을 경우 버튼 복구
+                        btn.textContent = btnText;
+                        btn.setAttribute("style", "color: white; border: solid 2px white;");
+                    }
+                }
+            })
+
+            // Login 버튼을 눌렀을 때
+            function login(){
+                loading(); // 로딩 시작
+                loginBtnFlag = true;
+                client.publish('login/camera',"login"); // 로그인 시작
+            }
+
+            // Sign Up 버튼을 눌렀을 때
+            function signUp(){
+                loading(); // 로딩 시작
+                signUpBtnFlag = true;
+                //카메라에게 사진을 찍으라고 토픽보냄
+                client.publish('exist/camera', 'ok') // 이미 가입한 회원인지 확인
+            }
+
+            // Delete 버튼을 눌렀을 때
+            function deleteUser(){
+                document.location.href = 'delete.html'
+            }
+
+            //재학습 시키기
+            function model(){
+                client.publish('reTrain', String(_db.getMirror_id()))
+            }
+        </script>
+    </body>
+</html>
