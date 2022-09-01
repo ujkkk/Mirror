@@ -1,25 +1,32 @@
 
-let mirror_db = require('./mirror_db');
+/* Section1. 변수 및 모달 관련 */
 
+/* HTML UI */
+let mirror_db = require('./mirror_db');
 let callBookBtn = document.getElementById("bar_callbook_button");
-callBookBtn.addEventListener("click",showUserMirrorBook);
 let modal = document.getElementById('modal');
 let friendList = document.getElementById("friend-list");
-friendList.addEventListener("change",showUserMirrorBook);
 let findFriend = document.getElementById("find-friend");
-findFriend.addEventListener("change",showUserMirrorBook);
 let serachFriendDiv = document.getElementById("search-friend-div");
 let ul = document.getElementById('otherUserList');
 let searchBtn = document.getElementById('search-btn');
+let addFriendBtn =  document.getElementById('add-friend-btn');
+
+/* ADD Event Listener */
+callBookBtn.addEventListener("click",showUserMirrorBook);
+friendList.addEventListener("change",showUserMirrorBook);
+findFriend.addEventListener("change",showUserMirrorBook);
 searchBtn.addEventListener('click',userCheck);
+addFriendBtn.addEventListener("click",addFriendDB);
 
-
+/* 친구 추가 관련 Variable */
 let add_name = null;
 let add_id = null;
 let delete_id =null;
 let delete_name = null;
 let id =null;
 
+/* 모달 동작 함수 */
 function modalOn() {
     modal.style.display = "flex"
 }
@@ -37,19 +44,56 @@ closeBtn.addEventListener("click", e => {
     modalOff();
 })
 
+
+/* Section2. 연락처 관련 동작 */
 function showUserMirrorBook(){
 
     modal.style.display="flex";
     modal.style.visibility = "visible";
+    ul.innerHTML = "";
     document.getElementById('serach-input').value = "";
     document.getElementById('find-result').innerHTML = "";
     document.getElementById('user-img').style.display = "none";
     document.getElementById('add-friend-btn').style.display = "none";
 
     if(friendList.checked == true){
+        ul.style.display = "block";
         serachFriendDiv.style.visibility = "hidden";
         document.getElementById("inside-selected").style.visibility = "visible";
         document.getElementById("outside-selected").style.visibility = "hidden";
+        dbAccess.select('id, name','friend',`id=${mirror_db.getId()}`)
+        .then(value => { // users에 값 넣기
+                for (let k = 0; k < value.length; k++) {
+                    let li = document.createElement("li");
+                    li.style.width = "85%";
+                    li.style.margin = "0 auto";
+                    li.style.color="white";
+                    li.style.border="none";
+                    li.style.borderRadius="5px";
+                    li.style.marginBottom = "5px";
+                    li.style.fontWeight="bold";
+                    li.style.fontSize="20px";
+                    let deleteBtn = document.createElement("input");
+                    deleteBtn.style.float="right";
+                    deleteBtn.value ="✕";
+                    deleteBtn.style.marginRight = "20px";
+                    deleteBtn.type = "button";
+                    deleteBtn.addEventListener("click",deleteUser);
+                    li.appendChild(deleteBtn);
+                    const textNode = document.createTextNode(value[k].name);
+                    const userImg = document.createElement("img");
+                    userImg.setAttribute("src","./image/index/user.png");
+                    userImg.setAttribute("width","30px");
+                    userImg.setAttribute("height","30px");
+                    userImg.style.marginLeft = "35px";
+                    userImg.style.marginRight = "40px";
+                    userImg.style.verticalAlign="middle";
+                    li.appendChild(userImg);
+                    li.appendChild(textNode);
+                    ul.appendChild(li);
+                }   
+            }
+        )
         
     }
 
@@ -125,21 +169,39 @@ function addFriendDB(){
         mirror_db.createColumns('friend', data)
         .then(result => {
             if (result) {
-                document.getElementById('text').innerHTML = `<h3>추가 되었습니다.</h3>`
+
+                document.getElementById('find-result').innerHTML = "추가 되었습니다."
                 getUserInfo();
                 add_id = null;
                 add_name =null;
             }
             else {
                 reject(null);
-                document.getElementById('text').innerHTML = `<h3>추가 하지 못헀습니다.</h3>`
+                document.getElementById('find-result').innerHTML = "추가 하지 못헀습니다."
             }
         });
         
     }
     else{
-        document.getElementById('text').innerHTML = `<h3>추가할 수 없습니다.</h3>`;
+        document.getElementById('find-result').innerHTML = "추가할 수 없습니다.";
     }
 }
 
+function deleteUser(){
+    if(delete_id != null){
+        if (confirm(`'${delete_name}'님을 삭제 하시겠습니까?`)) {
+            mirror_db.delete('friend', `id = ${mirror_db.getId()} && friend_id = ${delete_id}`)
+            .then(value =>{
+                //테이블 갱신
+                $('#table-1 > tbody').empty();
+                delete_id = null;
+                delete_name = null;
+                getUserInfo();
+            })
+            return;
+        } else {
+            return;
+        }
+    }
+}
 
