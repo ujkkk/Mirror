@@ -21,7 +21,7 @@ function createWindow() {
     const win = new BrowserWindow(options);
 
     // win.webContents.openDevTools();  
-    win.loadFile("new_index.html");
+    win.loadFile("./init.html");
     // win.loadFile("test.html");
     
     let screenElectron = electron.screen;

@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <link href="css/call.css" rel="stylesheet">
+    </head>
+    <body>
+        <button onclick="f()">button</button>
+        
+        
+    
+    <!-- 전화 걸기위한 input과 button -> 눈에 보이진 않음 따로 대처방법 생각중 -->
+    <div id="room-selection-container" style="display: none">
+        <input id="room-input" type="text" />
+        <button id="connect-button">CONNECT</button>
+    </div>
+
+    <!-- 누군가가 전화를 걸었을 때 수락창 -->
+    <div id="caller-accept-container" style="display: none">
+        <div id="caller-alert">경미님의 영상통화</div>
+        <button class="call_button" id="accept"><img class="call-accept-icon" id="accept-icon" src="./image/index/start_call_icon.png"></button><button class="call_button" id="dont-accept"><img class="call-accept-icon" id="dont-accept-icon" src="./image/index/end_call_icon.png"></button>
+    </div>
+
+    <!-- 음성 통화 창 -->
+    <div id="audio-chat-container" style="display: none">
+        <div class="caller">김경미</div>
+        <button class="disconnect-button"><img class="disconnect-icon" src="./image/index/end_call_icon.png"></button>
+    </div>
+
+    <!-- 영상 통화 창 -->
+    <div id="video-chat-container" style="display: none">
+        <div class="caller">김경미</div>
+        <div id="video-container">
+            <video id="local-video" autoplay="autoplay"></video>
+            <video id="remote-video" autoplay="autoplay"></video>
+        </div>
+        <button class="disconnect-button"><img class="disconnect-icon" src="./image/index/end_call_icon.png"></button>
+    </div>
+
+
+    
+        <script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
+        <script type="module" src="./init_app.js"></script>
+
+        <script>
+            let mirrorDB = require('./mirror_db')
+            function f() {
+                mirrorDB.setMirror(1001)
+            }
+        </script>
+    </body>
+</html>

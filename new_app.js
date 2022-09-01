@@ -1,6 +1,12 @@
-const receivedData = location.href.split('?')[1];
-let mirrorDB = require('./mirror_db');
-mirrorDB.userId = 1001;//receivedData;
+// 통화 모듈
+const callAccess = require('./call_module/call')
+
+const receivedData = location.href.split('?')[1]
+let mirrorDB = require('./mirror_db')
+mirrorDB.setUser(receivedData)
+.then((user) => {
+    callAccess.setCall(user.id, user.name)
+})
 require('./weather_module/new_weather');
 
 /* 여기서 서버에 접근 + DB에 받아오기 */
