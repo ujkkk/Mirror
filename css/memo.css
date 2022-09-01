@@ -1,0 +1,140 @@
+*{
+    list-style: none;
+}
+#memo-container{
+    position: absolute;
+    margin-top: 47%;
+    margin-left: 75%;
+    height: 40%;
+    width: 25%;
+}
+#memo-div{
+    position: relative;
+    height: 100%;
+    width: 100%;
+   
+}
+#memo-img #memo-icon {
+    /* position: absolute; */
+    display: inline;
+    height: 20px;
+    width: 20px;
+    font-size: 2em;
+}
+#memo-img{
+    margin-left:7%;
+    float:left;
+}
+#memo-text-div {
+    color :white;
+    font-size: 13px;
+    display: inline;
+    margin-left: 2%;
+}
+#memo-slider-wrap {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+#memo-slider-wrap ul#memo-slider {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+}
+.memo-li{
+    float: left;
+    position: relative;
+    width:131px;
+    height: 100%;
+    
+}
+/* #memo-slider-wrap ul#memo-slider li>.memo  */
+.memo {
+    /* position: absolute; */
+    margin-left: 10%;
+    margin-bottom: 7%;
+    width: 80%;
+    height: 40%;
+    border: 1px solid white;
+    border-radius: 0px 0px 20px 0px ;
+    position: relative;
+
+}
+#memo-slider-wrap ul#memo-slider li>.memo h3 {
+    font-size: 18px;
+    color:wheat;
+    text-transform: uppercase;
+}
+
+.memo .memo-content{
+    margin-top:15%;
+    margin-left: 10%;
+    width: 80%;
+    height: 60%;
+    color:white;
+    font-size :11px;
+    text-align: center;
+}
+.memo .memo-content>img{
+    width: 100%;
+    height: 100%;
+}
+.memo .memo-time{
+    margin-top: 5%;
+    margin-left: 10%;
+    color:white;
+    font-size :9px;
+}
+/*btns*/
+.slider-btns {
+    position: absolute;
+    width: 30%;
+    height: 50%;
+    margin-top: 60%;
+    line-height: 57px;
+    text-align: center;
+    cursor: pointer;
+    color:white;
+    z-index: 100;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
+    -webkit-transition: all 0.1s ease;
+    -o-transition: all 0.1s ease;
+    transition: all 0.1s ease;
+}
+.slider-btns:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+#next {
+    right: -20%;
+    border-radius: 7px 0px 0px 7px;
+    color: #eee;
+}
+
+#previous {
+    left: -20%;
+    border-radius: 0px 7px 7px 7px;
+    color: #eee;
+}
+#memo-slider-wrap.active #next {
+    right: -10%
+    
+}
+
+#memo-slider-wrap.active #previous {
+    left: -10%;
+}
+
+/*ANIMATION*/
+#memo-slider-wrap ul,
+#memo-slider-pagination-wrap ul li {
+    -webkit-transition: all 0.3s cubic-bezier(1, .01, .32, 1);
+    -o-transition: all 0.3s cubic-bezier(1, .01, .32, 1);
+    transition: all 0.3s cubic-bezier(1, .01, .32, 1);
+}

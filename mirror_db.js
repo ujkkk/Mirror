@@ -7,6 +7,7 @@ let mirror_id = 100;
 var mysql = require('mysql');
 require('date-utils');
 
+
 /* 연결 설정 */
 var pool = mysql.createPool({
     connectionLimit: 10,
@@ -74,7 +75,7 @@ const practiceSql = (sql) => new Promise((resolve, reject) => {
             reject(err);
 
         }
-        console.log("data base connected id: " + conn.threadId);
+        //console.log("data base connected id: " + conn.threadId);
 
         //sql문 실행
         var exec = conn.query(sql, function (err, result) {
@@ -158,7 +159,7 @@ const addUser = (name) => new Promise((resolve, reject) => {
     console.log('addUser call');
 
     // user table 제작에 필요한 column을 데이터 객체로 형성
-    var data = { name: name };
+    var data = { name: name  , mirror_id : mirror_id};
 
     // user 행 제작
     createColumns('user', data)
@@ -209,8 +210,10 @@ dbAccess.userId = userId;
 let userName;
 
 /* user id 설정과 user id에 따른 name 설정 */
+
 dbAccess.setUser = (id) => new Promise((resolve, reject) => {
     dbAccess.userId = id
+
     selectColumns('name', 'user', `id=${id}`)
         .then(value => {
             userName = value[0].name
@@ -225,7 +228,6 @@ dbAccess.setUser = (id) => new Promise((resolve, reject) => {
 dbAccess.setMirror = function (id) {
     document.location.href=`new_index.html?${id}`
 }
-
 dbAccess.getId = () => id;
 dbAccess.getMirror_id = () => mirror_id;
 

@@ -10,6 +10,9 @@
     <link href="css/new_recordbar.css" rel="stylesheet">
     <link href="css/new_recording_button2.css" rel="stylesheet">
     <link href="css/new_index.css" rel="stylesheet">
+    <link href="css/message.css" rel="stylesheet">
+    <link href="css/memo.css" rel="stylesheet">
+    <!-- <script src="new_app.js"></script> -->
     <link  href="css/new_callbook.css" rel="stylesheet">
     <script src="new_app.js"></script>
     <script>
@@ -40,6 +43,51 @@
             <div id="date"></div>
         </div>
     </article>
+
+    <div id="message-container">
+        <div id="parent">
+          <div id="message-img"><img id='message_icon' src=./image/index/message.png></div>
+          <div id="message-text-div">Message</div>
+          <div id='message-contents'>
+            <ul class="message-slides" id='message-contents-ui'></ul>
+          </div>
+          <img id='point-imag' src='./image/index/point1.png' width="45px" height="45px">
+          <p class="message-controller">
+            <span class="prev" id='message-prev' style="visibility:hidden">&lang;</span>  
+            <span class="next" id="message-next">&rang;</span>
+          </p>
+          <!-- &lang: 왼쪽 방향 화살표
+      &rang: 오른쪽 방향 화살표 -->
+        </div>
+    </div>
+   <div id="message-detail-container">
+        <div id="message-detail-div">
+          <div id="message-sender" value="0"></div>
+          <div id="message-time"></div>
+          <div id="message-content"></div>
+        
+          <div id="message-reply">
+            <input type="text" id="reply-text" style="float:left">
+            <label id ='send-label' for="reply-btn"><img src='./image/index/send.png' width="25px" height="25px"></label> 
+            <button class="btn" id="reply-btn" type="button" onclick="reply_message()" style="display: none;">
+            
+            </div>
+        </div>
+    </div>
+
+    <div id="memo-container">
+        <div id="memo-div">
+            <div id="memo-img"><img id='memo-icon' src=./image/index/pin.png></div>
+            <div id="memo-text-div">MEMO</div>
+            <div id='memo-slider-wrap'>
+                <ul id="memo-slider">
+                </ul>
+                <div class="slider-btns" id="next"><span>&rang;</span></div>
+                <div class="slider-btns" id="previous"><span>&lang;</span></div>
+            
+            </div>
+        </div>
+    </div>
     <!-- end of weather & clock & time -->
     <div id="bar_container">
         <button class="bar_button" id="bar_phone_button" ><img class="bar_icon" src="./image/index/bar_phone.png"></button>
@@ -171,11 +219,23 @@
 </body>
 <script src = "new_clock.js"></script>
 
+<script src="./message_module/message.js"></script>
+<script src="./message_module/message_socket.js"></script>
+<script src="./memo_module/memo.js"></script>
 <script src="new_callbook.js"></script>
 
 <script src="record_module/new_record.js"></script>
 
 <script>
+    window.onload = initMessages()
+    var message_click_cnt = 0;
+    var message_option_container = document.getElementById("message_option_container");
+    
+    var text_option_button = document.getElementById("text_option_button");
+    var image_option_button = document.getElementById("image_option_button");
+    var record_option_button = document.getElementById("record_option_button");
+
+
     var message_click_cnt = 0; // 하단 bar 의 메시지 아이콘 몇 번 눌렀는지 확인
     var message_memo_container = document.getElementById("message_memo_container");
 

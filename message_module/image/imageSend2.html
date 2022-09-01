@@ -1,0 +1,121 @@
+<html>
+    <head>
+        <title>Login & Sign up</title>
+        <meta charset="utf-8">
+        <style>
+             html,
+            body {
+                width: 100%;
+                height: 100%;
+                background-color: black;
+            }
+            label{
+                color : white;
+            }
+            .container {
+                position:relative;
+                /* display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh; */
+                top: 60%;
+                text-align: center;
+                /* margin-top: 50%; */
+            }
+            img{
+                display: inline-block;
+                content: "";
+                border: none;
+            }
+            .btnDiv{
+                margin: 30px;
+            }
+            .btn{
+                display: inline;
+                width: 40vw;
+                padding: 10px;
+                border: solid 3px white;
+                border-radius: 12px;
+                background-color:transparent;
+                color: white;
+                /* font-size: 5vw; */
+                font-size: xx-large;
+                /* font-weight: bold; */
+                /* font-family: 'Do Hyeon', sans-serif; */
+            }
+            .btn:active{
+                border: solid 3px gray;
+                color: gray;
+                background-color: white;
+            }
+            .input-group{
+                margin: 30px;
+            }
+            .input-file-button{
+                padding: 6px 25px;
+                background-color:#292626;
+                border: solid 1px white;
+                border-radius: 4px;
+                color: white;
+                cursor: pointer;
+            }
+            #message-content{
+                display: none;
+            }
+        </style>
+               
+    </head>
+    <body>
+        <div class="container">  
+
+            <div class ="message">
+                <form id ="media-form" action="http:/localhost:3000/send/image" method= post enctype="multipart/form-data">
+                    <div class ="input-group">
+                        <img id='message-img' src='./media/test.jpg' width="550px">
+                    </div>
+                    <div class ="input-group">
+                        <input id ="message-sender" type="hidden" value="1001" name="sender"></div> 
+                        <label for="message-receiver">받는 사람</label>
+                        <input id="message-receiver" type="text" name="receiver" ></div>
+                    <div class ="input-group">
+                        <div id="textDiv" style="color:aliceblue"></div>
+                    </div>
+                    <div class="btnDiv" id="sendDiv"> 
+                        <button class="btn" id="sendBtn" type="button" onClick="send()" >보내기</button>
+                        <button class="btn" id="sendBtn" type="button" onClick="reCamera()" >다시 찍기</button>
+                    </div>
+                </form>
+
+            </div>
+            
+           
+        </div>
+       
+        <script>
+           
+            const client = require("../message_mqtt");
+            function reCamera(){
+                document.location.href = "imageSend1.html";
+            }
+
+            //전송하기 버튼을 눌렀을 때 실행
+            function send(){
+                if((document.getElementById('message-receiver').value != null) &&(document.getElementById('message-receiver').value != '')){
+                    //서버로 메시지를 보내는 이벤트 publish
+                    client.publish('send/image', 'send');
+                    document.getElementById('textDiv').innerHTML = "<h3>전송 되었습니다.</h3>";
+                    setTimeout(1500, ()=>{
+                        client.publish('camera/close', 'ok')
+                        document.location.href = 'testMain.html'
+                    })
+                }
+                else{
+                    document.getElementById('textDiv').innerHTML = "<h3>보낼 수 없습니다.</h3>";
+                }
+                
+            }
+
+        </script>
+    </body>
+</html>

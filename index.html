@@ -5,6 +5,7 @@
     <title>ELECTRON EX</title>
     <meta charset="utf-8">
     <link href="css/weather-icons.min.css" rel="stylesheet">
+
     <link href="css/call.css" rel="stylesheet">
 
     <link href="css/new_weather.css" rel="stylesheet">
@@ -14,6 +15,11 @@
     <link rel="shortcut icon" href="#">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WebRTC</title>
+
+    <link href="css/clock.css" rel="stylesheet">
+    <link href="css/message.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/modal.css">
+
     <script>
         function setMemoDeleteBtn(e) {
             let deleteBtns = document.getElementsByClassName("memoDeleteBtn");
@@ -48,17 +54,36 @@
             <div id="date"></div>
         </div>
     </article>
+    <div class="message-box">
+        <div id="parent">
+            <div class='text-div' id="message-text-div">Message</div>
+            <div id='message-contents'></div>
+        </div>
+    </div>
+
+    <div id="message-detail-box">
+        <div id="message-detail-div">
+            <div id="message-sender"></div>
+            <div id="message-content"></div>
+            <div id="message-time"></div>
+            <img src="" style="display: none;">
+        </div>
+    </div>
+
 
 
     <!-- 전화 아이콘 클릭시 보이는 창 -->
     <div id="bar_phone_container" style="display: none">
         <div id="record-set-component">
-            <button class="record-set-button" id="all-record-button">all</button><button class="record-set-button" id="absensce-button">absensce</button>
+            <button class="record-set-button" id="all-record-button">all</button><button class="record-set-button"
+                id="absensce-button">absensce</button>
         </div>
-        
+
         <div class="call-conponent" id="call-record"></div>
         <div class="call-conponent" id="call-address-book" style="display: none"></div>
-        <button class="call_button" id="record-button"><img id="record-icon" src="./image/index/call_record_icon.png"></button><button class="call_button" id="call-address-button"><img id="call-address-icon" src="./image/index/bar_callbook.png"></button>
+        <button class="call_button" id="record-button"><img id="record-icon"
+                src="./image/index/call_record_icon.png"></button><button class="call_button"
+            id="call-address-button"><img id="call-address-icon" src="./image/index/bar_callbook.png"></button>
     </div>
 
     <!-- 전화 걸기위한 input과 button -> 눈에 보이진 않음 따로 대처방법 생각중 -->
@@ -89,11 +114,13 @@
         <div class="caller">김경미</div>
         <div id="call-refusal-alert">전화를 받을 수 없습니다</div>
     </div>
-    
+
     <!-- 누군가가 전화를 걸었을 때 수락창 -->
     <div id="caller-accept-container" style="display: none">
         <div id="caller-alert">경미님의 영상통화</div>
-        <button class="call_button" id="accept"><img class="call-accept-icon" id="accept-icon" src="./image/index/start_call_icon.png"></button><button class="call_button" id="dont-accept"><img class="call-accept-icon" id="dont-accept-icon" src="./image/index/end_call_icon.png"></button>
+        <button class="call_button" id="accept"><img class="call-accept-icon" id="accept-icon"
+                src="./image/index/start_call_icon.png"></button><button class="call_button" id="dont-accept"><img
+                class="call-accept-icon" id="dont-accept-icon" src="./image/index/end_call_icon.png"></button>
     </div>
 
     <div id="bar_container">
@@ -111,6 +138,13 @@
     <script src="clock.js"></script>
 
     <script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
+    <!-- <script src="app.js"></script> -->
+    <script src="clock.js"></script>
+    <script src="./message_module/message.js"></script>
+    <script src="./message_module/message_socket.js"></script>
+    <script>
+        window.onload = initMessages()
+    </script>
 </body>
 
 </html>
