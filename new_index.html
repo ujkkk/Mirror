@@ -7,13 +7,15 @@
     <link href="css/sticker.css" rel="stylesheet">
     <link href="css/weather-icons.min.css" rel="stylesheet">
     <link href="css/new_clock.css" rel="stylesheet">
+    <link href="css/new_recordbar.css" rel="stylesheet">
+    <link href="css/new_recording_button2.css" rel="stylesheet">
     <link href="css/new_index.css" rel="stylesheet">
     <link href="css/message.css" rel="stylesheet">
     <link href="css/memo.css" rel="stylesheet">
     <!-- <script src="new_app.js"></script> -->
+    <link  href="css/new_callbook.css" rel="stylesheet">
+    <script src="new_app.js"></script>
     <script>
-        
-
         function setMemoDeleteBtn(e){
             let deleteBtns = document.getElementsByClassName("memoDeleteBtn");
 
@@ -89,20 +91,22 @@
     <!-- end of weather & clock & time -->
     <div id="bar_container">
         <button class="bar_button" id="bar_phone_button" onclick="barPhone()"><img class="bar_icon" src="./image/index/bar_phone.png"></button>
-        <button class="bar_button" id="bar_callbook_button" onclick="barCallBook()"><img class="bar_icon" src="./image/index/bar_callbook.png"></button>
+        <button class="bar_button" id="bar_callbook_button"><img class="bar_icon" src="./image/index/bar_callbook.png"></button>
         <button class="bar_button" id="bar_message_button" onclick="barMessage()"><img class="bar_icon" src="./image/index/bar_message2.png"></button>
         <button class="bar_button" id="bar_memmo_button" onclick="barMemo()"><img class="bar_icon" src="./image/index/bar_memo.png"></button>
     </div>
-    <!-- <div id="message_option_container" style="display: none;">
-        <button class="option_button" id="text_option_button" onclick="textMessage()"><img class="bar_icon" src="./image/index/option_text2.png"></button>
-        <button class="option_button" id="image_option_button" onclick="imageMessage()"><img class="bar_icon" src="./image/index/option_image.png"></button>
-        <button class="option_button" id="record_option_button" onclick="recordMessage()"><img class="bar_icon" src="./image/index/option_record.png"></button>
-    </div> -->
     <!-- end of menu bar -->
-    <div id="radio_container">
-        <input type="radio" name="option" id="text" checked><label for="text">Text</label>
-        <input type="radio" name="option" id="image"><label for="image">Image</label>
-        <input type="radio" name="option" id="record"><label for="record">Record</label>
+    <div id="message_memo_container" style="display: none;">
+        <div id="radio_container">
+            <input type="radio" name="option" class="option_radio" id="text" value="text" checked><label class="menu" for="text">Text</label>
+            <input type="radio" name="option" class="option_radio" id="image" value="image"><label class="menu" for="image">Image</label>
+            <input type="radio" name="option" class="option_radio" id="record" value="record"><label class="menu" for="record">Record</label>
+        </div>
+        <div id="content">
+            <button class="option_button" id="write_button" onclick="showWrite()"><img class="option_icon" src="./image/index/write_icon.png"></button>
+            <button class="option_button" id="back_button" onclick="showStore()" style="display: none;"><img class="option_icon" src="./image/index/back_icon.png"></button>
+            <div id="select_content"></div>
+        </div>
     </div>
 
     <!-- <div id="memo_ui" class="blur_effect">
@@ -125,11 +129,50 @@
         <img id="stickerImg" ondblclick="setMemoDeleteBtn(event)" onclick="setMemoDeleteBtn(event)" src="memo_module/img/sticker.png">
         <img id="callImg" src="memo_module/img/call.png">
     </div> -->
+
+    <div id="modal" class="modal-overlay">
+        <div class="modal-window">
+            <div class="title">
+                <h3>연락처</h3>
+            </div>
+            <div class="close-area">✕</div>
+            <div id="user-select">
+                <div id="select-left">
+                    <input type="radio" name="user" id="friend-list" checked><label for="friend-list">Mirror 친구 목록</label>
+                    <div id="inside-selected" class="selected-div"></div>
+                </div>
+                <div id = "select-right">
+                    <input type="radio" name = "user" id="find-friend"><label for="find-friend">Mirror 친구 추가</label>
+                    <div id="outside-selected" class="selected-div"></div>
+                </div>
+            </div>
+            <div id = "modal-contents">
+                <div id = "friend-list-div" style="overflow:auto;">
+                    <ul id="otherUserList">
+                    </ul>
+                </div>
+                <div id = "search-friend-div">
+                    <input type="text" id="serach-input" placeholder="친구 Mirror ID">
+                    <input type="button" id="search-btn" value="검색">
+                    <div id="find-result-div">
+                        <img id = "user-img" src="./image/index/user.png" width="20" height="20">
+                        <p id="find-result" style="color:white"></p>
+                        <input id="add-friend-btn" type="button" value="추가">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script src = "new_clock.js"></script>
+
 <script src="./message_module/message.js"></script>
 <script src="./message_module/message_socket.js"></script>
 <script src="./memo_module/memo.js"></script>
+<script src="new_callbook.js"></script>
+
+<script src="record_module/new_record.js"></script>
+
 <script>
     window.onload = initMessages()
     var message_click_cnt = 0;
@@ -139,27 +182,144 @@
     var image_option_button = document.getElementById("image_option_button");
     var record_option_button = document.getElementById("record_option_button");
 
+
+    var message_click_cnt = 0; // 하단 bar 의 메시지 아이콘 몇 번 눌렀는지 확인
+    var message_memo_container = document.getElementById("message_memo_container");
+
+    var write_button = document.getElementById("write_button");
+    var back_button = document.getElementById("back_button");
+    var select_content = document.getElementById("select_content");
+
+    // 하단 bar 의 메시지 아이콘 눌렀을 때
     function barMessage(){
         console.log("barMessage click");
-        // message_click_cnt++;
-        // if(message_click_cnt%2==1) message_option_container.style.display = "block";
-        // else{
-        //     message_option_container.style.display = "none";
-        //     message_click_cnt=0;
-        // } 
+        message_click_cnt++;
+        if(message_click_cnt%2==1) message_memo_container.style.display = "block";
+        else{
+            message_memo_container.style.display = "none";
+            message_click_cnt=0;
+        }
+    }
+
+    function showhideRecordBar(){
+        let recordbars_div = document.getElementById("recordbars_div");
+        if(recordbars_div.style.display == "block") recordbars_div.style.display = "none";
+        else recordbars_div.style.display = "block";
+    }
+
+    function record(){
+        // 레코드 진행 상황을 보여주는 bar들 
+        let recordbars_div = document.createElement("div");
+        recordbars_div.setAttribute("id", "recordbars_div");
+        recordbars_div.setAttribute("style","display: none;");
+
+        let bars = document.createElement("div");
+        bars.setAttribute("id", "bars");
         
+        for(let i=0; i<10; i++){
+            let bar = document.createElement("div");
+            bar.setAttribute("class", "bar");
+            bars.appendChild(bar);
+        }
+        recordbars_div.appendChild(bars);
+
+        // 레코드 버튼
+        let record_button_container = document.createElement("div");
+        record_button_container.setAttribute("class", "record_button_container");
+
+        let record_checkbox = document.createElement("input");
+        record_checkbox.setAttribute("type", "checkbox");
+        record_checkbox.setAttribute("id","record_button");
+        record_checkbox.setAttribute("onClick", "showhideRecordBar()");
+        
+        let record_label = document.createElement("label");
+        record_label.setAttribute("for","record_button");
+        record_label.setAttribute("id","record_button_label");
+        
+        let record_time = document.createElement("div");
+        record_time.setAttribute("class","record_time");
+
+        let record_hm = document.createElement("div");
+        record_hm.setAttribute("class","h_m");
+        let record_sms = document.createElement("div");
+        record_sms.setAttribute("class","s_ms");
+
+        record_time.appendChild(record_hm);
+        record_time.appendChild(record_sms);
+
+        record_button_container.appendChild(record_checkbox);
+        record_button_container.appendChild(record_label);
+        record_button_container.appendChild(record_time);
+
+        let player = document.createElement("audio");
+        player.setAttribute("id","player");
+        player.setAttribute("controls","true");
+        player.setAttribute("hidden", "hidden");
+        
+        select_content.appendChild(recordbars_div);
+        record_button_container.appendChild(player);
+        select_content.appendChild(record_button_container);
+        
+        console.log(select_content);
+
+        // <div class="record_button_container">
+        //     <input type="checkbox" id="record_button"/>
+        //     <label for="record_button" id="record_button_label"></label>
+        //     <div class="record_time">
+        //         <div class="h_m"></div > 
+        //         <div class="s_ms"></div>
+        //     </div>
+        // </div>
     }
 
-    function textMessage(){
+    function showWrite(){
+        write_button.style.display = "none";
+        back_button.style.display = "block";
 
+        // 라디오 버튼 체크 확인
+        var radio = document.getElementsByName("option");
+        var sel_type = null;
+        for(var i=0;i<radio.length;i++){
+            if(radio[i].checked == true) sel_type = radio[i].value;
+        }
+
+        if(sel_type == "text"){
+            //
+        }
+        else if(sel_type == "image"){
+            //
+        }
+        else { // sel_type == "record"
+            console.log(sel_type);
+            record();
+        }
     }
 
-    function imageMessage(){
+    function showStore(){
+        write_button.style.display = "block";
+        back_button.style.display = "none";
 
-    }
+        if(select_content.hasChildNodes()){
+            console.log(`${select_content.firstChild} 지우기`);
+            select_content.removeChild(select_content.firstChild);
+        }
 
-    function recordMessage(){
+        // 라디오 버튼 체크 확인
+        var radio = document.getElementsByName("option");
+        var sel_type = null;
+        for(var i=0;i<radio.length;i++){
+            if(radio[i].checked == true) sel_type = radio[i].value;
+        }
 
+        if(sel_type == "text"){
+            //
+        }
+        else if(sel_type == "image"){
+            //
+        }
+        else { // sel_type == "record"
+            // record_store();
+        }
     }
 </script>
 </html>

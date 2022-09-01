@@ -1,22 +1,22 @@
 /* 모듈 사용할 객체 */
 let dbAccess = {};
+let id = 1001;
+let mirror_id = 100; 
 
 // mysql 모듈 불러오기
 var mysql = require('mysql');
 require('date-utils');
-let id = 1001;
-let mirror_id = 100;
+
 
 /* 연결 설정 */
 var pool = mysql.createPool({
     connectionLimit: 10,
     host: 'localhost',
     user: 'root',
-    password: '1234',
+    password: '11111111',
     database: 'mirror_db',
     debug: false
 });
-
 
 /* 테이블 columns 제작 (insert 문) */
 const createColumns = (table_name, data) => new Promise((resolve, reject) => {
@@ -223,7 +223,6 @@ dbAccess.setUser = function (id) {
         })
 }
 dbAccess.getId = () => id;
-
 dbAccess.getMirror_id = () => mirror_id;
 
 /* dbAccess 객체를 모듈화 */

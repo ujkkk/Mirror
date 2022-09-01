@@ -1,12 +1,13 @@
 //DISPLAY=:0 xrandr --output HDMI-1 --rotate right
 const { app, BrowserWindow } = require("electron");
+const electron = require("electron");
 
 function createWindow() {
     let options = {
         // width: 1200,
         // height: 1900,
-        width: 270*2,
-        height: 480*2,
+        // width: 1080,
+        // height: 1920,
         x: 0,
         y: 0,
         webPreferences: {
@@ -15,13 +16,23 @@ function createWindow() {
         },
         backgroundColor: "#000000"
     }
-    // options.fullscreen = true;
+    options.fullscreen = true;
     options.autoHideMenuBar = true;
     const win = new BrowserWindow(options);
 
-    //win.webContents.openDevTools();  
+    // win.webContents.openDevTools();  
+<<<<<<< HEAD
+    win.loadFile("./init.html");
+
+=======
     win.loadFile("new_index.html");
-    // win.loadFile("index.html");
+>>>>>>> parent of 56d0339 (전화 추가)
+    // win.loadFile("test.html");
+    
+    let screenElectron = electron.screen;
+    let mainScreen = screenElectron.getPrimaryDisplay();
+    console.log(mainScreen);
+    
 }
 
 app.whenReady().then(() => {

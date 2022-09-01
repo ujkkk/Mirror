@@ -163,7 +163,7 @@
     display: none;
 }
 
-input[type="button"]{
+#memoDiv input[type="button"]{
     background-color: #353735;
     border: 2px solid white;
     color: white;
