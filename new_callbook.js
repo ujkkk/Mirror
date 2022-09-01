@@ -61,7 +61,7 @@ function showUserMirrorBook(){
         serachFriendDiv.style.visibility = "hidden";
         document.getElementById("inside-selected").style.visibility = "visible";
         document.getElementById("outside-selected").style.visibility = "hidden";
-        dbAccess.select('id, name','friend',`id=${mirror_db.getId()}`)
+        mirror_db.select('id, name','friend',`id=${mirror_db.getId()}`)
         .then(value => { // users에 값 넣기
                 for (let k = 0; k < value.length; k++) {
                     let li = document.createElement("li");
