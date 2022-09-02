@@ -1,0 +1,186 @@
+
+#message-container{
+    position: absolute;
+    margin-top: 15vh;
+    margin-left: 3vw;
+    height: 10vh;
+    width: 40%;
+}
+#parent {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+#message-img #message_icon {
+    /* position: absolute; */
+    display: inline;
+    height: 1.8vh;
+    width: 1.8vh;
+    font-size: 1.8vh;
+}
+#message-img{
+    margin-left:1vh;
+    float:left;
+}
+#message-text-div {
+    color :white;
+    font-size: 1.3vh;
+    display: inline;
+    margin-left: 0.5vh;
+}
+#message-contents {
+    margin-top: 0.7vh;
+    margin-left: 0.5vh;
+    height: 5.5vh;
+    position: relative;
+    overflow: hidden;  
+}
+.message-content{
+    margin-top: 0.4vh;
+    margin-left: 0.2vh;
+    color: white;
+    font-size: 1vh;
+    width: 40%;
+    height: 60%;
+    cursor: pointer;
+    border-radius: 1vh;
+    outline: none;
+    padding-left: 0.4vh;
+    border: 0;
+}
+#point-imag{
+    margin-top :1%;
+    margin-left:35%;
+    width: 4vh;
+    height: 4vh;
+    right: 50%;
+    transform: translate(50%, 0%);
+}
+.message-slides{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1800px; /* 슬라이드할 사진과 마진 총 넓이 */
+    height: 64%;
+    transition: left 0.4s ease-out; 
+    /*ease-out: 처음에는 느렸다가 점점 빨라짐*/
+}
+/* 슬라이드들 옆으로 정렬 */
+.message-slides li:not(:last-child){
+    float: left;
+    margin-right: 100px;
+    list-style:none;
+  }
+  
+.message-slides li{
+    float: left;
+    list-style:none;
+}
+
+.message-controller span{
+    position:absolute;
+    background-color: transparent;
+    color: white;
+    text-align: center;
+    border-radius: 50%;
+    /* padding: 10px 20px; */
+    top: 55%;
+    font-size: 0.7em;
+    cursor: pointer;
+  }
+  
+  /* 이전, 다음 화살표에 마우스 커서가 올라가 있을때 */
+.message-controller span:hover{
+    background-color: rgba(128, 128, 128, 0.11);
+}
+  
+#message-prev{
+    left: 0.8vh;
+}
+#message-next{
+    right: 0.8vh;
+   
+}
+
+#message-detail-container{
+    position: absolute;
+    margin-top: 5%;
+    margin-left: 45%;
+    height: 20%;
+    width: 50%;
+    border: 0.07vh solid white;
+    visibility :hidden;
+    border-radius: 5%;
+}
+#message-detail-div{
+    position: relative;
+    height: 100%;
+    width: 100%;
+   
+}
+#message-detail-div #message-sender{
+    color : white;
+    font-size: 1.3vh;
+    /* margin-top: 3%; */
+    margin-left: 1.2vh;
+    float:left;
+}
+#message-detail-div #message-time{
+    color : white;
+    font-size: 0.8vh;
+    margin-left: 60%;
+    margin-top: 3%;
+}
+
+#message-detail-div #message-content{
+    color : white;
+    width: 80%;
+    height: 35%;
+    font-size: 1.7vh;
+    margin: 2.3vh;
+    margin-top: 2.5vh;
+    align-items: center;
+    justify-content: center;
+    
+    
+}
+
+
+#message-detail-div #message-image{
+
+  margin-left: 13%;
+  width : 170px;
+  height: 80px;
+}
+
+#message-detail-div #message-reply{
+    margin-top: 11%;
+    width: 80%;
+    height: 20%;
+}
+#message-detail-div #message-reply #reply-text{
+  margin-left: 10%;
+  width: 100%;
+  height: 65%;
+  font-size: 1.2vh;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color:aliceblue;
+  position:relative;
+}
+
+
+#message-detail-div #message-reply #send-label{
+    bottom: 2vh;
+    right: 5vh;
+    font-size: 2vh;
+    position:absolute;
+}
+
+#message-detail-div #message-reply #send-label img{
+    width: 3vh;
+    height: 3vh;
+}

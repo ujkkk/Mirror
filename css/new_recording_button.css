@@ -2920,28 +2920,28 @@
     }
 }
 
-@-webkit-keyframes record_time {
+@-webkit-keyframes time {
     to {
         top: 100%;
         opacity: 1;
     }
 }
 
-@-moz-keyframes record_time {
+@-moz-keyframes time {
     to {
         top: 100%;
         opacity: 1;
     }
 }
 
-@-o-keyframes record_time {
+@-o-keyframes time {
     to {
         top: 100%;
         opacity: 1;
     }
 }
 
-@keyframes record_time {
+@keyframes time {
     to {
         top: 100%;
         opacity: 1;
@@ -2952,20 +2952,20 @@
     70% {
         border-radius: 6px;
         position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 20px;
-        height: 20px;
+        /* left: 50%;
+        top: 50%; */
+        width: 30px;
+        height: 30px;
         /* margin: -30px -30px; */
     }
 
     100% {
         border-radius: 6px;
         position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 24px;
-        height: 24px;
+        /* left: 50%;
+        top: 50%; */
+        width: 34px;
+        height: 34px;
         /* margin: -32px -32px; */
     }
 }
@@ -2974,20 +2974,20 @@
     70% {
         border-radius: 6px;
         position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 20px;
-        height: 20px;
+        /* left: 50%;
+        top: 50%; */
+        width: 30px;
+        height: 30px;
         /* margin: -30px -30px; */
     }
 
     100% {
         border-radius: 6px;
         position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 24px;
-        height: 24px;
+        /* left: 50%;
+        top: 50%; */
+        width: 34px;
+        height: 34px;
         /* margin: -32px -32px; */
     }
 }
@@ -2996,20 +2996,20 @@
     70% {
         border-radius: 6px;
         position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 20px;
-        height: 20px;
+        /* left: 50%;
+        top: 50%; */
+        width: 30px;
+        height: 30px;
         /* margin: -30px -30px; */
     }
 
     100% {
         border-radius: 6px;
         position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 24px;
-        height: 24px;
+        /* left: 50%;
+        top: 50%; */
+        width: 34px;
+        height: 34px;
         /* margin: -32px -32px; */
     }
 }
@@ -3018,20 +3018,20 @@
     70% {
         border-radius: 6px;
         position: absolute;
-        left: 50%;
-        top: 75%;
-        width: 18px;
-        height: 18px;
+        /* left: 50%;
+        top: 50%; */
+        width: 30px;
+        height: 30px;
         /* margin: -30px -30px; */
     }
 
     100% {
         border-radius: 6px;
         position: absolute;
-        left: 50%;
-        top: 75%;
-        width: 22px;
-        height: 22px;
+        /* left: 50%;
+        top: 50%; */
+        width: 34px;
+        height: 34px;
         /* margin: -32px -32px; */
     }
 }
@@ -3039,12 +3039,16 @@
 .record_button_container {
     position: absolute;
     left: 50%;
-    top: 70%;
-    width: 100px;
-    height: 100px;
+    /* top: 70%; */
+    /*피그마에서ㅡㄴ 분명 bottom 170이라고 했음 ., 외않되*/
+    /* bottom: 170px; */
+    bottom: 100px;
     transform: translate(-50%, -50%);
-    border: solid 1px green;
-    /* margin: -35px -35px; */
+    width: 170px;
+    height: 170px;
+    /* margin: -85px -85px; */
+    /* border: solid 1px red; */
+    /* background-color: red; */
 }
 
 .record_button_container #record_button {
@@ -3055,20 +3059,18 @@
     position: absolute;
     left: 50%;
     top: 75%;
+    transform: translate(-50%, -50%);
     /* width: 130px;
     height: 130px; */
-    /* width: 80px;
-    height: 80px; */
-    width: 40px;
-    height: 40px;
-    transform: translate(-50%, -50%);
-    /* margin: -15px -15px; */
+    width: 70px;
+    height: 70px;
+    /* margin: -65px -65px; */
     content: "";
     /* -webkit-transform: translate(-6px, -6px);
     -ms-transform: translate(-6px, -6px);
     transform: translate(-6px, -6px); */
     border-radius: 50%;
-    border: 1.5px solid #fff;
+    border: 3px solid #fff;
     cursor: pointer;
 }
 
@@ -3076,18 +3078,20 @@
     position: absolute;
     left: 50%;
     top: 75%;
-    width: 30px;
-    height: 30px;
     transform: translate(-50%, -50%);
+    /* width: 100px;
+    height: 100px; */
+    width: 55px;
+    height: 55px;
     /* margin: -50px -50px; */
     content: "";
-    border-radius: 50%;
+    border-radius: 50px;
     background: #e80415;
     cursor: pointer;
 }
 
 .record_button_container #record_button:checked+#record_button_label:after {
-    -webkit-animation: stop 0.5s infinite cubic-bezier(0.4, 0.9, 0.9, 1);
+    -webkit-animation: stop 0.5s infinite cubic-bezier(0.4, -0.9, 0.9, 1);
     -moz-animation: stop 0.5s infinite cubic-bezier(0.4, -0.9, 0.9, 1);
     -o-animation: stop 0.5s infinite cubic-bezier(0.4, -0.9, 0.9, 1);
     animation: stop 0.5s infinite cubic-bezier(0.4, -0.9, 0.9, 1);
@@ -3098,10 +3102,10 @@
 }
 
 .record_button_container #record_button:checked~.record_time {
-    -webkit-animation: record_time 0.3s infinite linear;
-    -moz-animation: record_time 0.3s infinite linear;
-    -o-animation: record_time 0.3s infinite linear;
-    animation: record_time 0.3s infinite linear;
+    -webkit-animation: time 0.3s infinite linear;
+    -moz-animation: time 0.3s infinite linear;
+    -o-animation: time 0.3s infinite linear;
+    animation: time 0.3s infinite linear;
     -webkit-animation-iteration-count: 1;
     animation-iteration-count: 1;
     -webkit-animation-fill-mode: forwards;
@@ -3156,9 +3160,8 @@
     /* margin: -2px; */
     color: #a2a2a2;
     /* font-family: "Fjalla One", sans-serif; */
-    font-size: 0.7rem;
+    font-size: 1.3em;
 }
-
 
 .record_button_container .record_time .h_m:after {
     float: right;
