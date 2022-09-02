@@ -20,6 +20,10 @@ let inside = document.getElementById("inside");
 inside.addEventListener("change",showOtherUsers);
 let outside = document.getElementById("outside");
 outside.addEventListener("change",showOtherUsers);
+
+
+let send_record_button = document.getElementById("send_record_button");
+send_record_button.addEventListener("click", submitMemo);
 /* Section3. mqtt 브로커 연결 및 topic subscribe */
 
 const options = { // 브로커 정보(ip, port)

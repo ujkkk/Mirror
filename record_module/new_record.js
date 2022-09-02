@@ -8,10 +8,9 @@ let file_path; // 저장된 파일 경로
 
 // 엘리먼트 취득
 const $audioEl = document.querySelector("audio");
-const $startBtn = document.querySelector("#startBtn");
-const $stopBtn = document.querySelector("#stopBtn");
-// const $saveBtn = document.querySelector("#saveBtn");
-// const $sendBtn = document.querySelector("#sendBtn");
+const $record_button = document.querySelector("#record_button");
+// const $startBtn = document.querySelector("#startBtn");
+// const $stopBtn = document.querySelector("#stopBtn");
 
 // 녹음중 상태 변수
 let isRecording = false;
@@ -22,58 +21,69 @@ let mediaRecorder = null;
 // 녹음 데이터 저장 배열
 const audioArray = [];
 
-$startBtn.onclick = async function (event) {
+// function refreshEl(){
+//     console.log("refreshEl");
+//     $audioEl = document.querySelector("audio");
+//     $record_button = document.querySelector("#record_button");
+// }
 
-    // 마이크 mediaStream 생성: Promise를 반환하므로 async/await 사용
-    const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+$record_button.onclick = async function (event) {
+    console.log("그지같은..");
+    if (!isRecording) {
+        console.log("record start");
+        // 마이크 mediaStream 생성: Promise를 반환하므로 async/await 사용
+        const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-    // MediaRecorder 생성
-    mediaRecorder = new MediaRecorder(mediaStream);
+        // MediaRecorder 생성
+        mediaRecorder = new MediaRecorder(mediaStream);
 
-    // 이벤트핸들러: 녹음 데이터 취득 처리
-    mediaRecorder.ondataavailable = (event) => {
-        audioArray.push(event.data); // 오디오 데이터가 취득될 때마다 배열에 담아둔다.
-        console.log("event.data : " + event.data); // object Blob
+        // 이벤트핸들러: 녹음 데이터 취득 처리
+        mediaRecorder.ondataavailable = (event) => {
+            audioArray.push(event.data); // 오디오 데이터가 취득될 때마다 배열에 담아둔다.
+            console.log("event.data : " + event.data); // object Blob
+        }
+
+        // 이벤트핸들러: 녹음 종료 처리 & 재생하기
+        mediaRecorder.onstop = (event) => {
+            console.log("audioArray: ", audioArray);
+            console.log("audioArray Type: ", typeof (audioArray)); // object
+
+            // 녹음이 종료되면, 배열에 담긴 오디오 데이터(Blob)들을 합친다: 코덱도 설정해준다.
+            blob = new Blob(audioArray, { "type": "audio/ogg codecs=opus" });
+            console.log("blob : " + blob);
+            console.log("audioArray type : " + typeof (audioArray));
+            audioArray.splice(0); // 기존 오디오 데이터들은 모두 비워 초기화한다.
+
+            // Blob 데이터에 접근할 수 있는 주소를 생성한다.
+            const blobURL = window.URL.createObjectURL(blob);
+            console.log("blobURL : " + blobURL);
+
+
+            // audio엘리먼트로 재생한다.
+            $audioEl.src = blobURL;
+            $audioEl.play();
+
+        }
+
+        // 녹음 시작
+        mediaRecorder.start();
+        isRecording = true;
     }
-
-    // 이벤트핸들러: 녹음 종료 처리 & 재생하기
-    mediaRecorder.onstop = (event) => {
-        console.log("audioArray: ", audioArray);
-        console.log("audioArray Type: ", typeof (audioArray)); // object
-
-        // 녹음이 종료되면, 배열에 담긴 오디오 데이터(Blob)들을 합친다: 코덱도 설정해준다.
-        blob = new Blob(audioArray, { "type": "audio/ogg codecs=opus" });
-        console.log("blob : " + blob);
-        console.log("audioArray type : " + typeof (audioArray));
-        audioArray.splice(0); // 기존 오디오 데이터들은 모두 비워 초기화한다.
-
-        // Blob 데이터에 접근할 수 있는 주소를 생성한다.
-        const blobURL = window.URL.createObjectURL(blob);
-        console.log("blobURL : " + blobURL);
-
-
-        // audio엘리먼트로 재생한다.
-        $audioEl.src = blobURL;
-        $audioEl.play();
-
+    else {
+        console.log("record end");
+        mediaRecorder.stop();
+        isRecording = false;
     }
-
-    // 녹음 시작
-    mediaRecorder.start();
-    isRecording = true;
-    document.querySelector(".blur_effect").style.filter = "blur(5px)";
-    document.querySelector("#recordingContainer").style.display = "flex";
-    $startBtn.disabled = true;
 }
 
-// 녹음 종료
-$stopBtn.onclick = async function (event) {
-    mediaRecorder.stop();
-    isRecording = false;
-    document.querySelector(".blur_effect").style.filter = "blur(0px)";
-    document.querySelector("#recordingContainer").style.display = "none";
-    $startBtn.disabled = false;
-}
+// // 녹음 종료
+// $stopBtn.onclick = async function (event) {
+//     mediaRecorder.stop();
+//     isRecording = false;
+//     document.querySelector(".blur_effect").style.filter = "blur(0px)";
+//     document.querySelector("#recordingContainer").style.display = "none";
+//     $startBtn.disabled = false;
+// }
 
 
 // 녹음 파일 저장하기
@@ -141,3 +151,6 @@ $sendBtn.onclick = async function (event) {
     } // end of reader.onloadend ...
 
 } // end of $sendBtn.onclick ...
+
+
+// module.exports = {refreshEl};
