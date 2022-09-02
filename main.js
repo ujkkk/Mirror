@@ -15,14 +15,16 @@ function createWindow() {
         },
         backgroundColor: "#000000"
     }
+
     //options.fullscreen = true
     //options.autoHideMenuBar = true
     const win = new BrowserWindow(options)
- 
+
 
     win.loadFile("init.html");
     // win.loadFile("test.html");
-    
+    // win.loadFile("record_module/record.html");
+
     let screenElectron = electron.screen;
     let mainScreen = screenElectron.getPrimaryDisplay();
     console.log(mainScreen);

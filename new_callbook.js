@@ -11,6 +11,7 @@ let serachFriendDiv = document.getElementById("search-friend-div");
 let ul = document.getElementById('otherUserList');
 let searchBtn = document.getElementById('search-btn');
 let addFriendBtn =  document.getElementById('add-friend-btn');
+let userImg = document.getElementById("user-img");
 
 /* ADD Event Listener */
 callBookBtn.addEventListener("click",showUserMirrorBook);
@@ -55,7 +56,7 @@ function showUserMirrorBook(){
     document.getElementById('find-result').innerHTML = "";
     document.getElementById('user-img').style.display = "none";
     document.getElementById('add-friend-btn').style.display = "none";
-
+   
     if(friendList.checked == true){
         ul.style.display = "block";
         serachFriendDiv.style.visibility = "hidden";
@@ -109,6 +110,7 @@ function showUserMirrorBook(){
 function userCheck(){
     document.getElementById('user-img').style.display = "none";
     document.getElementById('add-friend-btn').style.display = "none";
+   
     let friend_id = document.getElementById('serach-input').value;
     if(friend_id == null || friend_id=='')
         return;
@@ -125,6 +127,7 @@ function userCheck(){
         //친구목록에 이미 추가된 유저이면 추가 안함
         if(values.length>0){
             document.getElementById('find-result').innerHTML = "이미 등록된 유저입니다.";
+            document.getElementById('find-result').style.marginTop = "50px";
             id = null
             add_id = null;
             add_name = null;
@@ -142,14 +145,18 @@ function userCheck(){
         })
         .then(res =>{
             if(res.data != ""){
+                userImg.style.visibility="visible";
+                addFriendBtn.style.visibility = "visible";
                 document.getElementById('user-img').style.display = "block";
                 document.getElementById('add-friend-btn').style.display = "inline-block";
                 document.getElementById('find-result').innerHTML = `${res.data}`
+                document.getElementById('find-result').style.marginTop = "10px";
                 add_id = friend_id;
                 add_name = res.data;
                 console.log("여기 들어옴!!!!"+add_name);
             }
             else{
+                document.getElementById('find-result').style.marginTop = "50px";
                 document.getElementById('find-result').innerHTML = "존재하지 않는 사용자입니다."
                 add_id = null;
                 add_name = null;
@@ -169,8 +176,10 @@ function addFriendDB(){
         mirror_db.createColumns('friend', data)
         .then(result => {
             if (result) {
-
+                userImg.style.visibility="hidden";
+                addFriendBtn.style.visibility = "hidden";
                 document.getElementById('find-result').innerHTML = "추가 되었습니다."
+                document.getElementById('find-result').style.marginTop = "-50px";
                 getUserInfo();
                 add_id = null;
                 add_name =null;
@@ -178,12 +187,14 @@ function addFriendDB(){
             else {
                 reject(null);
                 document.getElementById('find-result').innerHTML = "추가 하지 못헀습니다."
+                document.getElementById('find-result').style.marginTop = "-50px";
             }
         });
         
     }
     else{
         document.getElementById('find-result').innerHTML = "추가할 수 없습니다.";
+        document.getElementById('find-result').style.marginTop = "-50px";
     }
 }
 
