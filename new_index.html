@@ -14,7 +14,8 @@
     <link href="css/memo.css" rel="stylesheet">
     <!-- <script src="new_app.js"></script> -->
     <link  href="css/new_callbook.css" rel="stylesheet">
-    <script src="new_app.js"></script>
+    <link href="css/call.css" rel="stylesheet">
+
     <script>
         function setMemoDeleteBtn(e){
             let deleteBtns = document.getElementsByClassName("memoDeleteBtn");
@@ -27,6 +28,11 @@
                 for (let i=0;i<deleteBtns.length;i++)
                         deleteBtns[i].style.visibility = "hidden";
             }
+        }
+        function callRefusalAlertOff() {
+            const callRefusalContainer = document.getElementById('call-refusal-container')
+
+            callRefusalContainer.style = 'display: none'
         }
     </script>
 </head>
@@ -111,7 +117,6 @@
 
     <!-- call //////////////////////////////////////////// -->
 
-    
     <!-- 전화 아이콘 클릭시 보이는 창 -->
     <div id="bar_phone_container" style="display: none">
         <div id="record-set-component">
@@ -223,7 +228,7 @@
 <script src="./memo_module/memo.js"></script>
 <script src="new_callbook.js"></script>
 
-<script src="record_module/new_record.js"></script>
+<!-- <script src="record_module/new_record.js"></script> -->
 
 <script>
     window.onload = initMessages()
@@ -374,4 +379,6 @@
         }
     }
 </script>
+<script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
+<script src="new_app.js"></script>
 </html>
