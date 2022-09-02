@@ -19,7 +19,7 @@ const callerConponent = document.getElementsByClassName('caller')
 const callRefusalContainer = document.getElementById('call-refusal-container')
 
 // Variables.
-const socket = io.connect('ws://223.194.155.68:3000/') // socket 서버 연결
+const socket = io.connect('ws://localhost:3000/') // socket 서버 연결
 let mediaConstraints = { // 미디어 설정
   audio: false,
   video: false,
@@ -137,6 +137,8 @@ socket.on('room_joined', async () => {
 // room이 꽉 찼을 때(전화를 하고 있을 때)
 socket.on('full_room', (roomId) => {
   console.log('Socket event callback: full_room')
+  //isRoomJoin = false
+  isRoomCloser = false
   exitRoom()
 })
 
