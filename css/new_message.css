@@ -170,17 +170,20 @@
   background-color: rgba(255, 255, 255, 0.2);
   color:aliceblue;
   position:relative;
+  transform: translateY(1vh);
 }
 
-
-#message-detail-div #message-reply #send-label{
+#reply-btn {
+    background: transparent;
+    border: none;
+    flex: 1;
     bottom: 3vh;
     right: 4.5vh;
     font-size: 2vh;
     position:absolute;
 }
 
-#message-detail-div #message-reply #send-label img{
+#reply-btn img{
     width: 3vh;
     height: 3vh;
 }
