@@ -116,9 +116,10 @@ function create_memo_div(memos){
         memo_time.setAttribute('class','memo-time')
 
         //time
-        time = (String(memo.time)).substring(5,memo_time.length);
-        time = time.split(':')
-        memo_time.innerHTML = time[0] +':'+ time[1];
+        time= memo.time.toFormat('MM-DD HH24:MI')
+        // time = (String(memo.time)).substring(5,memo_time.length);
+        // time = time.split(':')
+        memo_time.innerHTML = time
         console.log(memo_time.innerHTML);
 
         //content

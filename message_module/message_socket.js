@@ -5,7 +5,7 @@ const fs = require('fs');
 //const mirror_db = require('./mirror_db');
 //npm install @types/socket.io-client --save
 
-var socket = io('http://223.194.159.229:9000/', { transports : ['websocket'] });
+var socket = io('http://192.168.137.169:9000/', { transports : ['websocket'] });
 
 
 socket.on("connect", () => {

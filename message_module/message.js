@@ -1,5 +1,5 @@
 const mirror_db = require('../mirror_db');
-// const socket = require('./message_socket')
+const socket = require('./message_socket')
 require('date-utils');
 
 console.log('message call')
@@ -12,6 +12,11 @@ const prev = document.querySelector('#message-prev'); //이전 버튼
 const next = document.querySelector('#message-next'); //다음 버튼
 const slideWidth = 200; //한개의 슬라이드 넓이
 const slideMargin = 100; //슬라이드간의 margin 값
+const messageSendButton = document.getElementById('reply-btn')
+
+messageSendButton.addEventListener('click', () => {
+    reply_message()
+})
 
 //전체 슬라이드 컨테이너 넓이 설정
 slides.style.width = (slideWidth + slideMargin) * slideCount + 'px';
@@ -124,7 +129,7 @@ function message_detail(msg_id) {
                     break;
 
             }
-            detail_time_div.innerHTML = `${selected_msg.time}`
+            detail_time_div.innerHTML = `${selected_msg.time.toFormat('MM-DD HH24:MI')}`
 
         })
 }
