@@ -61,29 +61,6 @@
     color: white;
 }
 
-/* 임의의 영역 생성 */
-.scrollBar { 
-    width: 200px;
-    height: 200px;
-    overflow-y: scroll;
-}
-
-/* 아래의 모든 코드는 영역::코드로 사용 */
-
-.scrollBar::-webkit-scrollbar {
-    width: 10px;  /* 스크롤바의 너비 */
-}
-
-.scrollBar::-webkit-scrollbar-thumb {
-    height: 30%; /* 스크롤바의 길이 */
-    background: #217af4; /* 스크롤바의 색상 */
-    
-    border-radius: 10px;
-}
-
-.scrollBar::-webkit-scrollbar-track {
-    background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
-}
 /* 여기부터 내 코드 */
 input[type="radio"]{
     display: none;
@@ -201,4 +178,19 @@ label{
    display: none;
     width: 30%;
     margin-top: 10px;
+}
+
+#friend-list-div {
+    width: 100%;
+    height: 65%;
+    position: absolute;
+    overflow: scroll;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+}
+
+#friend-list-div::-webkit-scrollbar{
+    display: none;
 }
