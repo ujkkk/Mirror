@@ -1,17 +1,18 @@
-
+const mirror_db = require('../mirror_db');
+const {insertNewMessage } = require('./message');
 const { io } = require("socket.io-client");
 const fs = require('fs');
 //const mirror_db = require('./mirror_db');
 //npm install @types/socket.io-client --save
 
-var socket = io('http://localhost:9000/', { transports : ['websocket'] });
+var socket = io('http://223.194.159.229:9000/', { transports : ['websocket'] });
 
 
 socket.on("connect", () => {
     console.log("connection socket server");
 });
 
-
+console.log('message call')
 
 //나에게 서버로부터 메시지가 올 때
 socket.on(`${mirror_db.getId()}`, req => {
@@ -58,7 +59,7 @@ socket.on(`${mirror_db.getId()}`, req => {
                   //본인의 id는 어떻게 알아낼지
                       let data = {
                           sender : req.sender,
-                          receiver : '1001',
+                          receiver : mirrorDB.getId(),
                           content : filename,
                           type : 'image'
                       };

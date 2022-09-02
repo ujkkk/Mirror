@@ -104,10 +104,10 @@
 
 #message-detail-container{
     position: absolute;
-    margin-top: 5%;
+    top: 4vh;
     margin-left: 45%;
-    height: 20%;
-    width: 50%;
+    height: 20vh;
+    width: 26vh;
     border: 0.07vh solid white;
     visibility :hidden;
     border-radius: 5%;
@@ -137,11 +137,11 @@
     width: 80%;
     height: 35%;
     font-size: 1.7vh;
-    margin: 2.3vh;
-    margin-top: 2.5vh;
+    margin: 2.0vh;
     align-items: center;
     justify-content: center;
-    
+    text-align: center;
+    transform: translateY(20%);
     
 }
 
@@ -174,8 +174,8 @@
 
 
 #message-detail-div #message-reply #send-label{
-    bottom: 2vh;
-    right: 5vh;
+    bottom: 3vh;
+    right: 4.5vh;
     font-size: 2vh;
     position:absolute;
 }

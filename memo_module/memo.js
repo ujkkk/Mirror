@@ -1,3 +1,5 @@
+const mirror_db = require('../mirror_db');
+
 //slide-wrap
 var slideWrapper = document.getElementById('memo-slider-wrap');
 //current slideIndexition

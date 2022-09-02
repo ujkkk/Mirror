@@ -14,6 +14,7 @@
 }
 
 #date_ui {
+    transform: translateY(-0.8vh);
     color: white;
     height: 3vh;
     width: 100%;

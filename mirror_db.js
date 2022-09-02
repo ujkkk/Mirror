@@ -1,7 +1,8 @@
 /* 모듈 사용할 객체 */
 let dbAccess = {};
-let id = 1001;
+let id;
 let mirror_id = 100; 
+let name;
 
 // mysql 모듈 불러오기
 var mysql = require('mysql');
@@ -201,26 +202,21 @@ dbAccess.addMemo = function (id, from, contents, store) {
     createColumns('memo', data);
 }
 
-// mirror 사용자 id
-let userId = 1;
-// 모듈로 userId도 사용 하기 위해 dbAccess에 추가
-dbAccess.userId = userId;
-
-// mirror 사용자 이름
-let userName;
+// 모듈로 id도 사용 하기 위해 dbAccess에 추가
+dbAccess.id = id;
 
 /* user id 설정과 user id에 따른 name 설정 */
 
-dbAccess.setUser = (id) => new Promise((resolve, reject) => {
-    dbAccess.userId = id
-
+dbAccess.setUser = (user_id) => new Promise((resolve, reject) => {
+    id = user_id
+    mirror_id = (String(id)).substr(0,3)
     selectColumns('name', 'user', `id=${id}`)
         .then(value => {
-            userName = value[0].name
-            console.log('userName1:' + userName)
+            name = value[0].name
+            console.log('mirror_id:' + mirror_id)
             // 모듈로 name도 사용 하기 위해 dbAccess에 추가
-            dbAccess.userName = userName
-            resolve({id: dbAccess.userId, name: userName})
+            dbAccess.name = name
+            resolve({id: id, name: name})
         })
 }) 
 

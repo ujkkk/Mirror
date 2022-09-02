@@ -265,7 +265,7 @@ function insertOtherUserDB(user){
         method:'post',
         url:'http://localhost:9000/send/text',
         data: {
-            sender: 1001,
+            sender: mirrorDB.getId(),
             receiver: user.id,
             content: contents
         }

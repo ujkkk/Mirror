@@ -1,7 +1,8 @@
-const mirror_db = require('./mirror_db');
+const mirror_db = require('../mirror_db');
 // const socket = require('./message_socket')
 require('date-utils');
 
+console.log('message call')
 
 const slides = document.querySelector('.message-slides'); //전체 슬라이드 컨테이너
 const slideImg = document.querySelectorAll('.message-slides li'); //모든 슬라이드들
@@ -150,6 +151,7 @@ function initMessages() {
    // message_list.forEach(message => { })
 }
 
+
 //message 객체를 message 목록(html)에 삽입
 function insertMessageContent(message, type) {
 
@@ -157,7 +159,7 @@ function insertMessageContent(message, type) {
     let messageContent = document.createElement('li');
     messageContent.setAttribute('class', 'message-content');
     messageContent.setAttribute('value', message.msg_id);
-    messageContent.setAttribute('onclick', `message_detail(${message.msg_id})`);
+    //messageContent.setAttribute('onclick', `message_detail(${message.msg_id})`);
     //보낸 사람이 누군지 friend DB에서 이름을 찾음
     mirror_db.select('name', 'friend', `friend_id =${message.sender}`)
         .then(sender => {
@@ -192,6 +194,7 @@ function insertMessageContent(message, type) {
                     break;
             }
             message_contents_ui.prepend(messageContent);
+            messageContent.addEventListener("click", function () { message_detail(message.msg_id) })
         })
 }
 

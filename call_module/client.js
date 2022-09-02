@@ -19,7 +19,7 @@ const callerConponent = document.getElementsByClassName('caller')
 const callRefusalContainer = document.getElementById('call-refusal-container')
 
 // Variables.
-const socket = io.connect('ws://localhost:3000/') // socket 서버 연결
+const socket = io.connect('ws://223.194.155.68:3000/') // socket 서버 연결
 let mediaConstraints = { // 미디어 설정
   audio: false,
   video: false,
