@@ -140,6 +140,7 @@
                     <button id="send_record_button" style="display: none; position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 347px; font-size: 20px;">SEND</button>
                     <audio id="player" controls style="position: absolute; display: none; left: 50%; top: 240px; transform: translate(-50%, -50%);"></audio>
                 </div>
+                <!-- end of record_content -->
             </div>
             <!-- end of select_content... -->
         </div>
@@ -314,11 +315,14 @@
         else message_memo_container.style.display = "none";
     }
 
-    function record(){
+    function showRecordContent(){
         let record_container = document.getElementById("record_content");
         record_container.style.display = "block";
         console.log(select_content);
+    }
 
+    function showImageContent(){
+        
     }
 
     function showWrite(){
@@ -336,11 +340,11 @@
             //
         }
         else if(sel_type == "image"){
-            //
+            showImageContent();
         }
         else { // sel_type == "record"
             console.log(sel_type);
-            record();
+            showRecordContent();
         }
     }
 
