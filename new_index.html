@@ -52,33 +52,32 @@
 
     <div id="message-container">
         <div id="parent">
-          <div id="message-img"><img id='message_icon' src=./image/index/message.png></div>
-          <div id="message-text-div">Message</div>
-          <div id='message-contents'>
-            <ul class="message-slides" id='message-contents-ui'></ul>
-          </div>
-          <img id='point-imag' src='./image/index/point1.png' width="45px" height="45px">
-          <p class="message-controller">
-            <span class="prev" id='message-prev' style="visibility:hidden">&lang;</span>  
-            <span class="next" id="message-next">&rang;</span>
-          </p>
-          <!-- &lang: 왼쪽 방향 화살표
-      &rang: 오른쪽 방향 화살표 -->
+            <div id="message-img"><img id='message_icon' src=./image/index/message.png></div>
+            <div id="message-text-div">Message</div>
+            <div id='message-contents'>
+                <ul class="message-slides" id='message-contents-ui'></ul>
+            </div>
+            <img id='point-imag' src='./image/index/point1.png' width="45px" height="45px">
+            <p class="message-controller">
+                <span class="prev" id='message-prev' style="visibility:hidden">&lang;</span>
+                <span class="next" id="message-next">&rang;</span>
+            </p>
+            <!-- &lang: 왼쪽 방향 화살표
+            &rang: 오른쪽 방향 화살표 -->
         </div>
     </div>
-   <div id="message-detail-container">
+    <div id="message-detail-container">
         <div id="message-detail-div">
-          <div id="message-sender" value="0"></div>
-          <div id="message-time"></div>
-          <div id="message-content"></div>
-        
-          <div id="message-reply">
-            <input type="text" id="reply-text" style="float:left">
-            
-            <button class="btn" id="reply-btn" type="button"> 
-                <img src='./image/index/send.png' width="25px" height="25px">
-            </button>
-            
+            <div id="message-sender" value="0"></div>
+            <div id="message-time"></div>
+            <div id="message-content"></div>
+    
+            <div id="message-reply">
+                <input type="text" id="reply-text" style="float:left">
+    
+                <button class="btn" id="reply-btn" type="button">
+                    <img src='./image/index/send.png' width="25px" height="25px">
+                </button>
             </div>
         </div>
     </div>
@@ -105,14 +104,15 @@
     <!-- end of menu bar -->
     <div id="message_memo_container" style="display: none;">
         <div id="radio_container">
-            <input type="radio" name="option" class="option_radio" id="text" value="text" checked><label class="menu" for="text">Text</label>
-            <input type="radio" name="option" class="option_radio" id="image" value="image"><label class="menu" for="image">Image</label>
-            <input type="radio" name="option" class="option_radio" id="record" value="record"><label class="menu" for="record">Record</label>
+            <input type="radio" name="option" class="option_radio" id="text" value="text" checked onchange="checkOption()"><label class="menu" for="text">Text</label>
+            <input type="radio" name="option" class="option_radio" id="image" value="image" onchange="checkOption()"><label class="menu" for="image">Image</label>
+            <input type="radio" name="option" class="option_radio" id="record" value="record" onchange="checkOption()"><label class="menu" for="record">Record</label>
         </div> 
         <div id="content">
             <button class="option_button" id="write_button" onclick="showWrite()"><img class="option_icon" src="./image/index/write_icon.png"></button>
             <button class="option_button" id="back_button" onclick="showStore()" style="display: none;"><img class="option_icon" src="./image/index/back_icon.png"></button>
             <div id="select_content">
+                <!-- start of record_content -->
                 <div id="record_content" style="position: absolute; display: none; width: 100%; height: 100%;">
                     <div id="recordbars_div" style="display: none;">
                         <div id="bars"> 
@@ -138,11 +138,15 @@
                         </div>
                     </div>
                     <!-- end of record_button_container -->
-                    <!-- onclick 함수 지정해줘야 함 -->
                     <button id="send_record_button" style="display: none; position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 347px; font-size: 20px;">SEND</button>
                     <audio id="player" controls style="position: absolute; display: none; left: 50%; top: 240px; transform: translate(-50%, -50%);"></audio>
                 </div>
                 <!-- end of record_content -->
+                <!-- start of image_content -->
+                <div id="image_content" style="position: absolute; display: none; width: 100%; height: 100%;">
+                    <canvas></canvas>
+                    <button id="shutter_button" style="background-color: transparent; border: none;" onclick="pressShutter()"><img src="./image/index/shutter_icon.png" style="position: absolute; width: 70px; height: 70px; left: 50%; bottom: 50px; transform:translate(-50%, -50%);"></button>
+                </div>
             </div>
             <!-- end of select_content... -->
         </div>
@@ -288,8 +292,10 @@
 <script src="./memo_module/memo.js"></script>
 <script src="new_callbook.js"></script>
 -->
-<!-- <script src="record_module/new_record.js"></script> -->
-<script src="record_module/new_m_record.js"></script>
+
+
+<!-- <script src="message_module/record/new_record.js"></script> -->
+<script src="message_module/record/new_m_record.js"></script>
 <script src="memo_module/create_memo.js"></script>
 
 
@@ -298,12 +304,19 @@
     //window.onload = initMessages()
     
     var message_click_cnt = 0;
-    var message_option_container = document.getElementById("message_option_container");
+    let message_option_container = document.getElementById("message_option_container");
     
-    var text_option_button = document.getElementById("text_option_button");
-    var image_option_button = document.getElementById("image_option_button");
-    var record_option_button = document.getElementById("record_option_button");
+    let text_option_button = document.getElementById("text_option_button");
+    let image_option_button = document.getElementById("image_option_button");
+    let record_option_button = document.getElementById("record_option_button");
 
+    let write_button = document.getElementById("write_button");
+    let back_button = document.getElementById("back_button");
+
+    let image_content = document.getElementById("image_content");
+    let shutter_button = document.getElementById("shutter_button");
+
+    let record_content = document.getElementById("record_content");
 
     var message_click_cnt = 0; // 하단 bar 의 메시지 아이콘 몇 번 눌렀는지 확인
     var message_memo_container = document.getElementById("message_memo_container");
@@ -316,16 +329,33 @@
         // message_click_cnt++;
         if(message_memo_container.style.display=="none") message_memo_container.style.display = "block";
         else message_memo_container.style.display = "none";
+
+        //사진 찍기
+        console.log('카메라 활성화');
+        //카메라 키기
+        client.publish('camera/on',"start");
+        //frame 돌고 있기
     }
 
-    function showRecordContent(){
-        let record_container = document.getElementById("record_content");
-        record_container.style.display = "block";
-        console.log(select_content);
+    const client = require("message_module/message_mtt");
+    function pressShutter(){
+        
+        // document.location.href='imageSend1.html'
+        //사진 찍기
+        console.log('사진찍기 함수 호출');
+        //사진찍기
+        client.publish('capture/camera',"start");
     }
 
     function showImageContent(){
-        
+        image_content.style.display = "block";
+        record_content.style.display="none";
+    }
+
+    function showRecordContent(){
+        image_content.style.display = "none";
+        record_content.style.display = "block";
+        console.log(select_content);
     }
 
     function showWrite(){
@@ -370,6 +400,17 @@
         }
         else { // sel_type == "record"
             // record_store();
+        }
+    }
+
+    function checkOption(){
+        // 저장공간 보는 모드일 때
+        if(write_button.style.display == "block"){
+            showStore();
+        }
+        // 쓰기 모드일 때
+        else{
+            showWrite();
         }
     }
 </script>
