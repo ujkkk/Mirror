@@ -43,13 +43,19 @@ client.on('message', async (topic, message, packet) => {
       console.log("capture/camera_done 토픽 받음")
       var saved_filePath = message
       
-      document.location.href = './imageSend2.html'
+      // document.location.href = './imageSend2.html'
       var c = document.createElement('canvas');
-      var img = document.getElementById('message-img');
+      // var c = document.getElementById("canvas");
+      var img = document.getElementById('msg-img');
+      // img.setAttribute("style", "position: absolute; left: 50%; top: 250px; transform: translate(-50%, -50%); width:550px;");
 
       var time = new Date().getTime();
-      img.src = saved_filePath +'?time='+ time;
-     
+      // img.src = saved_filePath +'?time='+ time;
+      const wdr = __dirname;
+      console.log(`work directory: ${wdr}`);
+
+      img.src ="message_module/image/"+saved_filePath+'?time='+ time;
+      console.log(img);
       console.log(' img.src : ' + img.src)
       //c.height = img.naturalHeight;
       //c.width = img.naturalWidth;
@@ -58,8 +64,8 @@ client.on('message', async (topic, message, packet) => {
       ctx.drawImage(img, 0, 0, c.width, c.height);
       var base64String = c.toDataURL();
       console.log(base64String)
-     
       
+      // img.style.display = "block";
     }
     //전송하기 누르면 호출되는 이벤트
     if(topic == 'send/image'){
