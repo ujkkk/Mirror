@@ -31,7 +31,8 @@
 #message-contents {
     margin-top: 4%;
     margin-left: 3%;
-    height: 55%;
+    height: 40%;
+    width :40%;
     position: relative;
     overflow: hidden;  
 }
@@ -39,7 +40,7 @@
     margin-top: 1%;
     margin-left: 1%;
     color: white;
-    font-size: 11px;
+    font-size: 20px;
     width: 28%;
     height: 60%;
     cursor: pointer;
@@ -57,20 +58,25 @@
     left: 0;
     top: 0;
     width: 1800px; /* 슬라이드할 사진과 마진 총 넓이 */
-    height: 64%;
+    height: 30%;
     transition: left 0.4s ease-out; 
+    float: left;
     /*ease-out: 처음에는 느렸다가 점점 빨라짐*/
 }
 /* 슬라이드들 옆으로 정렬 */
 .message-slides li:not(:last-child){
     float: left;
     margin-right: 100px;
+
     list-style:none;
   }
   
 .message-slides li{
     float: left;
     list-style:none;
+    width: 28%;
+    height: 60%;
+    
 }
 
 .message-controller span{
