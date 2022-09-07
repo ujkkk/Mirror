@@ -46,6 +46,8 @@ bar_message_button.addEventListener('click', ()=> {
 write_button.addEventListener('click', showWrite);
 back_button.addEventListener('click', showStore);
 send_button.addEventListener('click', showSendModal);
+inside.addEventListener('change', showUserBook);
+outside.addEventListener('change', showUserBook);
 
 shutter_button.addEventListener('click', () => {
     client.publish('capture/camera',"start");
@@ -54,8 +56,9 @@ shutter_button.addEventListener('click', () => {
 function showSendModal(){
     console.log("showSendModal");
     send_modal.style.visibility = "visible";
-    
-    
+}
+
+function showUserBook() {
     
     if(inside.checked == true){
         ul.innerHTML = "";
