@@ -1,7 +1,7 @@
 /* 모듈 사용할 객체 */
 let dbAccess = {};
 let id;
-let mirror_id = 100; 
+let mirror_id = 300; 
 let name;
 
 // mysql 모듈 불러오기

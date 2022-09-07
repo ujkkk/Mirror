@@ -179,7 +179,7 @@ function insertMessageContent(message, type) {
                 case 'image':
                     content = '(이미지)';
                     break;
-                case 'record':
+                case 'audio':
                     content = '(음성 메시지)';
                     break;
             }

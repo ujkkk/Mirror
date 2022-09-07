@@ -12,6 +12,7 @@
     <link href="css/new_index.css" rel="stylesheet">
     <link href="css/new_message.css" rel="stylesheet">
     <link href="css/new_memo.css" rel="stylesheet">
+    <link href="css/modal.css" rel="stylesheet">
     <!-- <script src="new_app.js"></script> -->
     <link  href="css/new_callbook.css" rel="stylesheet">
     <link href="css/call.css" rel="stylesheet">
@@ -99,23 +100,23 @@
     <div id="bar_container">
         <button class="bar_button" id="bar_phone_button" ><img class="bar_icon" src="./image/index/bar_phone.png"></button>
         <button class="bar_button" id="bar_callbook_button"><img class="bar_icon" src="./image/index/bar_callbook.png"></button>
-        <button class="bar_button" id="bar_message_button" onclick="barMessage()"><img class="bar_icon" src="./image/index/bar_message2.png"></button>
+        <button class="bar_button" id="bar_message_button"><img class="bar_icon" src="./image/index/bar_message2.png"></button>
         <button class="bar_button" id="bar_memmo_button" onclick="barMemo()"><img class="bar_icon" src="./image/index/bar_memo.png"></button>
     </div>
     <!-- end of menu bar -->
     <div id="message_memo_container" style="display: none;">
         <div id="radio_container">
-            <input type="radio" name="option" class="option_radio" id="text" value="text" checked onchange="checkOption()"><label class="menu" for="text">Text</label>
-            <input type="radio" name="option" class="option_radio" id="image" value="image" onchange="checkOption()"><label class="menu" for="image">Image</label>
-            <input type="radio" name="option" class="option_radio" id="record" value="record" onchange="checkOption()"><label class="menu" for="record">Record</label>
+            <input type="radio" name="option" class="option_radio" id="text" value="text" checked><label class="menu" for="text">Text</label>
+            <input type="radio" name="option" class="option_radio" id="image" value="image"><label class="menu" for="image">Image</label>
+            <input type="radio" name="option" class="option_radio" id="record" value="record"><label class="menu" for="record">Record</label>
         </div> 
         <div id="content">
-            <button class="option_button" id="write_button" onclick="showWrite()"><img class="option_icon" src="./image/index/write_icon.png"></button>
-            <button class="option_button" id="back_button" onclick="showStore()" style="display: none;"><img class="option_icon" src="./image/index/back_icon.png"></button>
+            <button class="option_button" id="write_button"><img class="option_icon" src="./image/index/write_icon.png"></button>
+            <button class="option_button" id="back_button" style="display: none;"><img class="option_icon" src="./image/index/back_icon.png"></button>
             <div id="select_content">
                 <div id="text_content" style="display: none;">
                     <textarea id="textArea"></textarea>
-                    <button id="send_text_button" style=" position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 200px; font-size: 20px;">SEND</button>
+                    <button id="send_text_button" class="send_button" style=" position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 200px; font-size: 20px;">SEND</button>
                 </div>
                 <!-- start of record_content -->
                 <div id="record_content" style="position: absolute; display: none; width: 100%; height: 100%;">
@@ -143,14 +144,14 @@
                         </div>
                     </div>
                     <!-- end of record_button_container -->
-                    <button id="send_record_button" style="display: none; position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 347px; font-size: 20px;">SEND</button>
+                    <button id="send_record_button" class="send_button" style="display: none; position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 347px; font-size: 20px;">SEND</button>
                     <audio id="player" controls style="position: absolute; display: none; left: 50%; top: 240px; transform: translate(-50%, -50%);"></audio>
                 </div>
                 <!-- end of record_content -->
                 <!-- start of image_content -->
                 <div id="image_content" style="position: absolute; display: none; width: 100%; height: 100%;">
                     <img id='msg-img' src='./message_module/image/media/test.jpg' style="position: absolute; left: 50%; top: 250px; transform: translate(-50%, -50%); width: 550px;" >
-                    <button id="send_image_button" style=" position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 200px; font-size: 20px;">SEND</button>
+                    <button id="send_image_button" class="send_button" style=" position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 200px; font-size: 20px;">SEND</button>
                     <button id="shutter_button" style="background-color: transparent; border: none;" onclick="pressShutter()"><img src="./image/index/shutter_icon.png" style="position: absolute; width: 70px; height: 70px; left: 50%; bottom: 50px; transform:translate(-50%, -50%);"></button>
                 </div>
             </div>
@@ -232,8 +233,8 @@
         <img id="callImg" src="memo_module/img/call.png">
     </div> -->
 
-
-    <div id="modal" class="modal-overlay">
+    <!-- 전송 모달창 -->
+    <div id="send-modal" class="modal-overlay">
         <div class="modal-window">
             <div class="title">
                 <h3>Mirror user</h3>
@@ -302,149 +303,10 @@
 
 <!-- <script src="message_module/record/new_record.js"></script> -->
 <script src="message_module/record/new_m_record.js"></script>
-<script src="memo_module/create_memo.js"></script>
+<script src="message_module/message_icon.js"></script>
+<!-- <script src="memo_module/create_memo.js"></script> -->
 <!-- <script src="./touch.js"></script> -->
 
-
-<script>
-    //window.onload = initMessages()
-    
-    var message_click_cnt = 0;
-    let message_option_container = document.getElementById("message_option_container");
-    
-    let text_option_button = document.getElementById("text_option_button");
-    let image_option_button = document.getElementById("image_option_button");
-    let record_option_button = document.getElementById("record_option_button");
-
-    let write_button = document.getElementById("write_button");
-    let back_button = document.getElementById("back_button");
-
-    let text_content = document.getElementById("text_content");
-
-    let image_content = document.getElementById("image_content");
-    let shutter_button = document.getElementById("shutter_button");
-
-    let record_content = document.getElementById("record_content");
-
-    var message_click_cnt = 0; // 하단 bar 의 메시지 아이콘 몇 번 눌렀는지 확인
-    var message_memo_container = document.getElementById("message_memo_container");
-
-
-    const client = require("./message_module/message_mqtt");
-    // 하단 bar 의 메시지 아이콘 눌렀을 때
-    function barMessage(){
-        console.log("barMessage click");
-        // 메시지 창 띄우기
-        if(message_memo_container.style.display=="none") {
-            message_memo_container.style.display = "block";
-            //init
-            write_button.style.display = "block";
-            back_button.style.display = "none";
-            text_content.style.display = "none";
-            image_content.style.display = "none";
-            record_content.style.display="none";
-        }
-        else {
-            message_memo_container.style.display = "none";
-        }
-
-        //사진 찍기
-        console.log('카메라 활성화');
-        //카메라 키기
-        client.publish('camera/on',"start");
-        //frame 돌고 있기
-    }
-
-    
-    function pressShutter(){
-        
-        // document.location.href='imageSend1.html'
-        //사진 찍기
-        console.log('사진찍기 함수 호출');
-        //사진찍기
-        client.publish('capture/camera',"start");
-    }
-
-    function showTextContent(){
-        text_content.style.display = "block";
-        image_content.style.display = "none";
-        record_content.style.display="none";
-    }
-
-    function showImageContent(){
-        text_content.style.display = "none";
-        image_content.style.display = "block";
-        record_content.style.display="none";
-    }
-
-    function showRecordContent(){
-        text_content.style.display = "none";
-        image_content.style.display = "none";
-        record_content.style.display = "block";
-    }
-
-    function showWrite(){
-        write_button.style.display = "none";
-        back_button.style.display = "block";
-
-        // 라디오 버튼 체크 확인
-        var radio = document.getElementsByName("option");
-        var sel_type = null;
-        for(var i=0;i<radio.length;i++){
-            if(radio[i].checked == true) sel_type = radio[i].value;
-        }
-
-        if(sel_type == "text"){
-            showTextContent();
-        }
-        else if(sel_type == "image"){
-            showImageContent();
-        }
-        else { // sel_type == "record"
-            showRecordContent();
-        }
-    }
-
-    function showStore(){
-        write_button.style.display = "block";
-        back_button.style.display = "none";
-
-        // 라디오 버튼 체크 확인
-        var radio = document.getElementsByName("option");
-        var sel_type = null;
-        for(var i=0;i<radio.length;i++){
-            if(radio[i].checked == true) sel_type = radio[i].value;
-        }
-
-        if(sel_type == "text"){
-            text_content.style.display = "none";
-            image_content.style.display = "none";
-            record_content.style.display="none";
-        }
-        else if(sel_type == "image"){
-            text_content.style.display = "none";
-            image_content.style.display = "none";
-            record_content.style.display="none";
-        }
-        else { // sel_type == "record"
-            text_content.style.display = "none";
-            image_content.style.display = "none";
-            record_content.style.display="none";
-        }
-    }
-
-    function checkOption(){
-        // 쓰기 모드일 때
-        if(write_button.style.display == "none"){
-            console.log(`else. write_button.style.display : ${write_button.style.display}`);
-            showWrite();
-        }
-        else{// 저장공간 보는 모드일 때
-            console.log(`if. write_button.style.display : ${write_button.style.display}`);
-            showStore();
-        }
-    }
-</script>
 <script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
 <script src="new_app.js"></script>
 </html>
