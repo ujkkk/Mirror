@@ -95,7 +95,7 @@ function submitMemo(){
         let startOtherIndex;
         let checkConnectedUser = [];
         isClicked = true;
-        dbAccess.select('id, name', 'user', `id <> ${dbAccess.userId}`) // 현재 사용자가 아닌 다른 사용자 User DB 정보 불러오기
+        dbAccess.select('id, name', 'user', `id <> ${dbAccess.getId}`) // 현재 사용자가 아닌 다른 사용자 User DB 정보 불러오기
             .then(value => { // users에 값 넣기
                     let i=0;
                     for (i = 0; i < value.length; i++) { // 미러내 유저
