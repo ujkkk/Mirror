@@ -203,8 +203,6 @@ function insertMessageContent(message, type) {
         })
 }
 
-
-
                 
 //메시지가 새로 와서 메시지함을 갱신하는 함수
 //메시지 하나만 새로 추가

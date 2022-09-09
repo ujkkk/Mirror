@@ -15,6 +15,7 @@
     <!-- <script src="new_app.js"></script> -->
     <link  href="css/new_callbook.css" rel="stylesheet">
     <link href="css/call.css" rel="stylesheet">
+    <link href="css/message-views.css" rel="stylesheet">
     <!-- <link href="css/touch.css" rel="stylesheet"> -->
     <script>
         function setMemoDeleteBtn(e){
@@ -50,7 +51,7 @@
             <div id="date"></div>
         </div>
     </article>
-
+    <!-- end of weather & clock & time -->
     <div id="message-container">
         <div id="parent">
             <div id="message-img"><img id='message_icon' src=./image/index/message.png></div>
@@ -95,7 +96,8 @@
             </div>
         </div>
     </div>
-    <!-- end of weather & clock & time -->
+    <!-- end of message -->
+
     <div id="bar_container">
         <button class="bar_button" id="bar_phone_button" ><img class="bar_icon" src="./image/index/bar_phone.png"></button>
         <button class="bar_button" id="bar_callbook_button"><img class="bar_icon" src="./image/index/bar_callbook.png"></button>
@@ -113,6 +115,18 @@
             <button class="option_button" id="write_button" onclick="showWrite()"><img class="option_icon" src="./image/index/write_icon.png"></button>
             <button class="option_button" id="back_button" onclick="showStore()" style="display: none;"><img class="option_icon" src="./image/index/back_icon.png"></button>
             <div id="select_content">
+                <!-- 메시지 함-->
+                <div id="message_storage_view" style="position: absolute;  width: 100%; height: 100%;">
+                    <!-- <h3 style="text-align:center;">Message</h3> -->
+                    <div id="message_storage_contents">
+                      
+                    </div>
+                    <div id="message_storage_detail">
+                        <div id="message_storage_detail_sender"></div>
+                        <div id="message_storage_detail_contents"></div>
+
+                    </div>
+                </div>
                 <!-- start of record_content -->
                 <div id="record_content" style="position: absolute; display: none; width: 100%; height: 100%;">
                     <div id="recordbars_div" style="display: none;">
@@ -338,7 +352,7 @@
         //frame 돌고 있기
     }
 
-    const client = require("message_module/message_mtt");
+    const client = require("message_module/message_mqtt");
     function pressShutter(){
         
         // document.location.href='imageSend1.html'
@@ -360,6 +374,7 @@
     }
 
     function showWrite(){
+        console.log('showWrite');
         write_button.style.display = "none";
         back_button.style.display = "block";
 
@@ -382,10 +397,11 @@
         }
     }
 
+    //저장 파일 보는 창
     function showStore(){
         write_button.style.display = "block";
         back_button.style.display = "none";
-
+        console.log('showStore');
         // 라디오 버튼 체크 확인
         var radio = document.getElementsByName("option");
         var sel_type = null;
@@ -395,9 +411,12 @@
 
         if(sel_type == "text"){
             //
+            document.getElementById('text_content').style.display = "none";
+            
         }
         else if(sel_type == "image"){
             //
+            document.getElementById('image_content').style.display = "none";
         }
         else { // sel_type == "record"
             // record_store();

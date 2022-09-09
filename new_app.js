@@ -13,8 +13,10 @@ mirrorDB.setUser(receivedData)
     const message = require('./message_module/message')
     message.initMessages()
     require('./message_module/message_socket')
+    require('./message_module/message_storage')
     require('./memo_module/memo')
     require('./new_callbook')
+    
 })
 
 require('./weather_module/new_weather');
@@ -22,7 +24,7 @@ require('./weather_module/new_weather');
 /* 여기서 서버에 접근 + DB에 받아오기 */
 const { default: axios } = require('axios');
 const dbAccess = require('./mirror_db');
-axios.get(`http://localhost:9000/check/${mirrorDB.userId}`)
+axios.get(`http://localhost:9000/check/${mirrorDB.getId()}`)
     .then(response => {
 
         console.log("app.js axios test | get data : "+response.data.status);
