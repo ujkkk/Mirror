@@ -97,7 +97,7 @@ if (phoneButton != null) {
 /* 모든 전화기록이 보이는 ui 만들기 */
 const setCallRecord = async function () {
     callRecord.innerHTML = ""
-    dbAccess.select('state, friend_id, call_time, call_option', 'call_record', `id=${dbAccess.userId}`) // 현재 call_record정보 불러오기
+    dbAccess.select('state, friend_id, call_time, call_option', 'call_record', `id=${dbAccess.getId()}`) // 현재 call_record정보 불러오기
         .then((value) => {
             recordArray = [{}]
             for (let i = 0; i < value.length; i++) {
@@ -110,7 +110,7 @@ const setCallRecord = async function () {
 /* 부재중 전화기록만 보이는 ui 만들기 */
 const setAbsensce = async function () {
     callRecord.innerHTML = ""
-    dbAccess.select('friend_id, call_time, call_option', 'call_record', `id=${dbAccess.userId} and state=2`) // 현재 call_record정보 불러오기
+    dbAccess.select('friend_id, call_time, call_option', 'call_record', `id=${dbAccess.getId()} and state=2`) // 현재 call_record정보 불러오기
         .then((value) => {
             recordArray = [{}]
             for (let i = 0; i < value.length; i++) {
@@ -159,7 +159,7 @@ function showRecord() {
         recordDiv.append(timeSpan)
         callRecord.prepend(recordDiv)
 
-        dbAccess.select('name', 'friend', `id=${dbAccess.userId} and friend_id=${recordArray[i].friend_id}`)
+        dbAccess.select('name', 'friend', `id=${dbAccess.getId()} and friend_id=${recordArray[i].friend_id}`)
             .then((friend) => {
                 if (friend.length != 0) {
                     callerName.innerText = friend[0].name
@@ -179,7 +179,7 @@ function showRecord() {
 
 /* DB 접근해서 friend 불러오기 및 주소록 ui 만들기 */
 function setCallAddress() {
-    dbAccess.select('friend_id, name', 'friend', `id=${dbAccess.userId}`) // 현재 friend DB 정보 불러오기
+    dbAccess.select('friend_id, name', 'friend', `id=${dbAccess.getId()}`) // 현재 friend DB 정보 불러오기
         .then(value => { // mirror에 값 넣기
             for (let i = 0; i < value.length; i++) {
                 friend[i] = { "id": value[i].friend_id, "name": value[i].name }
