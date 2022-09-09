@@ -17,6 +17,7 @@
     <link  href="css/new_callbook.css" rel="stylesheet">
     <link href="css/call.css" rel="stylesheet">
     <!-- <link href="css/touch.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="./new_keyboard_module/keyboard.css">
     <script>
         function setMemoDeleteBtn(e){
             let deleteBtns = document.getElementsByClassName("memoDeleteBtn");
@@ -291,6 +292,103 @@
             </div>
         </div>
     </div> -->
+    <div id="keyboard-div">
+        <div class = 'keyboard-container'> 
+            <div class = 'line' id="line1">
+                <input type ='button' class="key" value="1">
+                <input type ='button' class="key" value="2">
+                <input type ='button' class="key" value="3">
+                <input type ='button' class="key" value="4">
+                <input type ='button' class="key" value="5">
+                <input type ='button' class="key" value="6">
+                <input type ='button' class="key" value="7">
+                <input type ='button' class="key" value="8">
+                <input type ='button' class="key" value="9">
+                <input type ='button' class="key" value="0">
+                <input type ='button' class="key" value="←">
+            </div>
+            <div id="keyboard-keys">
+                <div id="ko-keys">
+                    <div class = 'line' id="line2">
+                            <input type ='button' class="key" value="ㅂ">
+                            <input type ='button' class="key" value="ㅈ">
+                            <input type ='button' class="key" value="ㄷ">
+                            <input type ='button' class="key" value="ㄱ">
+                            <input type ='button' class="key" value="ㅅ">
+                            <input type ='button' class="key" value="ㅛ">
+                            <input type ='button' class="key" value="ㅕ">
+                            <input type ='button' class="key" value="ㅑ">
+                            <input type ='button' class="key" value="ㅐ">
+                            <input type ='button' class="key" value="ㅔ">
+                    </div>
+                    <div class = 'line' id="line3">
+                        <input type ='button' class="key" value="ㅁ">
+                        <input type ='button' class="key" value="ㄴ">
+                        <input type ='button' class="key" value="ㅇ">
+                        <input type ='button' class="key" value="ㄹ">
+                        <input type ='button' class="key" value="ㅎ">
+                        <input type ='button' class="key" value="ㅗ">
+                        <input type ='button' class="key" value="ㅓ">
+                        <input type ='button' class="key" value="ㅏ">
+                        <input type ='button' class="key" value="ㅣ">
+                    </div>
+                    <div  class = 'line' id="line4">
+                        <input type ='button' class="key" value="ㅋ">
+                        <input type ='button' class="key" value="ㅌ">
+                        <input type ='button' class="key" value="ㅊ">
+                        <input type ='button' class="key" value="ㅍ">
+                        <input type ='button' class="key" value="ㅠ">
+                        <input type ='button' class="key" value="ㅜ">
+                        <input type ='button' class="key" value="ㅡ">
+                        <input type ='button' class="key" value=",">
+                        <input type ='button' class="key" value=".">
+                        <input type ='button' class="key" value="/">
+                    </div>
+                </div>
+                <div id="eng-keys">
+                    <div class = 'line' id="line2">
+                        <input type ='button' class="key" value="q">
+                        <input type ='button' class="key" value="w">
+                        <input type ='button' class="key" value="e">
+                        <input type ='button' class="key" value="r">
+                        <input type ='button' class="key" value="t">
+                        <input type ='button' class="key" value="y">
+                        <input type ='button' class="key" value="u">
+                        <input type ='button' class="key" value="i">
+                        <input type ='button' class="key" value="o">
+                        <input type ='button' class="key" value="p">
+                    </div>
+                    <div class = 'line' id="line3">
+                        <input type ='button' class="key" value="a">
+                        <input type ='button' class="key" value="s">
+                        <input type ='button' class="key" value="d">
+                        <input type ='button' class="key" value="f">
+                        <input type ='button' class="key" value="g">
+                        <input type ='button' class="key" value="h">
+                        <input type ='button' class="key" value="j">
+                        <input type ='button' class="key" value="k">
+                        <input type ='button' class="key" value="l">
+                    </div>
+                    <div  class = 'line' id="line4">
+                        <input type ='button' class="key" value="z">
+                        <input type ='button' class="key" value="x">
+                        <input type ='button' class="key" value="c">
+                        <input type ='button' class="key" value="v">
+                        <input type ='button' class="key" value="b">
+                        <input type ='button' class="key" value="n">
+                        <input type ='button' class="key" value="m">
+                        <input type ='button' class="key" value=",">
+                        <input type ='button' class="key" value=".">
+                        <input type ='button' class="key" value="/">
+                    </div>
+                </div>
+            </div>
+            <div  id="line5">
+                <input type ='button' class="key" value=" space " id="space"> 
+                <input type ='button' class="key" value="한/영" id="ko-eng"> 
+            </div>
+        </div>
+    </div>
 </body>
 <script src = "new_clock.js"></script>
 <!--
@@ -306,7 +404,7 @@
 <script src="message_module/message_icon.js"></script>
 <!-- <script src="memo_module/create_memo.js"></script> -->
 <!-- <script src="./touch.js"></script> -->
-
+<script src="./new_keyboard_module/keyboard.js"></script>
 <script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
 <script src="new_app.js"></script>
 </html>
