@@ -122,7 +122,7 @@ function userCheck(){
     }
 
     //친구 목록에 있는지 확인
-    mirror_db.select('*', 'friend', `friend_id=${friend_id}`)
+    mirror_db.select('*', 'friend', `friend_id=${friend_id} and id = ${mirror_db.getId()}`)
     .then(values =>{
         //친구목록에 이미 추가된 유저이면 추가 안함
         if(values.length>0){

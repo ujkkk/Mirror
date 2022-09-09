@@ -57,8 +57,8 @@ def closeCam():
     cam = NULL
 
 #def on_mouse(event, x, y, flags, param):
-     #if event == cv2.EVENT_LBUTTONDOWN:
-         
+    #if event == cv2.EVENT_LBUTTONDOWN:
+
 
 def createImage():
     # 노트북 웹캠에서 받아오는 영상을 저장하기

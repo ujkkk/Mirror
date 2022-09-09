@@ -174,3 +174,21 @@
     height: 85%; */
     /* top:15%; */
 }
+
+#textArea{
+    position:absolute; 
+    width: 65%; 
+    height: 35%;
+    background-color: gray; 
+    border: none;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    font-size: 25px;
+    color: white;
+    padding: 5%;
+}
+
+#textArea:focus {
+    outline: 2px solid darkgray;
+}
