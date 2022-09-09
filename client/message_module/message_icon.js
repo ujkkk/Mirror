@@ -10,7 +10,7 @@ const text = document.querySelector("#text");
 const image = document.querySelector("#image");
 const record = document.querySelector("#record");
 const shutter_button = document.querySelector("#shutter_button");
-const send_button = document.querySelector('.send_button');
+const send_button = document.querySelectorAll('.send_button');
 
 const send_modal = document.querySelector('#send-modal');
 const ul = document.querySelector('#otherUserList');
@@ -19,10 +19,10 @@ const outside = document.querySelector('#outside');
 const inside_selected = document.querySelector('#inside-selected');
 const outside_selected = document.querySelector('#outside-selected');
 
+// const axios = require('axios');
 const { write } = require("fs");
 const CMUsers = require("./CMUserInfo");
 const client = require("./message_module/message_mqtt");
-const mirror_db = require('./mirror_db');
 
 // message display ON/OFF
 bar_message_button.addEventListener('click', ()=> {
@@ -40,12 +40,16 @@ bar_message_button.addEventListener('click', ()=> {
     }
     else{
         message_memo_container.style.display = "none";
+        // camera off
+        client.publish('camera/close', 'ok')
     }
 })
 
 write_button.addEventListener('click', showWrite);
 back_button.addEventListener('click', showStore);
-send_button.addEventListener('click', showSendModal);
+for(let i=0; i< send_button.length; i++){
+    send_button[i].addEventListener('click', showSendModal);
+}
 inside.addEventListener('change', showUserBook);
 outside.addEventListener('change', showUserBook);
 
@@ -133,6 +137,63 @@ function showUserBook() {
     
                     li.appendChild(isConnect);
                 }
+                li.addEventListener('click', () =>{
+                    let sender = dbAccess.getId(); // 내 id
+                    let receiver = value[k].id; // 받는 사람 id
+
+                    // 현재 시간 가져오기
+                    var newDate = new Date();
+                    var send_time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
+
+                    // text, image, audio 3개 중 어떤 경우인지 확인
+                    let type_check = 'text';
+                    if(image.checked == true) type_check = "image";
+                    else if(record.checked == true) type_check = "audio";
+
+                    if(type_check == "text") { // text 전송일 때
+                        // text 내용 받아오기
+                        let content = document.querySelector("#textArea").innerText;
+                        axios({
+                            url: 'http://localhost:9000/send/text', // 통신할 웹문서
+                            method: 'post', // 통신할 방식
+                            data: { // 인자로 보낼 데이터
+                                sender: sender,
+                                receiver: receiver,
+                                content: content,
+                                type: type_check,
+                                send_time: send_time
+                            }
+                        }); // end of axios ...
+                    }
+                    else if(type_check == "image"){ // image 전송일 때
+
+                    }
+                    else{ // audio 전송일 때
+                        var reader = new FileReader();
+                        reader.readAsDataURL(blob);
+            
+                        reader.onloadend = function() {
+                            var base64 = reader.result;
+                            var base64Audio = base64.split(',').reverse()[0];
+            
+                            var bstr = atob(base64Audio); // base64String
+            
+                            axios({
+                                url: 'http://localhost:9000/send/audio', // 통신할 웹문서
+                                method: 'post', // 통신할 방식
+                                data: { // 인자로 보낼 데이터
+                                    sender: sender,
+                                    receiver: receiver,
+                                    content: bstr,
+                                    type: type_check,
+                                    send_time: send_time
+                                }
+                            }); // end of axios ...
+            
+                        } // end of reader.onloadend ...
+            
+                    } // end of else ...
+                }); // end of addEventListener ...
                 ul.appendChild(li);
             }   
         })
@@ -210,7 +271,79 @@ function showUserBook() {
     
                     li.appendChild(isConnect);
                 }
+                li.addEventListener('click', () =>{
+                    let sender = dbAccess.getId(); // 내 id
+                    let receiver = value[k].id; // 받는 사람 id
 
+                    // 현재 시간 가져오기
+                    let newDate = new Date();
+                    let send_time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
+
+                    // text, image, audio 3개 중 어떤 경우인지 확인
+                    let type_check = 'text';
+                    if(image.checked == true) type_check = "image";
+                    else if(record.checked == true) type_check = "audio";
+
+                    if(type_check == "text") { // text 전송일 때
+                        // text 내용 받아오기
+                        let content = document.querySelector("#textArea").value;
+                        axios({
+                            url: 'http://localhost:9000/send/text', // 통신할 웹문서
+                            method: 'post', // 통신할 방식
+                            data: { // 인자로 보낼 데이터
+                                sender: sender,
+                                receiver: receiver,
+                                content: content,
+                                type: type_check,
+                                send_time: send_time
+                            }
+                        }); // end of axios ...
+                    }
+                    else if(type_check == "image"){ // image 전송일 때
+                        //서버로 메시지를 보내는 이벤트 publish
+                        client.publish('send/image', 'send');
+                        console.log("image send success");
+                        
+                        
+
+                        axios({
+                            url: 'http://223.194.159.229:9000/send/image', // 통신할 웹문서
+                            method: 'post', // 통신할 방식
+                            data: { // 인자로 보낼 데이터
+                                receiver: receiver,
+                                sender: sender,
+                                content: base64String,
+                                type: type_check,
+                                send_time: send_time
+                            }
+                        });
+                    }
+                    else{ // audio 전송일 때
+                        var reader = new FileReader();
+                        reader.readAsDataURL(blob);
+            
+                        reader.onloadend = function() {
+                            var base64 = reader.result;
+                            var base64Audio = base64.split(',').reverse()[0];
+            
+                            var bstr = atob(base64Audio); // base64String
+            
+                            axios({
+                                url: 'http://localhost:9000/send/audio', // 통신할 웹문서
+                                method: 'post', // 통신할 방식
+                                data: { // 인자로 보낼 데이터
+                                    sender: sender,
+                                    receiver: receiver,
+                                    content: bstr,
+                                    type: type_check,
+                                    send_time: send_time
+                                }
+                            }); // end of axios ...
+            
+                        } // end of reader.onloadend ...
+            
+                    } // end of else ...
+                }); // end of addEventListener ...
                 ul.appendChild(li);
             }   
         })

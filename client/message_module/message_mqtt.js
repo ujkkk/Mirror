@@ -118,7 +118,7 @@ client.on('message', async (topic, message, packet) => {
       }
       
      // document.getElementById('content').value = byteFile   
-    }
+    } // end of (topic == 'send/image') ...
 })
 
 module.exports = client

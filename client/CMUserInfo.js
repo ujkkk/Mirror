@@ -13,7 +13,7 @@ CMUsers.setCMUserList = () => new Promise((resolve, reject)=>{
     
     console.log("거울 내 사용자 목록 불러오기");
     users = [{}];
-
+    console.log(`setCMUserList my id : ${dbAccess.getId()}`);
     dbAccess.select('id, name', 'user', `id <> ${dbAccess.getId()}`) // 현재 사용자가 아닌 다른 사용자 User DB 정보 불러오기
         .then(value => { // users에 값 넣기
             let i = 0;
@@ -23,16 +23,15 @@ CMUsers.setCMUserList = () => new Promise((resolve, reject)=>{
             resolve(users);
         }
         );
-    console.log("여기까진 가나")
 })
 
 
 CMUsers.setFriendList = () => new Promise((resolve, reject)=>{
     console.log("거울 외부 사용자 목록 불러오기");
-    dbAccess.select('id, name', 'friend', 'id <> 22')
+    dbAccess.select('friend_id, name', 'friend', `id = ${dbAccess.getId()}`)
         .then(value => { // users에 값 넣기
             for (let k = 0; k < value.length; k++) {
-                friendUsers[k] = { "id": value[k].id, "name": value[k].name, "connect": 0 };
+                friendUsers[k] = { "id": value[k].friend_id, "name": value[k].name, "connect": 0 };
                 checkConnectedUser[k] = friendUsers[k].id; //서버로 보내서 connect 확인할 친구 목록
             }
         }
@@ -48,14 +47,15 @@ CMUsers.setFriendList = () => new Promise((resolve, reject)=>{
             })
                 .then(response => {
                     let results = response.data.result;
+                    
                     for (let i = 0; i < results.length; i++) {
                         if (friendUsers[i].id == results[i].user) {
-                            console.log(`friendUsers Id : ${friendUsers[i]}, friendUsers connect : ${friendUsers[i].connect}`);
                             friendUsers[i].connect = results[i].connect;
                         }
                     }
+                    resolve(friendUsers);
                 })
-            resolve(friendUsers);
+            
         })
         .catch(
             () => {
