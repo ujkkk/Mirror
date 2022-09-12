@@ -10,8 +10,8 @@ let currentIdx = 0; //현재 슬라이드 index
 const slideCount = 2; // 슬라이드 개수
 const prev = document.querySelector('#message-prev'); //이전 버튼
 const next = document.querySelector('#message-next'); //다음 버튼
-const slideWidth = 200; //한개의 슬라이드 넓이
-const slideMargin = 100; //슬라이드간의 margin 값
+const slideWidth = 36.8; //한개의 슬라이드 넓이
+const slideMargin = 2; //슬라이드간의 margin 값
 const messageSendButton = document.getElementById('reply-btn')
 
 messageSendButton.addEventListener('click', () => {
@@ -23,8 +23,8 @@ slides.style.width = (slideWidth + slideMargin) * slideCount + 'px';
 
 function moveSlide(num) {
   
-  currentIdx = num;
-  slides.style.left = -num * 285 + 'px';
+    currentIdx = num;
+    slides.style.left = -  num *(slideWidth - 0.8)+ 'vh';
   if(num%2){
     document.getElementById('point-imag').src = './image/index/point2.png'
     document.getElementById('message-prev').style.visibility ='visible'

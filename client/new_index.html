@@ -213,7 +213,7 @@
     </div>
 
     <!-- 전화 거절 당했을 때 alert -->
-    <div id="call-refusal-container" style="display: none">
+    <div class="alert-container" id="call-refusal-container" style="display: none">
         <div class="close-area" onclick="callRefusalAlertOff()">✕</div>
         <div class="caller">김경미</div>
         <div id="call-refusal-alert">전화를 받을 수 없습니다</div>
@@ -227,7 +227,12 @@
 
     <!-- call //////////////////////////////////////////// -->
 
-
+    <!-- stt alert -->
+    <div class="alert-container" id="stt-refusal-container" style="display: none">
+        <div class="close-area" onclick="sttAlertOff()">✕</div>
+        <div id="stt-alert"></div>
+    </div>
+    
     <!-- <div id="memo_ui" class="blur_effect">
         <div id="myMemo"></div><div id="sendMemo"></div>
     </div>

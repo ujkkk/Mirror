@@ -2,6 +2,7 @@
 const dbAccess = require('../mirror_db')
 const callFunction = require('./client')
 const mqtt = require('mqtt')
+const e = require('express')
 
 // 필요한 component 불러오기 ======================================================
 const callRecord = document.getElementById('call-record')
@@ -16,6 +17,9 @@ const addressBookComponent = document.getElementById('call-address-book')
 const recordSetComponent = document.getElementById('record-set-component')
 const allRecordButton = document.getElementById('all-record-button')
 const absensceButton = document.getElementById('absensce-button')
+
+const sttRefusalContainer = document.getElementById('stt-refusal-container')
+const sttAlert = document.getElementById('stt-alert')
 
 const input = document.getElementById('room-input')
 const connectButton = document.getElementById('connect-button')
@@ -38,13 +42,65 @@ const options = { // 브로커 정보(ip, port)
 
 const mqttClient = mqtt.connect(options) // mqtt broker 연결
 mqttClient.subscribe('call_request')
+mqttClient.subscribe('video_call_request')
+
+call_option = 0
 
 mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 callback
-    if (topic.toString() == 'call_request') { // 전화 호출
-        phoneContainer.style = 'display: block'
-        callAddressButton.click()
+    if (topic.toString() == 'call_request') {
+        call_option = 0
+    }
+    else if(topic.toString() == 'video_call_request') {
+        call_option = 1
+    }
+    
+    if(message == null){
+        phoneButton.click()
+    }
+    else {
+        getCallFriendName(message, call_option)
     }
 })
+
+const getCallFriendName = function(name, call_option) {
+    dbAccess.select(`name, friend_id`,'friend',`id=${dbAccess.getId()} and name like '%${name}%'`)
+    .then((value)=>{
+        if(value.length==0){
+            console.log('이름이 존재하지 않습니다')
+            sttAlert.innerText = `${name}이를 찾을 수 없습니다`
+            sttRefusalContainer.style = 'display: block'
+        }
+        else if(value.length>=2) {
+            console.log('이름이 두개이상입니다'+value[0].name+', '+value[1].name)
+
+            sttAlert.innerText = '이름이 두개이상입니다 '+value[0].name+', '+value[1].name
+            sttRefusalContainer.style = 'display: block'
+            setTimeout(function () { // 5초 후 실행
+                sttRefusalContainer.style = 'display: none'
+                phoneContainer.style = 'display: block'
+                callRecordComponent.style = 'display: none'
+                addressBookComponent.style = 'display: block'
+                recordSetComponent.style = 'display: none'
+            }, 5000)
+            
+
+            friend = [{}]
+            for (let i = 0; i < value.length; i++) {
+                friend[i] = { "id": value[i].friend_id, "name": value[i].name }
+            }
+            showCallAddress() // friend 목록 보여줌 
+        }
+        else {
+            console.log(`이름은 ${value[0].name}`)
+            sttAlert.innerText = `${name}님에게 전화 걸겠습니다`
+            sttRefusalContainer.style = 'display: block'
+            setTimeout(function () { // 5초 후 실행
+                sttRefusalContainer.style = 'display: none'
+                callAccess.startCall({ 'id': value[0].friend_id, 'name': value[0].name }, call_option)
+            }, 5000)
+        }
+    })
+}
 
 // BUTTON LISTENER ============================================================
 
@@ -68,6 +124,7 @@ if (phoneButton != null) {
         recordSetComponent.style = 'display: none'
         setCallAddress()
     })
+
 
     // 전화 기록 아이콘 클릭시 이벤트
     recordButton.addEventListener('click', () => {
@@ -97,7 +154,7 @@ if (phoneButton != null) {
 /* 모든 전화기록이 보이는 ui 만들기 */
 const setCallRecord = async function () {
     callRecord.innerHTML = ""
-    dbAccess.select('state, friend_id, call_time, call_option', 'call_record', `id=${dbAccess.userId}`) // 현재 call_record정보 불러오기
+    dbAccess.select('state, friend_id, call_time, call_option', 'call_record', `id=${dbAccess.getId()}`) // 현재 call_record정보 불러오기
         .then((value) => {
             recordArray = [{}]
             for (let i = 0; i < value.length; i++) {
@@ -110,7 +167,7 @@ const setCallRecord = async function () {
 /* 부재중 전화기록만 보이는 ui 만들기 */
 const setAbsensce = async function () {
     callRecord.innerHTML = ""
-    dbAccess.select('friend_id, call_time, call_option', 'call_record', `id=${dbAccess.userId} and state=2`) // 현재 call_record정보 불러오기
+    dbAccess.select('friend_id, call_time, call_option', 'call_record', `id=${dbAccess.getId()} and state=2`) // 현재 call_record정보 불러오기
         .then((value) => {
             recordArray = [{}]
             for (let i = 0; i < value.length; i++) {
@@ -159,7 +216,7 @@ function showRecord() {
         recordDiv.append(timeSpan)
         callRecord.prepend(recordDiv)
 
-        dbAccess.select('name', 'friend', `id=${dbAccess.userId} and friend_id=${recordArray[i].friend_id}`)
+        dbAccess.select('name', 'friend', `id=${dbAccess.getId()} and friend_id=${recordArray[i].friend_id}`)
             .then((friend) => {
                 if (friend.length != 0) {
                     callerName.innerText = friend[0].name
@@ -179,7 +236,7 @@ function showRecord() {
 
 /* DB 접근해서 friend 불러오기 및 주소록 ui 만들기 */
 function setCallAddress() {
-    dbAccess.select('friend_id, name', 'friend', `id=${dbAccess.userId}`) // 현재 friend DB 정보 불러오기
+    dbAccess.select('friend_id, name', 'friend', `id=${dbAccess.getId()}`) // 현재 friend DB 정보 불러오기
         .then(value => { // mirror에 값 넣기
             for (let i = 0; i < value.length; i++) {
                 friend[i] = { "id": value[i].friend_id, "name": value[i].name }
