@@ -37,7 +37,7 @@ var watcher = mysqlEventWatcher.add(
 // 전체 memo ui 설정
 const setUI = function () {
     // memo전체를 select 문으로 가져와 contents를 ui로 띄우기
-    dbAccess.select('*', 'memo', `id=${dbAccess.userId}`)
+    dbAccess.select('*', 'memo', `id=${dbAccess.getId()}`)
         .then(value => {
             // 기존에 memo_ui 모두 삭제
             myMemo.innerHTML = "";
