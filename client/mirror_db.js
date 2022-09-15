@@ -16,7 +16,8 @@ var pool = mysql.createPool({
     user: 'root',
     password: '1234',
     database: 'mirror_db',
-    debug: false
+    debug: false,
+    dateStrings: 'date'
 });
 
 /* 테이블 columns 제작 (insert 문) */

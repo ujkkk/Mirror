@@ -137,7 +137,7 @@ function userCheck(){
 
         //친구목록에 없는 유저를 추가할 때
         axios({
-            url : 'http://localhost:9000/get/name',
+            url : 'http://113.198.84.128:80/get/name',
             method : 'post',
             data : {
                 id : friend_id,

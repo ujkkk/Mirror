@@ -19,7 +19,7 @@ const callerConponent = document.getElementsByClassName('caller')
 const callRefusalContainer = document.getElementById('call-refusal-container')
 
 // Variables.
-const socket = io.connect('ws://223.194.155.68:3000/') // socket 서버 연결
+const socket = io.connect('ws://113.198.84.128:80/') // socket 서버 연결
 let mediaConstraints = { // 미디어 설정
   audio: false,
   video: false,
@@ -417,7 +417,7 @@ function setRemoteStream(event) {
 
 /* 원격 스트림을 위한 설정, 다른이에게 내 비디오 condidate 주기 */
 function sendIceCandidate(event) {
-  setTimeout(function () { // 10초 후 일시정지
+  // setTimeout(function () { // 10초 후 일시정지
     if (event.candidate) {
     
       roomId = roomInformation.newRoomId
@@ -432,7 +432,7 @@ function sendIceCandidate(event) {
       setLocalStream(false, true)
       isConnect = true
     }
-  }, 2000)
+  // }, 2000)
   
 }
 

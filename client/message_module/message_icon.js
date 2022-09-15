@@ -154,7 +154,7 @@ function showUserBook() {
                         // text 내용 받아오기
                         let content = document.querySelector("#textArea").innerText;
                         axios({
-                            url: 'http://localhost:9000/send/text', // 통신할 웹문서
+                            url: 'http://113.198.84.128:80/send/text', // 통신할 웹문서
                             method: 'post', // 통신할 방식
                             data: { // 인자로 보낼 데이터
                                 sender: sender,
@@ -179,7 +179,7 @@ function showUserBook() {
                             var bstr = atob(base64Audio); // base64String
             
                             axios({
-                                url: 'http://localhost:9000/send/audio', // 통신할 웹문서
+                                url: 'http://113.198.84.128:80/send/audio', // 통신할 웹문서
                                 method: 'post', // 통신할 방식
                                 data: { // 인자로 보낼 데이터
                                     sender: sender,
@@ -288,7 +288,7 @@ function showUserBook() {
                         // text 내용 받아오기
                         let content = document.querySelector("#textArea").value;
                         axios({
-                            url: 'http://localhost:9000/send/text', // 통신할 웹문서
+                            url: 'http://113.198.84.128:80/send/text', // 통신할 웹문서
                             method: 'post', // 통신할 방식
                             data: { // 인자로 보낼 데이터
                                 sender: sender,
@@ -301,13 +301,14 @@ function showUserBook() {
                     }
                     else if(type_check == "image"){ // image 전송일 때
                         //서버로 메시지를 보내는 이벤트 publish
-                        client.publish('send/image', 'send');
+                        // client.publish('send/image', 'send');
                         console.log("image send success");
                         
-                        
+                        const image_canvas = document.querySelector('canvas');
+                        var base64String = image_canvas.toDataURL();
 
                         axios({
-                            url: 'http://223.194.159.229:9000/send/image', // 통신할 웹문서
+                            url: 'http://113.198.84.128:80/send/image', // 통신할 웹문서
                             method: 'post', // 통신할 방식
                             data: { // 인자로 보낼 데이터
                                 receiver: receiver,
@@ -329,7 +330,7 @@ function showUserBook() {
                             var bstr = atob(base64Audio); // base64String
             
                             axios({
-                                url: 'http://localhost:9000/send/audio', // 통신할 웹문서
+                                url: 'http://113.198.84.128:80/send/audio', // 통신할 웹문서
                                 method: 'post', // 통신할 방식
                                 data: { // 인자로 보낼 데이터
                                     sender: sender,

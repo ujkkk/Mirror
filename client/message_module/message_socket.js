@@ -5,7 +5,7 @@ const fs = require('fs');
 //const mirror_db = require('./mirror_db');
 //npm install @types/socket.io-client --save
 
-var socket = io('http://192.168.137.169:9000/', { transports : ['websocket'] });
+var socket = io('http://113.198.84.128:9000/', { transports : ['websocket'] });
 
 
 socket.on("connect", () => {
@@ -16,7 +16,8 @@ console.log('message call')
 
 //나에게 서버로부터 메시지가 올 때
 socket.on(`${mirror_db.getId()}`, req => {
-    console.log(req);
+    console.log('소켓메시지 도착', req);
+    // console.log(req);
 
     switch (req.type){
         case 'text':
