@@ -1,5 +1,8 @@
 const _db = require('../mirror_db')
+require('date-utils');
+
 function showMessageStorage(){
+    console.log('showMessageStorage');
    _db.select('*','message',`receiver =${_db.getId()}`)
    .then(messages =>{
         create_storage(messages);
@@ -56,15 +59,13 @@ function create_storage(messages){
                 case 'image':
                     message_content.innerHTML = '(사진)';
                     break;
-                case 'record':
-                    message_content.innerHTML = '(오디오)';
+                case 'audio':
+                    message_content.innerHTML = '(음성 메시지)';
             }   
     
             message_div.appendChild(message_send);
             message_div.appendChild(message_date);
             message_div.appendChild(message_content);
-            
-            console.log('message.sender :' +this);
 
             message_content.addEventListener("click", (e)=>{message_storage_detail(e.target)});
             document.getElementById('message_storage_contents').prepend(message_div);
@@ -75,6 +76,7 @@ function create_storage(messages){
 }
 
 var currunt_sender ='';
+//메시지 함에서 오른쪽 메시지 클릭시 과거의 메시지 모두 출력
 function message_storage_detail(e){
 
     var sender_id = e.getAttribute('value');
@@ -85,12 +87,10 @@ function message_storage_detail(e){
     var contents = document.getElementById('message_storage_detail_contents');
     contents.replaceChildren();
 
-    
-    console.log('sender :' +sender)
-    document.getElementById('message_storage_detail_sender').innerHTML = sender;
+    // if(sender =='undefined')  document.getElementById('message_storage_detail_sender').innerHTML = '알 수 없음';
+    // else document.getElementById('message_storage_detail_sender').innerHTML = sender;
     _db.select('*', 'message', `sender=${sender_id} &&receiver=${_db.getId()}`)
     .then((messages) =>{
-        console.log(messages);
         messages.forEach(message =>{
             let content = document.createElement('div');
             let context = document.createElement('div');
@@ -110,10 +110,16 @@ function message_storage_detail(e){
                     break;
                 case 'image':
                     let img = document.createElement('img');
-                    img.src = './image/message/' + message.content;
+                    img.src = './image/message/' + message.content +'.jpg';
                     context.appendChild(img);
                 case 'audio':
-
+                    var audio_folder = './message_module/record/audio/client/';
+                    var audio = document.createElement('audio');
+                    audio.setAttribute('id', 'storage-audio');
+                    audio.controls = 'controls';
+                    audio.src = audio_folder + message.content+'.wav';
+                    context.appendChild(audio);
+                   
             }
             content.appendChild(context);
             content.appendChild(date);

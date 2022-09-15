@@ -171,7 +171,12 @@
     /* 2/3 */
 
 }
+#message-audio{
 
+    margin-left: 5%;
+    width :  35vw;
+    height:  6vw; 
+  }
 #message-detail-div #message-reply {
     margin-top: 11%;
     width: 80%;
