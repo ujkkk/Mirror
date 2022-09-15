@@ -59,11 +59,11 @@ mqttClient.subscribe('image_request')
 
 mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 callback
     customFriend = null
-    if (message == null) {
+    if (message.friendName == null) {
         customOption = false
     }
     else {
-        friendName = message
+        friendName = message.friendName
         customOption = true
         setCMFriend = CMUsers.setCustromFriendList(friendName)
         setCMuser = CMUsers.setCustromUserList(friendName)
@@ -365,7 +365,7 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                     //offline user 
                 } else {
                     axios({
-                        url: 'http://113.198.84.128:80/send/text', // 통신할 웹문서
+                        url: 'http://localhost:9000/send/text', // 통신할 웹문서
                         method: 'post', // 통신할 방식
                         data: { // 인자로 보낼 데이터
                             sender: sender,
@@ -395,7 +395,7 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                     });
                 } else {
                     axios({
-                        url: 'http://113.198.84.128:80/send/image', // 통신할 웹문서
+                        url: 'http://localhost:9000/send/image', // 통신할 웹문서
                         method: 'post', // 통신할 방식
                         data: { // 인자로 보낼 데이터
                             receiver: receiver,
@@ -430,7 +430,7 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                             });
                         } else {
                             axios({
-                                url: 'http://113.198.84.128:80/send/audio', // 통신할 웹문서
+                                url: 'http://localhost:9000/send/audio', // 통신할 웹문서
                                 method: 'post', // 통신할 방식
                                 data: { // 인자로 보낼 데이터
                                     sender: sender,

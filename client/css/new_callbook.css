@@ -1,8 +1,8 @@
 
-#modal.modal-overlay {
+#callbook-modal.callbook-modal-overlay {
     visibility: hidden;
 }
-#modal .modal-window {
+#callbook-modal .modal-window {
     background: rgba(113,113,113,0.85);
     -webkit-backdrop-filter: blur( 13.5px );
     border-radius: 10px;
@@ -16,19 +16,19 @@
     padding: 10px;
 }
 
-#modal .title {
+#callbook-modal .title {
     padding-left: 10px;
     display: inline;
     text-shadow: 1px 1px 2px gray;
     color: white; 
 }
 
-#modal .title h3 {
+#callbook-modal .title h3 {
     display: inline;
     font-size: 20px;
 }
 
-#modal .close-area {
+#callbook-modal .close-area {
     display: inline;
     float: right;
     padding-right: 10px;
@@ -38,7 +38,7 @@
     color: white;
 }
 
-#modal .content {
+#callbook-modal .content {
     margin-top: 20px;
     padding: 0px 10px;
     text-shadow: 1px 1px 2px gray;
@@ -49,12 +49,12 @@
 input[type="radio"]{
     display: none;
 }
-#user-select {
+#callbook-user-select {
     display:flex;
     margin-top:10px;
 }
 
-#user-select > div{
+#callbook-user-select > div{
     width:100%;
     margin-top:10px;
     margin-bottom:20px;

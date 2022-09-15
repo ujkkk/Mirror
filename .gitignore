@@ -46014,3 +46014,6 @@ node_modules/zongji/package.json
 node_modules/zongji/README.md
 server/node_modules/.bin/mime
 *.cmd
+client/message_module/record/test.js
+client/init.html
+client/init_app.js

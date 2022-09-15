@@ -103,17 +103,17 @@ function stt(data) {
       }
 
       else if (value.includes("음성 메시지") || value.includes("음성 메세지") || value.includes("음성메시지") || value.includes("음성메세지")) {
-        mqttClient.publish('audio_message_request', friendName)
+        mqttClient.publish('audio_message_request',  {friendName: friendName, value: value})
         return `받은 내용: ${value} -> 음성 메시지 호출\n`
       }
 
       else if (value.includes("메시지") || value.includes("메세지")) {
-        mqttClient.publish('message_request', friendName)
+        mqttClient.publish('message_request', {friendName: friendName, value: value})
         return `받은 내용: ${value} -> 메시지 호출\n`
       }
 
       else if (value.includes("사진")) {
-        mqttClient.publish('image_request', friendName)
+        mqttClient.publish('image_request',  {friendName: friendName, value: value})
         return `받은 내용: ${value} -> 사진 호출\n`
       }
 
