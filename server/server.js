@@ -176,7 +176,7 @@ const sendClientToMsg = (req, res, next) => {
         .then(value => {
             let msgData = [];
             for (let i = 0; i < value.length; i++) {
-                msgData[i] = { "sender": value[i].sender, "content": value[i].content, "type": value[i].type }
+                msgData[i] = { "sender": value[i].sender, "content": value[i].content, "type": value[i].type, "send_time":value[i].send_time}
                 console.log(msgData[i]);
             }
 
