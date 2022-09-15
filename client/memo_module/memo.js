@@ -94,8 +94,6 @@ function showSlides(n) {
 
 //해당 함수 호출시 미러 내 message DB에서 메시지를 가져와 나에게 온 메세지를 띄움
 function initMemo() {
-    
-    
     mirror_db.select('*', 'memo', `id = ${mirror_db.getId()}`)
     .then(memos => { 
             create_memo_div(memos);

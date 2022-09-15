@@ -120,30 +120,6 @@ body {
 }
 
 /* 전화 거절당한 창 css */
-#call-refusal-container{
-    background-color: rgb(47, 47, 47);
-    border-radius: 1.5vh;
-    width: 25vh;
-    height: 13vh;
-    position: absolute;
-    top: 40%;
-    right: 50%;
-    transform: translate(50%, -50%);
-
-    text-align: center;
-}
-
-#call-refusal-container .close-area {
-    display: inline;
-    position: absolute;
-    right: 2vh;
-    top: 1vh;
-    cursor: pointer;
-    font-size: 1.3vh;
-    text-shadow: 1px 1px 2px gray;
-    color: white;
-}
-
 #call-refusal-container .caller {
     padding-left: 0vh;
     height: 50%;
