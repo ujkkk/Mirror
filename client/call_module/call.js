@@ -3,6 +3,7 @@ const dbAccess = require('../mirror_db')
 const callFunction = require('./client')
 const mqtt = require('mqtt')
 const e = require('express')
+const moment = require('moment')
 
 // 필요한 component 불러오기 ======================================================
 const callRecord = document.getElementById('call-record')
@@ -181,7 +182,7 @@ function showRecord() {
     console.log('|| showRecord')
     var newDate = new Date()
     // time 형식 지정
-    var date = newDate.toFormat('MM-DD')
+    var date = moment(newDate).format('MM-DD')
     for (let i = 0; i < recordArray.length; i++) {
         const recordDiv = document.createElement('div')
 
@@ -202,8 +203,8 @@ function showRecord() {
         if (recordArray[i].state == 2)
             callerName.style.color = 'red'
 
-        call_date = recordArray[i].call_time.toFormat('MM-DD')
-        call_time = recordArray[i].call_time.toFormat('HH24:MI')
+        call_date = moment(recordArray[i].call_time).format('MM-DD')
+        call_time = moment(recordArray[i].call_time).format('HH24:MI')
 
         const timeSpan = document.createElement('span')
         if (date == call_date)

@@ -46012,3 +46012,5 @@ node_modules/zongji/node_modules/string_decoder/package.json
 node_modules/zongji/node_modules/string_decoder/README.md
 node_modules/zongji/package.json
 node_modules/zongji/README.md
+server/node_modules/.bin/mime
+*.cmd

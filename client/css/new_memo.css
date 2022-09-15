@@ -3,24 +3,24 @@
 }
 #memo-container{
     position: absolute;
-    top: 33vh;
-    right: 1vh;
-    height: 30vh;
-    width: 26vw;
+    top: 33vw;
+    right: 1vw;
+    height: 30vw;
+    width: 26vh;
 }
 #memo-div{
     position: relative;
     height: 100%;
     width: 100%;
-   
 }
+
 #memo-img #memo-icon {
     /* position: absolute; */
     display: inline;
-    height: 1.5vh;
-    width: 1.5vh;
-    font-size: 1vh;
-    transform: translateY(-0.5vh);
+    height: 1.5vw;
+    width: 1.5vw;
+    font-size: 1vw;
+    transform: translateY(-0.5vw);
 }
 #memo-img{
     margin-left:7%;
@@ -28,11 +28,11 @@
 }
 #memo-text-div {
     color :white;
-    font-size: 1.3vh;
+    font-size: 1.3vw;
     display: inline;
-    margin-left: 1vh;
+    margin-left: 1vw;
     position: absolute;
-    top: -0.5vh;
+    top: -0.5vw;
 }
 #memo-slider-wrap {
     width: 100%;
@@ -51,19 +51,19 @@
 .memo-li{
     float: left;
     position: relative;
-    width:52vw;
+    width:52vh;
     height: 100%;
     
 }
 /* #memo-slider-wrap ul#memo-slider li>.memo  */
 .memo {
     /* position: absolute; */
-    margin-left: 1.5vh;
-    margin-bottom: 1vh;
-    width: 20vw;
+    margin-left: 1.5vw;
+    margin-bottom: 1vw;
+    width: 20vh;
     height: 40%;
-    border: 0.08vh solid white;
-    border-radius: 0px 0px 1.5vh 0px ;
+    border: 0.08vw solid white;
+    border-radius: 0px 0px 1.5vw 0px ;
     position: relative;
 
 }
@@ -79,7 +79,7 @@
     width: 80%;
     height: 60%;
     color:white;
-    font-size :1.3vh;
+    font-size :1.3vw;
     text-align: center;
 }
 .memo .memo-content>img{
@@ -90,17 +90,17 @@
     margin-top: 5%;
     margin-left: 10%;
     color:white;
-    font-size : 0.8vh;
+    font-size : 0.8vw;
 }
 /*btns*/
 .slider-btns {
     position: absolute;
     width: 30%;
-    height: 6vh;
+    height: 6vw;
     top: 50%;
     transform: translate(0%, -50%);
 
-    line-height: 1vh;
+    line-height: 1vw;
     text-align: center;
     cursor: pointer;
     color:white;
@@ -129,12 +129,12 @@
 }
 #memo-slider-wrap.active #next {
     position:absolute;
-    right: -3vw;
+    right: -3vh;
 }
 
 #memo-slider-wrap.active #previous {
     position:absolute;
-    left: -3vw;
+    left: -3vh;
 }
 
 /*ANIMATION*/

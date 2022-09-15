@@ -1,5 +1,5 @@
 const mirror_db = require('../mirror_db');
-
+const moment = require('moment')
 //slide-wrap
 var slideWrapper = document.getElementById('memo-slider-wrap');
 //current slideIndexition
@@ -114,7 +114,7 @@ function create_memo_div(memos){
         memo_time.setAttribute('class','memo-time')
 
         //time
-        time= memo.time.toFormat('MM-DD HH24:MI')
+        time= moment(memo.time).format('MM-DD HH24:MI')
         // time = (String(memo.time)).substring(5,memo_time.length);
         // time = time.split(':')
         memo_time.innerHTML = time
