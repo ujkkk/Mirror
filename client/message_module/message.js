@@ -1,6 +1,7 @@
 const mirror_db = require('../mirror_db');
 const socket = require('./message_socket')
 require('date-utils');
+let fs = require('fs');
 
 console.log('message call')
 
@@ -86,7 +87,6 @@ function message_detail(msg_id) {
                 return;
             }
             selected_msg = selected_msg[0];
-            console.log(selected_msg)
             //선택한 메시지 
             let message_detail_div = document.getElementById('message-detail-div')
             message_detail_div.setAttribute('value', msg_id)
@@ -111,21 +111,31 @@ function message_detail(msg_id) {
             if (document.getElementById('message-image')) {
                 document.getElementById('message-content').removeChild(document.getElementById('message-image'));
                 //document.getElementById('image').style.display = 'none';
-                console.log('삭제됨');
+            }
+            if (document.getElementById('message-audio')) {
+                document.getElementById('message-audio').removeChild(document.getElementById('message-audio'));
+                //document.getElementById('image').style.display = 'none';
             }
             switch (selected_msg.type) {
                 case 'text':
-                    console.log('selected_msg.content :' + selected_msg.content)
                     detail_content_div.innerHTML = `${selected_msg.content}`;
                     break;
                 case 'image':
-                    image_forlder = './image/message/'
+                    image_folder = './image/message/'
                     detail_content_div.innerHTML = '';
                     let img = document.createElement('img')
                     img.setAttribute('id','message-image')
-                    img.src = image_forlder + selected_msg.content;
-                    console.log('img.src :' + img.src)
+                    img.src = image_folder + selected_msg.content +'.jpg';
                     detail_content_div.appendChild(img);
+                    break;
+                case 'audio' :               
+                    var audio_folder = './message_module/record/audio/client/';
+                    var audio = document.createElement('audio');
+                    audio.setAttribute('id', 'message-audio');
+                    audio.src = audio_folder+selected_msg.content+'.wav';
+                    audio.controls = 'controls';
+                   // audio.play();
+                    detail_content_div.appendChild(audio);
                     break;
 
             }
@@ -139,10 +149,13 @@ function initMessages() {
     mirror_db.select('*', 'message', `receiver = ${mirror_db.getId()}`)
         .then(messages => {
             messages.forEach(message => { message_list.unshift(message);})
-            insertMessageContent(message_list[0], 'init');
-            insertMessageContent(message_list[2], 'init');
-            insertMessageContent(message_list[1], 'init');
-            insertMessageContent(message_list[3], 'init');
+            for(var i=0; i<4; i++){
+                insertMessageContent(message_list[i], 'init');
+            }
+            
+            // insertMessageContent(message_list[2], 'init');
+            // insertMessageContent(message_list[1], 'init');
+            // insertMessageContent(message_list[3], 'init');
             // while(message_list.length>0){
             //     //리스트에서 가장 앞 원소를 꺼냄
             //     message = message_list.shift();
@@ -202,8 +215,6 @@ function insertMessageContent(message, type) {
         })
 }
 
-
-
                 
 //메시지가 새로 와서 메시지함을 갱신하는 함수
 //메시지 하나만 새로 추가
@@ -212,8 +223,6 @@ function insertNewMessage() {
         .then(messages => {
             //가장 마지막에 추가된 메시지 가져오기
             message = messages[messages.length - 1];
-            console.log('insertNewMessage : ');
-            console.log(message);
             insertMessageContent(message, 'new');
         })
 }
@@ -224,7 +233,6 @@ function reply_message(element){
     var receiver_id = document.getElementById('message-sender').getAttribute('value')
     var content = document.getElementById('reply-text').value;
     var time = new Date().toFormat('YYYY-MM-DD HH24:MI:SS');
-    console.log(content)
     socket.emit('realTime/message', {
         sender : mirror_db.getId(),
         receiver :  receiver_id,

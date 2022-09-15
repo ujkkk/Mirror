@@ -12,17 +12,14 @@
     <link href="css/new_index.css" rel="stylesheet">
     <link href="css/new_message.css" rel="stylesheet">
     <link href="css/new_memo.css" rel="stylesheet">
-    <link href="css/modal.css" rel="stylesheet">
     <!-- <script src="new_app.js"></script> -->
     <link  href="css/new_callbook.css" rel="stylesheet">
     <link href="css/call.css" rel="stylesheet">
     <link href="css/message-views.css" rel="stylesheet">
     <!-- <link href="css/touch.css" rel="stylesheet"> -->
-    <link rel="stylesheet" href="./new_keyboard_module/keyboard.css">
     <script>
         function setMemoDeleteBtn(e){
             let deleteBtns = document.getElementsByClassName("memoDeleteBtn");
-
             if (e.type == "dblclick" && deleteBtns.length != 0){
                     for (let i=0;i<deleteBtns.length;i++)
                         deleteBtns[i].style.visibility = "visible";
@@ -34,18 +31,8 @@
         }
         function callRefusalAlertOff() {
             const callRefusalContainer = document.getElementById('call-refusal-container')
-            callRefusalContainer.style = 'display: none'
-        }
-        function claseSendModal(e){
-           e.style =  'display: none'
 
-        function friendAlertOff() {
-            const sendModal = document.getElementById('send-modal')
-            sendModal.style = 'display: none'
-        }
-        function sttAlertOff() {
-            const sttContainer = document.getElementById('stt-refusal-container')
-            sttContainer.style = 'display: none'
+            callRefusalContainer.style = 'display: none'
         }
     </script>
 </head>
@@ -69,9 +56,7 @@
             <div id="message-img"><img id='message_icon' src=./image/index/message.png></div>
             <div id="message-text-div">Message</div>
             <div id='message-contents'>
-                <ul class="message-slides" id='message-contents-ui'>
-                
-                </ul>
+                <ul class="message-slides" id='message-contents-ui'></ul>
             </div>
             <img id='point-imag' src='./image/index/point1.png' width="45px" height="45px">
             <p class="message-controller">
@@ -115,33 +100,31 @@
     <div id="bar_container">
         <button class="bar_button" id="bar_phone_button" ><img class="bar_icon" src="./image/index/bar_phone.png"></button>
         <button class="bar_button" id="bar_callbook_button"><img class="bar_icon" src="./image/index/bar_callbook.png"></button>
-        <button class="bar_button" id="bar_message_button"><img class="bar_icon" src="./image/index/bar_message2.png"></button>
+        <button class="bar_button" id="bar_message_button" onclick="barMessage()"><img class="bar_icon" src="./image/index/bar_message2.png"></button>
         <button class="bar_button" id="bar_memmo_button" onclick="barMemo()"><img class="bar_icon" src="./image/index/bar_memo.png"></button>
     </div>
     <!-- end of menu bar -->
     <div id="message_memo_container" style="display: none;">
         <div id="radio_container">
-            <input type="radio" name="option" class="option_radio" id="text" value="text" checked><label class="menu" for="text">Text</label>
-            <input type="radio" name="option" class="option_radio" id="image" value="image"><label class="menu" for="image">Image</label>
-            <input type="radio" name="option" class="option_radio" id="record" value="record"><label class="menu" for="record">Record</label>
+            <input type="radio" name="option" class="option_radio" id="text" value="text" checked onchange="checkOption()"><label class="menu" for="text">Text</label>
+            <input type="radio" name="option" class="option_radio" id="image" value="image" onchange="checkOption()"><label class="menu" for="image">Image</label>
+            <input type="radio" name="option" class="option_radio" id="record" value="record" onchange="checkOption()"><label class="menu" for="record">Record</label>
         </div> 
         <div id="content">
-            <button class="option_button" id="write_button"><img class="option_icon" src="./image/index/write_icon.png"></button>
-            <button class="option_button" id="back_button" style="display: none;"><img class="option_icon" src="./image/index/back_icon.png"></button>
+            <button class="option_button" id="write_button" onclick="showWrite()"><img class="option_icon" src="./image/index/write_icon.png"></button>
+            <button class="option_button" id="back_button" onclick="showStore()" style="display: none;"><img class="option_icon" src="./image/index/back_icon.png"></button>
             <div id="select_content">
                 <!-- 메시지 함-->
                 <div id="message_storage_view" style="position: absolute;  width: 100%; height: 100%;">
                     <!-- <h3 style="text-align:center;">Message</h3> -->
-                    <div id="message_storage_contents"></div>
+                    <div id="message_storage_contents">
+                      
+                    </div>
                     <div id="message_storage_detail">
                         <div id="message_storage_detail_sender"></div>
                         <div id="message_storage_detail_contents"></div>
-                    </div>
-                </div>
-                <div id="text_content" style="display: none;">
-                    <textarea id="textArea"></textarea>
-                    <button id="send_text_button" class="send_button" style=" position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 200px; font-size: 20px;">SEND</button>
 
+                    </div>
                 </div>
                 <!-- start of record_content -->
                 <div id="record_content" style="position: absolute; display: none; width: 100%; height: 100%;">
@@ -169,15 +152,14 @@
                         </div>
                     </div>
                     <!-- end of record_button_container -->
-                    <button id="send_record_button" class="send_button" style="display: none; position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 347px; font-size: 20px;">SEND</button>
+                    <button id="send_record_button" style="display: none; position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 347px; font-size: 20px;">SEND</button>
                     <audio id="player" controls style="position: absolute; display: none; left: 50%; top: 240px; transform: translate(-50%, -50%);"></audio>
                 </div>
                 <!-- end of record_content -->
                 <!-- start of image_content -->
                 <div id="image_content" style="position: absolute; display: none; width: 100%; height: 100%;">
-                    <img id='msg-img' src='./message_module/image/media/test.jpg' style="position: absolute; left: 50%; top: 250px; transform: translate(-50%, -50%); width: 550px;" >
-                    <button id="send_image_button" class="send_button" style=" position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 200px; font-size: 20px;">SEND</button>
-                    <button id="shutter_button" style="background-color: transparent; border: none;"><img src="./image/index/shutter_icon.png" style="position: absolute; width: 70px; height: 70px; left: 50%; bottom: 50px; transform:translate(-50%, -50%);"></button>
+                    <canvas></canvas>
+                    <button id="shutter_button" style="background-color: transparent; border: none;" onclick="pressShutter()"><img src="./image/index/shutter_icon.png" style="position: absolute; width: 70px; height: 70px; left: 50%; bottom: 50px; transform:translate(-50%, -50%);"></button>
                 </div>
             </div>
             <!-- end of select_content... -->
@@ -222,7 +204,7 @@
     </div>
 
     <!-- 전화 거절 당했을 때 alert -->
-    <div class="alert-container" id="call-refusal-container" style="display: none">
+    <div id="call-refusal-container" style="display: none">
         <div class="close-area" onclick="callRefusalAlertOff()">✕</div>
         <div class="caller">김경미</div>
         <div id="call-refusal-alert">전화를 받을 수 없습니다</div>
@@ -236,12 +218,7 @@
 
     <!-- call //////////////////////////////////////////// -->
 
-    <!-- stt alert -->
-    <div class="alert-container" id="stt-refusal-container" style="display: none">
-        <div class="close-area" onclick="sttAlertOff()">✕</div>
-        <div id="stt-alert"></div>
-    </div>
-    
+
     <!-- <div id="memo_ui" class="blur_effect">
         <div id="myMemo"></div><div id="sendMemo"></div>
     </div>
@@ -263,13 +240,13 @@
         <img id="callImg" src="memo_module/img/call.png">
     </div> -->
 
-    <!-- 전송 모달창 -->
-    <div id="send-modal" class="modal-overlay">
+
+    <div id="modal" class="modal-overlay">
         <div class="modal-window">
             <div class="title">
                 <h3>Mirror user</h3>
             </div>
-            <div class="close-area" onclick="friendAlertOff()">✕</div>
+            <div class="close-area">✕</div>
             <div id="user-select">
                 <div id="select-left">
                     <input type="radio" name="user" id="inside" checked><label for="inside">미러 내부 사용자</label>
@@ -288,7 +265,7 @@
     </div>
 
 
-    <div id="modal" class="modal-overlay">
+    <!-- <div id="modal" class="modal-overlay">
         <div class="modal-window">
             <div class="title">
                 <h3>연락처</h3>
@@ -308,135 +285,155 @@
                 <div id = "friend-list-div" style="overflow:auto;">
                     <ul id="otherUserList">
                     </ul>
-                    <div id = "search-friend-div">
-                        <input type="text" id="serach-input" placeholder="친구 Mirror ID">
-                        <input type="button" id="search-btn" value="검색">
-                        <div id="find-result-div">
-                            <img id = "user-img" src="./image/index/user.png" width="20" height="20">
-                            <p id="find-result" style="color:white"></p>
-                            <input id="add-friend-btn" type="button" value="추가">
-                        </div>
+                </div>
+                <div id = "search-friend-div">
+                    <input type="text" id="serach-input" placeholder="친구 Mirror ID">
+                    <input type="button" id="search-btn" value="검색">
+                    <div id="find-result-div">
+                        <img id = "user-img" src="./image/index/user.png" width="20" height="20">
+                        <p id="find-result" style="color:white"></p>
+                        <input id="add-friend-btn" type="button" value="추가">
                     </div>
-            </div>
-            </div>
-        </div>
-    </div>
-
-   <!-- KEYBOARD UI-->
-    <div id = 'keyboard-container'> 
-        <div class = 'line' id="line1">
-            <input type ='button' class="key" value="1">
-            <input type ='button' class="key" value="2">
-            <input type ='button' class="key" value="3">
-            <input type ='button' class="key" value="4">
-            <input type ='button' class="key" value="5">
-            <input type ='button' class="key" value="6">
-            <input type ='button' class="key" value="7">
-            <input type ='button' class="key" value="8">
-            <input type ='button' class="key" value="9">
-            <input type ='button' class="key" value="0">
-            <input type ='button' class="key" value="←">
-        </div>
-        <div id="keyboard-keys">
-            <div id="ko-keys">
-                <div class = 'line' id="line2">
-                        <input type ='button' class="key ko_changable" value="ㅂ">
-                        <input type ='button' class="key ko_changable" value="ㅈ">
-                        <input type ='button' class="key ko_changable" value="ㄷ">
-                        <input type ='button' class="key ko_changable" value="ㄱ">
-                        <input type ='button' class="key ko_changable" value="ㅅ">
-                        <input type ='button' class="key" value="ㅛ">
-                        <input type ='button' class="key" value="ㅕ">
-                        <input type ='button' class="key" value="ㅑ">
-                        <input type ='button' class="key ko_changable" value="ㅐ">
-                        <input type ='button' class="key ko_changable" value="ㅔ">
-                </div>
-                <div class = 'line' id="line3">
-                    <input type ='button' class="key" value="ㅁ">
-                    <input type ='button' class="key" value="ㄴ">
-                    <input type ='button' class="key" value="ㅇ">
-                    <input type ='button' class="key" value="ㄹ">
-                    <input type ='button' class="key" value="ㅎ">
-                    <input type ='button' class="key" value="ㅗ">
-                    <input type ='button' class="key" value="ㅓ">
-                    <input type ='button' class="key" value="ㅏ">
-                    <input type ='button' class="key" value="ㅣ">
-                </div>
-                <div  class = 'line' id="line4">
-                    <input type ='button' class="key" value="ㅋ">
-                    <input type ='button' class="key" value="ㅌ">
-                    <input type ='button' class="key" value="ㅊ">
-                    <input type ='button' class="key" value="ㅍ">
-                    <input type ='button' class="key" value="ㅠ">
-                    <input type ='button' class="key" value="ㅜ">
-                    <input type ='button' class="key" value="ㅡ">
-                    <input type ='button' class="key" value=",">
-                    <input type ='button' class="key" value=".">
-                    <input type ='button' class="key" value="/">
-                </div>
-            </div>
-            <div id="eng-keys">
-                <div class = 'line' id="line2">
-                    <input type ='button' class="key eng" value="q">
-                    <input type ='button' class="key eng" value="w">
-                    <input type ='button' class="key eng" value="e">
-                    <input type ='button' class="key eng" value="r">
-                    <input type ='button' class="key eng" value="t">
-                    <input type ='button' class="key eng" value="y">
-                    <input type ='button' class="key eng" value="u">
-                    <input type ='button' class="key eng" value="i">
-                    <input type ='button' class="key eng" value="o">
-                    <input type ='button' class="key eng" value="p">
-                </div>
-                <div class = 'line' id="line3">
-                    <input type ='button' class="key eng" value="a">
-                    <input type ='button' class="key eng" value="s">
-                    <input type ='button' class="key eng" value="d">
-                    <input type ='button' class="key eng" value="f">
-                    <input type ='button' class="key eng" value="g">
-                    <input type ='button' class="key eng" value="h">
-                    <input type ='button' class="key eng" value="j">
-                    <input type ='button' class="key eng" value="k">
-                    <input type ='button' class="key eng" value="l">
-                </div>
-                <div  class = 'line' id="line4">
-                    <input type ='button' class="key eng" value="z">
-                    <input type ='button' class="key eng" value="x">
-                    <input type ='button' class="key eng" value="c">
-                    <input type ='button' class="key eng" value="v">
-                    <input type ='button' class="key eng" value="b">
-                    <input type ='button' class="key eng" value="n">
-                    <input type ='button' class="key eng" value="m">
-                    <input type ='button' class="key" value=",">
-                    <input type ='button' class="key" value=".">
-                    <input type ='button' class="key" value="/">
                 </div>
             </div>
         </div>
-        <div  id="line5">
-            <input type ='button' class="key" value="shift" id="shift">
-            <input type ='button' class="key" value=" space " id="space"> 
-            <input type ='button' class="key" value="한/영" id="ko-eng"> 
-        </div>
-    </div>
+    </div> -->
 </body>
 <script src = "new_clock.js"></script>
 <!--
     <script src="./message_module/message.js"></script>
 <script src="./message_module/message_socket.js"></script>
 <script src="./memo_module/memo.js"></script>
-
+<script src="new_callbook.js"></script>
 -->
 
-<!-- <script src="new_callbook.js"></script> -->
-<!-- <script src="message_module/record/new_record.js"></script> -->
-<!-- <script src="message_module/record/new_m_record.js"></script>
-<script src="message_module/message_icon.js"></script> -->
-<!-- <script src="message_module/message_icon.js"></script> -->
-<!-- <script src="memo_module/create_memo.js"></script> -->
-<!-- <script src="./touch.js"></script> -->
 
-<script src="./new_keyboard_module/keyboard.js"></script>
+<!-- <script src="message_module/record/new_record.js"></script> -->
+<script src="message_module/record/new_m_record.js"></script>
+<script src="memo_module/create_memo.js"></script>
+<!-- <script src="./touch.js"></script> -->
+<!-- 
+
+<script>
+    //window.onload = initMessages()
+    
+    var message_click_cnt = 0;
+    let message_option_container = document.getElementById("message_option_container");
+    
+    let text_option_button = document.getElementById("text_option_button");
+    let image_option_button = document.getElementById("image_option_button");
+    let record_option_button = document.getElementById("record_option_button");
+
+    let write_button = document.getElementById("write_button");
+    let back_button = document.getElementById("back_button");
+
+    let image_content = document.getElementById("image_content");
+    let shutter_button = document.getElementById("shutter_button");
+
+    let record_content = document.getElementById("record_content");
+
+    var message_click_cnt = 0; // 하단 bar 의 메시지 아이콘 몇 번 눌렀는지 확인
+    var message_memo_container = document.getElementById("message_memo_container");
+
+
+
+    // 하단 bar 의 메시지 아이콘 눌렀을 때
+    function barMessage(){
+        console.log("barMessage click");
+        // message_click_cnt++;
+        if(message_memo_container.style.display=="none") message_memo_container.style.display = "block";
+        else message_memo_container.style.display = "none";
+
+        //사진 찍기
+        console.log('카메라 활성화');
+        //카메라 키기
+        client.publish('camera/on',"start");
+        //frame 돌고 있기
+    }
+
+    const client = require("message_module/message_mqtt");
+    function pressShutter(){
+        
+        // document.location.href='imageSend1.html'
+        //사진 찍기
+        console.log('사진찍기 함수 호출');
+        //사진찍기
+        client.publish('capture/camera',"start");
+    }
+
+    function showImageContent(){
+        image_content.style.display = "block";
+        record_content.style.display="none";
+    }
+
+    function showRecordContent(){
+        image_content.style.display = "none";
+        record_content.style.display = "block";
+        console.log(select_content);
+    }
+
+    function showWrite(){
+        console.log('showWrite');
+        write_button.style.display = "none";
+        back_button.style.display = "block";
+
+        // 라디오 버튼 체크 확인
+        var radio = document.getElementsByName("option");
+        var sel_type = null;
+        for(var i=0;i<radio.length;i++){
+            if(radio[i].checked == true) sel_type = radio[i].value;
+        }
+
+        if(sel_type == "text"){
+            //
+        }
+        else if(sel_type == "image"){
+            showImageContent();
+        }
+        else { // sel_type == "record"
+            console.log(sel_type);
+            showRecordContent();
+        }
+    }
+
+    //저장 파일 보는 창
+    function showStore(){
+        write_button.style.display = "block";
+        back_button.style.display = "none";
+        //document.getElementById('radio_container').style.display = "none";
+        console.log('showStore');
+        // 라디오 버튼 체크 확인
+        var radio = document.getElementsByName("option");
+        var sel_type = null;
+        for(var i=0;i<radio.length;i++){
+            if(radio[i].checked == true) sel_type = radio[i].value;
+        }
+
+        if(sel_type == "text"){
+            //
+            document.getElementById('text_content').style.display = "none";
+            
+        }
+        else if(sel_type == "image"){
+            //
+            document.getElementById('image_content').style.display = "none";
+        }
+        else { // sel_type == "record"
+            // record_store();
+        }
+    }
+
+    function checkOption(){
+        // 저장공간 보는 모드일 때
+        if(write_button.style.display == "block"){
+            showStore();
+        }
+        // 쓰기 모드일 때
+        else{
+            showWrite();
+        }
+    }
+</script> -->
 <script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
 <script src="new_app.js"></script>
 </html>

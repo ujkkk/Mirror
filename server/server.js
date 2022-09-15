@@ -221,7 +221,12 @@ const msgInsertDB = (req, res, next) => {
     // json 파싱 과정
     let reqBody = req.body;
     const sender = reqBody.sender;
-    var data = { "sender": reqBody.sender, "receiver": reqBody.receiver, "content": reqBody.content, "type": "text" }
+    var data = { "sender": reqBody.sender, 
+                "receiver": reqBody.receiver, 
+                "content": reqBody.content, 
+                "type":"text",
+                "send_time":reqBody.send_time }
+    
 
     //db insert
     server_db.createColumns('message', data).then(() => { next() })
@@ -318,7 +323,8 @@ app.post('/get/name', (req, res) => {
         })
 })
 //이미지를 요청했을 때
-app.get('/get/image', (req, res) => {
+
+app.post('/get/image', (req, res) => {
     console.log(req.body);
     fileName = req.body.fileName;
     server_db.select('*', 'message', `content=${fileName}`)
@@ -337,7 +343,7 @@ app.get('/get/image', (req, res) => {
 
 })
 //오디오를 요청했을 때
-app.get('/get/audio', (req, res) => {
+app.post('/get/audio', (req, res) => {
     // 전달할 파일
     file_name = req.body.fileName;
 
@@ -358,8 +364,10 @@ app.get('/get/audio', (req, res) => {
 })
 
 
-app.post('/send/image', (req, res, next) => {
+
+function msgInserDBImage(req, res, next){
     console.log(req.body)
+    //서버에 저장되는 시간
     var time = new Date().getTime();
     var file_name = time;
     var file = './message/' + file_name + '.txt';
@@ -382,13 +390,12 @@ app.post('/send/image', (req, res, next) => {
     // while(n--) {
     //     u8arr[n] = bstr.charCodeAt(n);
     // }
+    next();
+}
 
-    res.send('okk');
-})
-
-app.post('/send/audio', (req, res, next) => {
-    // 서버에 저장되는 시간
-    var save_time = new Date().getTime();
+function msgInserDBAudio(req, res, next){
+// 서버에 저장되는 시간
+    var save_time = new Date().getTime(); 
     //서버에 저장되는 파일명
     var file_name = './message/' + save_time + '.wav';
     //서버의 message DB에 남길 순수 파일명(확장자 제외)
@@ -420,10 +427,52 @@ app.post('/send/audio', (req, res, next) => {
 
     // server DB에 저장
     server_db.createColumns('message', data);
-    console.log("The file was saved!");
-})
+    console.log("The file was saved!"); 
+    next();
+}
 
 
-app.get('/check/:id', checkUpdate, sendClientToMsg, setStateTable);
-app.post('/send/text', realTimeMsg, msgInsertDB, updateCheckTable);
-app.post('/connect/user', getConnectedUserList);
+// app.post('/send/audio', (req, res, next) => {
+//     // 서버에 저장되는 시간
+//     var save_time = new Date().getTime(); 
+//     //서버에 저장되는 파일명
+//     var file_name = './message/' + save_time + '.wav';
+//     //서버의 message DB에 남길 순수 파일명(확장자 제외)
+//     var pure_file_name = String(save_time);
+
+
+//     var bstr = req.body.content; // base64String
+//     var n = bstr.length;
+//     var u8arr = new Uint8Array(n);
+
+//     // 서버에 파일 저장하기
+//     fs.writeFile(file_name, u8arr, 'utf8', function (error) {
+//         console.log(u8arr)
+//     });
+//     while (n--) {
+//         u8arr[n] = bstr.charCodeAt(n);
+//     }
+
+//     sender = req.body.sender;
+//     receiver = req.body.receiver;
+//     send_time = req.body.send_time;
+
+//     var data = {
+//         sender: sender,
+//         receiver: receiver,
+//         content: pure_file_name,
+//         type: 'audio',
+//         send_time: send_time
+//     }
+
+//     // server DB에 저장
+//     server_db.createColumns('message', data);
+//     console.log("The file was saved!");
+// })
+
+app.get('/check/:id',checkUpdate,sendClientToMsg,setStateTable);
+app.post('/send/text', msgInsertDB, updateCheckTable);
+app.post('/send/image', msgInserDBImage, updateCheckTable);
+app.post('/send/audio', msgInserDBAudio, updateCheckTable);
+app.post('/connect/user',getConnectedUserList);
+

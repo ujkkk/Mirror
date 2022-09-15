@@ -20,6 +20,7 @@ const audioArray = [];
 
 record_button.onclick = async function(event){
     console.log("record_btn onclick");
+    console.log(`blob : ${blob}`)
     if(!isRecording){
         console.log("mediaStream 가보자고");
         // 마이크 mediaStream 생성: Promise를 반환하므로 async/await 사용
@@ -71,3 +72,8 @@ record_button.onclick = async function(event){
 send_record_button.onclick = async function (event){
     
 }
+
+function getBlob(){
+    return blob;
+}
+module.exports = {getBlob};

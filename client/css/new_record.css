@@ -79,7 +79,7 @@ Button:active{
 /* .containerAudio{
     
 } */
-audio{
+#player{
     position: relative;
     top: 60%;
     margin: 2vw;
