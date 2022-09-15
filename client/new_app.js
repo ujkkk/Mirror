@@ -24,6 +24,7 @@ const { default: axios } = require('axios');
 const dbAccess = require('./mirror_db');
 const { resolve } = require('path')
 var datas = [];
+
 axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
     .then(response => {
 

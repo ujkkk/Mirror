@@ -102,9 +102,19 @@ function stt(data) {
         return `받은 내용: ${value} -> 영상통화 호출\n`
       }
 
+      else if (value.includes("음성 메시지") || value.includes("음성 메세지") || value.includes("음성메시지") || value.includes("음성메세지")) {
+        mqttClient.publish('audio_message_request', friendName)
+        return `받은 내용: ${value} -> 음성 메시지 호출\n`
+      }
+
       else if (value.includes("메시지") || value.includes("메세지")) {
         mqttClient.publish('message_request', friendName)
         return `받은 내용: ${value} -> 메시지 호출\n`
+      }
+
+      else if (value.includes("사진")) {
+        mqttClient.publish('image_request', friendName)
+        return `받은 내용: ${value} -> 사진 호출\n`
       }
 
       else if (value.includes("메모")) {
@@ -124,7 +134,7 @@ function stt(data) {
       setGeumbi()
       return `받은 내용: ${value}\n`;
     }
-    else if(create_message) {
+    else if (create_message) {
       setGeumbi()
       mqttClient.publish('message_content', value);
       return `메시지 전달 내용: ${value}\n`;

@@ -15,7 +15,7 @@ mirrorDB.setUser(receivedData)
 /* 여기서 서버에 접근 + DB에 받아오기 */
 const { default: axios } = require('axios');
 // const dbAccess = require('./mirror_db');
-// axios.get(`http://192.168.137.169:9000/check/${mirrorDB.getId()}`)
+// axios.get(`http://192.168.137.169:80/check/${mirrorDB.getId()}`)
 //     .then(response => {
 
 //         console.log("app.js axios test | get data : "+response.data.status);

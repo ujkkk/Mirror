@@ -1,8 +1,10 @@
+const mqtt = require('mqtt')
+const keyboardTarget = require('./new_keyboard_module/keyboard')
 
 /* Section1. 변수 및 모달 관련 */
-
+console.log("new_callbook에 들어옴")
 /* HTML UI */
-// let mirror_db = require('./mirror_db');
+let mirror_db = require('./mirror_db');
 let callBookBtn = document.getElementById("bar_callbook_button");
 let modal = document.getElementById('modal');
 let friendList = document.getElementById("friend-list");
@@ -12,13 +14,16 @@ let ul = document.getElementById('otherUserList');
 let searchBtn = document.getElementById('search-btn');
 let addFriendBtn =  document.getElementById('add-friend-btn');
 let userImg = document.getElementById("user-img");
+let searchInput = document.getElementById("serach-input");
+let isCallBtnClicked = false; // 연락처 바 아이콘 클릭 확인
 
 /* ADD Event Listener */
-callBookBtn.addEventListener("click",showUserMirrorBook);
-friendList.addEventListener("change",showUserMirrorBook);
-findFriend.addEventListener("change",showUserMirrorBook);
+callBookBtn.addEventListener("click",function(e){showUserMirrorBook(e)});
+friendList.addEventListener("change",function(e){showUserMirrorBook(e)});
+findFriend.addEventListener("change",function(e){showUserMirrorBook(e)});
 searchBtn.addEventListener('click',userCheck);
 addFriendBtn.addEventListener("click",addFriendDB);
+searchInput.addEventListener('click', function(e){showKeyboard(e)});
 
 /* 친구 추가 관련 Variable */
 let add_name = null;
@@ -35,8 +40,10 @@ function isModalOn() {
     return modal.style.display === "flex"
 }
 function modalOff() {
+    hideKeyboard();
     modal.style.display = "none"
     isClicked = false;
+    isCallBtnClicked = false;
     friendList.checked = true;
 }
 
@@ -45,10 +52,37 @@ closeBtn.addEventListener("click", e => {
     modalOff();
 })
 
+/* Section2. stt 위한 MQTT 사용 */
 
-/* Section2. 연락처 관련 동작 */
-function showUserMirrorBook(){
+/* mqtt 브로커 연결 및 topic subscribe */
+const options = { // 브로커 정보(ip, port)
+    host: '127.0.0.1',
+    port: 1883
+}
 
+const mqttClient = mqtt.connect(options) // mqtt broker 연결
+mqttClient.subscribe('callbook_request')
+
+mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 callback
+    console.log("메시지 받았을 때 - 연락처")
+    if (topic.toString() == 'callbook_request') { // 전화 호출
+        modal.style = 'display: flex'
+        callBookBtn.click()
+    }
+})
+
+/* Section3. 연락처 관련 동작 */
+function showUserMirrorBook(e){
+    console.log("연락처 클릭됨 :"+ e.type)
+    if (e.type == "click"){
+        if (isCallBtnClicked == false){
+            isCallBtnClicked = true;
+        }
+        else {
+            modalOff();
+            return;
+        }
+    }
     modal.style.display="flex";
     modal.style.visibility = "visible";
     ul.innerHTML = "";
@@ -58,11 +92,11 @@ function showUserMirrorBook(){
     document.getElementById('add-friend-btn').style.display = "none";
    
     if(friendList.checked == true){
-        ul.style.display = "block";
+        ul.style.display = "block";                                                                                             
         serachFriendDiv.style.visibility = "hidden";
         document.getElementById("inside-selected").style.visibility = "visible";
         document.getElementById("outside-selected").style.visibility = "hidden";
-        mirror_db.select('id, name','friend',`id=${mirror_db.getId()}`)
+        mirror_db.select('friend_id, name','friend',`id=${mirror_db.getId()}`)
         .then(value => { // users에 값 넣기
                 for (let k = 0; k < value.length; k++) {
                     let li = document.createElement("li");
@@ -74,13 +108,13 @@ function showUserMirrorBook(){
                     li.style.marginBottom = "5px";
                     li.style.fontWeight="bold";
                     li.style.fontSize="20px";
+                    li.value=value[k].friend_id;
                     let deleteBtn = document.createElement("input");
                     deleteBtn.style.float="right";
                     deleteBtn.value ="✕";
                     deleteBtn.style.marginRight = "20px";
                     deleteBtn.type = "button";
-                    deleteBtn.addEventListener("click",deleteUser);
-                    li.appendChild(deleteBtn);
+                    deleteBtn.addEventListener("click",e=>{deleteUser(e)});
                     const textNode = document.createTextNode(value[k].name);
                     const userImg = document.createElement("img");
                     userImg.setAttribute("src","./image/index/user.png");
@@ -91,6 +125,7 @@ function showUserMirrorBook(){
                     userImg.style.verticalAlign="middle";
                     li.appendChild(userImg);
                     li.appendChild(textNode);
+                    li.appendChild(deleteBtn);
                     ul.appendChild(li);
                 }   
             }
@@ -108,6 +143,7 @@ function showUserMirrorBook(){
 }
 
 function userCheck(){
+    hideKeyboard();
     document.getElementById('user-img').style.display = "none";
     document.getElementById('add-friend-btn').style.display = "none";
    
@@ -122,7 +158,7 @@ function userCheck(){
     }
 
     //친구 목록에 있는지 확인
-    mirror_db.select('*', 'friend', `friend_id=${friend_id} and id = ${mirror_db.getId()}`)
+    mirror_db.select('*', 'friend', `friend_id=${friend_id}`)
     .then(values =>{
         //친구목록에 이미 추가된 유저이면 추가 안함
         if(values.length>0){
@@ -137,7 +173,7 @@ function userCheck(){
 
         //친구목록에 없는 유저를 추가할 때
         axios({
-            url : 'http://localhost:9000/get/name',
+            url : 'http://113.198.84.128:80/get/name',
             method : 'post',
             data : {
                 id : friend_id,
@@ -198,21 +234,35 @@ function addFriendDB(){
     }
 }
 
-function deleteUser(){
+function deleteUser(e){
+    delete_id = e.target.parentNode.value;
+    delete_name =e.target.previousSibling.nodeValue;
+    console.log(`delete_id = ${delete_id}`);
+    console.log(`delete_name = ${delete_name}`);
     if(delete_id != null){
         if (confirm(`'${delete_name}'님을 삭제 하시겠습니까?`)) {
             mirror_db.delete('friend', `id = ${mirror_db.getId()} && friend_id = ${delete_id}`)
             .then(value =>{
                 //테이블 갱신
-                $('#table-1 > tbody').empty();
+                showUserMirrorBook();
                 delete_id = null;
                 delete_name = null;
-                getUserInfo();
             })
             return;
         } else {
             return;
         }
     }
+    delete_id = null;
+    delete_name = null;
 }
 
+function showKeyboard(e){
+    keyboardTarget.setCurrentTarget(e.target.id);
+    keyboardTarget.keyboard.style.display="block";
+}
+
+function hideKeyboard(){
+    keyboardTarget.setCurrentTarget(null);
+    keyboardTarget.keyboard.style.display="none";
+}

@@ -15,7 +15,7 @@ mirror_db = require('../mirror_db');
 //받은 메시지가 이미지이면 서버에 해당 파일을 요청하여
 //해당 미러에 파일 저장
 axios({
-  url: 'http://223.194.159.229:9000/get/image', // 통신할 웹문서
+  url: 'http://113.198.84.128:80/get/image', // 통신할 웹문서
   method: 'get', // 통신할 방식
   data: { // 인자로 보낼 데이터
     fileName: '1661236908222',

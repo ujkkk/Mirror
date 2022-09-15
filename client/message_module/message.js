@@ -140,7 +140,6 @@ function message_detail(msg_id) {
 
             }
             detail_time_div.innerHTML = selected_msg.time.toFormat('MM-DD HH24:MI')
-
         })
 }
 

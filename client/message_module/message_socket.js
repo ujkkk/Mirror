@@ -9,6 +9,7 @@ const { resolve } = require('path');
 var socket = io('http://113.198.84.128:80/', { transports : ['websocket'] });
 
 
+
 socket.on("connect", () => {
     console.log("connection socket server", mirror_db.getId());
 });
@@ -17,7 +18,7 @@ socket.on("connect", () => {
 //나에게 서버로부터 메시지가 올 때
 socket.on(`${mirror_db.getId()}`, req => {
 
-    console.log('소켓 메시지 도착',req);
+    console.log('소켓메시지 도착', req);
 
     switch (req.type){
         case 'text':

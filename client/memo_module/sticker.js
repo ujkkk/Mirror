@@ -14,7 +14,7 @@ var MySQLEvents = require('mysql-events');
 var dsn = {
     host: 'localhost',
     user: 'root',
-    password: '1234',
+    password: '11111111',
 };
 
 var mysqlEventWatcher = MySQLEvents(dsn);

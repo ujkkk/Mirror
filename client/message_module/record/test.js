@@ -4,7 +4,7 @@ const { resolve } = require('path');
 const mirror_db = require('./mirror_db');
 
 // sender 임시 지정
-let sender = '1001';
+let sender = mirror_db.getId();
 // let sender = data[i].sender;
 
 // 받을 파일 임시 지정
@@ -16,6 +16,7 @@ let get_file_name = "1661230800614";
 axios({
     url: 'http://113.198.84.128:80/get/audio', // 통신할 웹문서
     method: 'post', // 통신할 방식
+
     data: { // 인자로 보낼 데이터
         fileName: get_file_name
     }
