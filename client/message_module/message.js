@@ -172,6 +172,7 @@ function initMessages() {
 
 
 //message 객체를 message 목록(html)에 삽입
+let lastClickedId; // 마지막으로 클릭된 msg li의 id
 function insertMessageContent(message, type) {
 
     let message_contents_ui = document.getElementById('message-contents-ui');
@@ -213,7 +214,24 @@ function insertMessageContent(message, type) {
                     break;
             }
             message_contents_ui.prepend(messageContent);
-            messageContent.addEventListener("click", function () { message_detail(message.msg_id) })
+            messageContent.addEventListener("click", function (e) { 
+                console.log("이 이벤트 리스너가 불리긴 함")
+                let currentTargetId = e.target.value; // 현재 클릭된 li
+               
+                if(currentTargetId != lastClickedId){  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 다를 때 -> message_detail함수 호출 + 마지막으로 클릭된 아이디 갱신
+                    console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 다를 때")
+                    console.log(`current:${currentTargetId}, last:${lastClickedId}`)
+                    message_detail(message.msg_id) 
+                    lastClickedId = currentTargetId;
+                }
+                else {  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 같을 때 -> detail 창 닫기
+                    console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 같을 때")
+                    console.log(`current:${currentTargetId}, last:${lastClickedId}`)
+                    lastClickedId = "";
+                    e.target.style.backgroundColor = "black"
+                    document.getElementById('message-detail-container').style.visibility = 'hidden';
+                }
+            })
         })
 }
 
