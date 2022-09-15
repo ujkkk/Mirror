@@ -104,7 +104,7 @@ client.on('message', async (topic, message, packet) => {
         var newDate = new Date();
         var time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
         axios({
-          url: 'http://223.194.159.229:9000/send/image', // 통신할 웹문서
+          url: 'http://223.194.159.229:80/send/image', // 통신할 웹문서
           method: 'post', // 통신할 방식
           data: { // 인자로 보낼 데이터
             receiver : receiver,

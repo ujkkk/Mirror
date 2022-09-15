@@ -5,6 +5,8 @@ const back_button = document.querySelector("#back_button");
 const text_content = document.querySelector("#text_content");
 const image_content = document.querySelector("#image_content");
 const record_content = document.querySelector("#record_content");
+const textArea = document.getElementById('textArea');
+textArea.addEventListener('click', function(e){showKeyboard(e)});
 
 const text = document.querySelector("#text");
 const image = document.querySelector("#image");
@@ -13,7 +15,7 @@ const shutter_button = document.querySelector("#shutter_button");
 const send_button = document.querySelectorAll('.send_button');
 
 const send_modal = document.querySelector('#send-modal');
-const ul = document.querySelector('#otherUserList');
+const send_ul = document.querySelector('#otherUserList');
 const inside = document.querySelector('#inside');
 const outside = document.querySelector('#outside');
 const inside_selected = document.querySelector('#inside-selected');
@@ -135,6 +137,7 @@ bar_message_button.addEventListener('click', () => {
             customFriend = null
             customOption = false
         }
+
         message_memo_container.style.display = "none";
         // camera off
         client.publish('camera/close', 'ok')
@@ -156,7 +159,9 @@ shutter_button.addEventListener('click', () => {
 
 //CMUsers.setCustromFriendList
 
-function showSendModal() {
+
+function showSendModal(){
+    hideKeyboard();
     console.log("showSendModal");
     if (customFriend != null) {
         liClickEvent({ id: customFriend.id, name: customFriend.name }, customFriend.send_option)
@@ -167,27 +172,31 @@ function showSendModal() {
     }
 }
 
-function showUserBook() {
-    if (inside.checked == true) {
+const userSelect = document.getElementById('user-select')
 
+function showUserBook() {
+
+    if(inside.checked == true) {
+        let setCMuser
         console.log('inside.checked == true');
-        ul.innerHTML = "";
+        send_ul.innerHTML = "";
         inside_selected.style.visibility = 'visible';
         outside_selected.style.visibility = 'hidden';
 
         if (!customOption) {
             setCMuser = CMUsers.setCMUserList()
         }
-
         setCMuser.then(value => {
             console.log(`CMUSERS[0] :${value[0].id} `)
             for (let k = 0; k < value.length; k++) {
                 let li = document.createElement("li");
+
                 li.style.border = "none";
                 li.value = value[k].friend_id;
                 const textNode = document.createTextNode(value[k].name);
                 const userImg = document.createElement("img");
                 userImg.setAttribute("src", "./image/index/user.png");
+
                 li.appendChild(userImg);
                 li.appendChild(textNode);
 
@@ -198,6 +207,7 @@ function showUserBook() {
 
                     circle.style.backgroundColor = "green";
                     isConnect.innerHTML = "Online";
+
 
                     isConnect.appendChild(circle);
                     li.appendChild(isConnect);
@@ -223,6 +233,7 @@ function showUserBook() {
 
     else if (outside.checked == true) { // outside.checked == true
         ul.innerHTML = "";
+
         inside_selected.style.visibility = 'hidden';
         outside_selected.style.visibility = 'visible';
         if (!customOption) {
@@ -233,11 +244,13 @@ function showUserBook() {
             console.log(`CMUSERS[0] :${value[0].id} `)
             for (let k = 0; k < value.length; k++) {
                 let li = document.createElement("li");
+
                 li.style.border = "none";
                 li.value = value[k].friend_id;
                 const textNode = document.createTextNode(value[k].name);
                 const userImg = document.createElement("img");
                 userImg.setAttribute("src", "./image/index/user.png");
+
                 li.appendChild(userImg);
                 li.appendChild(textNode);
 
@@ -262,13 +275,15 @@ function showUserBook() {
                     isConnect.appendChild(circle);
                     li.appendChild(isConnect);
                 }
+
                 li.addEventListener('click', () => {
                     liClickEvent(value[k], 1)
                 }); // end of addEventListener ...
                 ul.appendChild(li);
+
             }
         })
-    }
+}
 }
 
 const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
@@ -453,3 +468,13 @@ record.addEventListener('change', () => {
     if (write_button.style.display == "none") showWrite(); // Writing Mode
     else showStore(); // Storage Mode
 })
+
+function showKeyboard(e){
+    keyboardTarget.setCurrentTarget(e.target.id);
+    keyboardTarget.keyboard.style.display="block";
+}
+
+function hideKeyboard(){
+    keyboardTarget.setCurrentTarget(null);
+    keyboardTarget.keyboard.style.display="none";
+}
