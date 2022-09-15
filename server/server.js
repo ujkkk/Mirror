@@ -131,6 +131,10 @@ io.on('connection', function (socket) {
 
 
 /* ----------------- client가 로그인 후, 본인의 메시지 업데이트와 확인 상태 요청 ----------------- */
+const userConnectUpdate = (req,next) => { // 유저 접속시, 접속중으로 상태 변경
+    server_db.update("user", "connect=1", `id=${req.params.id}`)
+    .then(()=>{next()})
+}
 const checkUpdate = (req, res, next) => {
     console.log("func checkUpdate: Request Get Success");
     let id = req.params.id
@@ -469,7 +473,7 @@ function msgInserDBAudio(req, res, next){
 //     console.log("The file was saved!");
 // })
 
-app.get('/check/:id',checkUpdate,sendClientToMsg,setStateTable);
+app.get('/check/:id',userConnectUpdate,checkUpdate,sendClientToMsg,setStateTable);
 app.post('/send/text', msgInsertDB, updateCheckTable);
 app.post('/send/image', msgInserDBImage, updateCheckTable);
 app.post('/send/audio', msgInserDBAudio, updateCheckTable);
