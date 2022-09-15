@@ -4,7 +4,7 @@ const { resolve } = require('path');
 const mirror_db = require('./mirror_db');
 
 // sender 임시 지정
-let sender = '1001';
+let sender = mirror_db.getId();
 // let sender = data[i].sender;
 
 // 받을 파일 임시 지정

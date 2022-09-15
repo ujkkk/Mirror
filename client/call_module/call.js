@@ -108,7 +108,7 @@ if (phoneButton != null) {
 
     // 전화 아이콘 클릭시 이벤트
     phoneButton.addEventListener('click', () => {
-        if (phoneIconTouch % 2 == 0) {
+        if (phoneContainer.style.display == 'none') {
             phoneContainer.style = 'display: block'
             allRecordButton.click()
         }

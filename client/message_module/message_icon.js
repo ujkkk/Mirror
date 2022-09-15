@@ -19,26 +19,122 @@ const outside = document.querySelector('#outside');
 const inside_selected = document.querySelector('#inside-selected');
 const outside_selected = document.querySelector('#outside-selected');
 
+
+const sttRefusalContainer = document.getElementById('stt-refusal-container')
+const sttAlert = document.getElementById('stt-alert')
+
 // const axios = require('axios');
 const { write } = require("fs");
-const CMUsers = require("./CMUserInfo");
-const client = require("./message_module/message_mqtt");
+const CMUsers = require("../CMUserInfo");
+const client = require("./message_mqtt");
+const mqtt = require('mqtt');
+const dbAccess = require("../mirror_db");
+
+// stt 실행 =======================================================================================
+let customOption = false
+let friendName
+let setCMuser
+let setCMFriend
+let customFriend = null
+
+console.log('message icon')
+
+/* mqtt 브로커 연결 및 topic subscribe */
+const options = { // 브로커 정보(ip, port)
+    host: '127.0.0.1',
+    port: 1883
+}
+
+const mqttClient = mqtt.connect(options) // mqtt broker 연결
+mqttClient.subscribe('message_request')
+mqttClient.subscribe('audio_message_request')
+mqttClient.subscribe('image_request')
+
+
+mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 callback
+    customFriend = null
+    if (message == null) {
+        customOption = false
+    }
+    else {
+        friendName = message
+        customOption = true
+        setCMFriend = CMUsers.setCustromFriendList(friendName)
+        setCMuser = CMUsers.setCustromUserList(friendName)
+
+        setCMuser.then(user => {
+            setCMFriend.then(friend => {
+                console.log(`user value len: ${user.length}, ${friend.length} = ${user.length + friend.length}`)
+                if (user.length + friend.length == 0) {
+                    sttAlert.innerText = `${friendName}이를 찾을 수 없습니다`
+                    sttRefusalContainer.style = 'display: block'
+                    customOption = false
+                    return;
+                }
+                else if (user.length + friend.length == 1) {
+                    if (message_memo_container.style.display == "none") {
+                        message_memo_container.style.display = "block"
+                    }
+                    if (user.length == 1) {
+                        friendName = user[0].name
+                        customFriend = { name: user[0].name, id: user[0].id, send_option: 0 }
+                    }
+                    else {
+                        friendName = friend[0].name
+                        customFriend = { name: friend[0].name, id: friend[0].id, send_option: 1 }
+                    }
+                    console.log(`이름은 ${friendName}`)
+                    sttAlert.innerText = `${friendName}님에게 보낼 메시지를 입력바랍니다`
+                    sttRefusalContainer.style = 'display: block'
+                }
+                else {
+                    if (message_memo_container.style.display == "none") {
+                        message_memo_container.style.display = "block"
+                    }
+                    sttAlert.innerText = `보낼 메시지를 입력바랍니다`
+                    sttRefusalContainer.style = 'display: block'
+                }
+            })
+        })
+    }
+
+    if (topic.toString() == 'message_request') {
+        write_button.click()
+    }
+    else if (topic.toString() == 'audio_message_request') {
+        write_button.click()
+        record.click()
+
+    }
+    else if (topic.toString() == 'image_request') {
+        write_button.click()
+        image.click()
+    }
+})
+
+
+// stt 실행 =======================================================================================
 
 // message display ON/OFF
-bar_message_button.addEventListener('click', ()=> {
+bar_message_button.addEventListener('click', () => {
     console.log('bar_message_button click!');
-    if(message_memo_container.style.display == "none"){
+    document.querySelector("#textArea").value = "";
+    if (message_memo_container.style.display == "none") {
         message_memo_container.style.display = "block";
         //init
         write_button.style.display = "block";
         back_button.style.display = "none";
         text_content.style.display = "none";
         image_content.style.display = "none";
-        record_content.style.display="none";
+        record_content.style.display = "none";
         // camera on
-        client.publish('camera/on',"start");
+        client.publish('camera/on', "start");
     }
-    else{
+    else {
+        if (customOption) {
+            customFriend = null
+            customOption = false
+        }
         message_memo_container.style.display = "none";
         // camera off
         client.publish('camera/close', 'ok')
@@ -47,205 +143,111 @@ bar_message_button.addEventListener('click', ()=> {
 
 write_button.addEventListener('click', showWrite);
 back_button.addEventListener('click', showStore);
-for(let i=0; i< send_button.length; i++){
+for (let i = 0; i < send_button.length; i++) {
     send_button[i].addEventListener('click', showSendModal);
 }
 inside.addEventListener('change', showUserBook);
 outside.addEventListener('change', showUserBook);
 
 shutter_button.addEventListener('click', () => {
-    client.publish('capture/camera',"start");
+    client.publish('capture/camera', "start");
 });
 
-function showSendModal(){
+
+//CMUsers.setCustromFriendList
+
+function showSendModal() {
     console.log("showSendModal");
-    send_modal.style.visibility = "visible";
-    showUserBook();
+    if (customFriend != null) {
+        liClickEvent({ id: customFriend.id, name: customFriend.name }, customFriend.send_option)
+    }
+    else {
+        send_modal.style.visibility = "visible";
+        showUserBook();
+    }
 }
 
 function showUserBook() {
-    if(inside.checked == true){
+    if (inside.checked == true) {
+
         console.log('inside.checked == true');
         ul.innerHTML = "";
         inside_selected.style.visibility = 'visible';
         outside_selected.style.visibility = 'hidden';
-        CMUsers.setCMUserList()
-        .then(value => {
+
+        if (!customOption) {
+            setCMuser = CMUsers.setCMUserList()
+        }
+
+        setCMuser.then(value => {
             console.log(`CMUSERS[0] :${value[0].id} `)
             for (let k = 0; k < value.length; k++) {
                 let li = document.createElement("li");
-                li.style.width = "85%";
-                li.style.margin = "0 auto";
-                li.style.color="white";
-                li.style.border="none";
-                li.style.borderRadius="5px";
-                li.style.marginBottom = "5px";
-                li.style.fontWeight="bold";
-                li.style.fontSize="20px";
-                li.value=value[k].friend_id;
+                li.style.border = "none";
+                li.value = value[k].friend_id;
                 const textNode = document.createTextNode(value[k].name);
                 const userImg = document.createElement("img");
-                userImg.setAttribute("src","./image/index/user.png");
-                userImg.setAttribute("width","30px");
-                userImg.setAttribute("height","30px");
-                userImg.style.marginLeft = "35px";
-                userImg.style.marginRight = "40px";
-                userImg.style.verticalAlign="middle";
+                userImg.setAttribute("src", "./image/index/user.png");
                 li.appendChild(userImg);
                 li.appendChild(textNode);
 
                 // connect UI
-                if (value[k].connect == 1){
+                if (value[k].connect == 1) {
                     const isConnect = document.createElement("p");
                     const circle = document.createElement("div");
-                    
-                    circle.style.display="inline-block";
-                    circle.style.marginLeft = "10px";
-                    circle.style.borderRadius = "50%";
-                    circle.style.width = "10px";
-                    circle.style.height = "10px";
-                    circle.style.backgroundColor = "green";
-    
-                    isConnect.style.display = "inline-block";
-                    isConnect.style.fontSize = "15px";
-                    isConnect.innerHTML = "Online";
-                    isConnect.style.float = "right"
-                    isConnect.style.marginTop = "2px";
-                    isConnect.style.marginRight = "100px";
-                    isConnect.appendChild(circle);
 
+                    circle.style.backgroundColor = "green";
+                    isConnect.innerHTML = "Online";
+
+                    isConnect.appendChild(circle);
                     li.appendChild(isConnect);
                 }
                 else {
                     const isConnect = document.createElement("p");
                     const circle = document.createElement("div");
-                    
-                    circle.style.display="inline-block";
-                    circle.style.marginLeft = "10px";
-                    circle.style.borderRadius = "50%";
-                    circle.style.width = "10px";
-                    circle.style.height = "10px";
+
                     circle.style.backgroundColor = "gray";
-    
-                    isConnect.style.display = "inline-block";
-                    isConnect.style.fontSize = "15px";
                     isConnect.innerHTML = "Offline";
-                    isConnect.style.float = "right"
-                    isConnect.style.marginTop = "2px";
-                    isConnect.style.marginRight = "100px";
+
                     isConnect.appendChild(circle);
-    
+
                     li.appendChild(isConnect);
                 }
-                li.addEventListener('click', () =>{
-                    let sender = dbAccess.getId(); // 내 id
-                    let receiver = value[k].id; // 받는 사람 id
-
-                    // 현재 시간 가져오기
-                    var newDate = new Date();
-                    var send_time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
-
-                    // text, image, audio 3개 중 어떤 경우인지 확인
-                    let type_check = 'text';
-                    if(image.checked == true) type_check = "image";
-                    else if(record.checked == true) type_check = "audio";
-
-                    if(type_check == "text") { // text 전송일 때
-                        // text 내용 받아오기
-                        let content = document.querySelector("#textArea").innerText;
-                        axios({
-                            url: 'http://localhost:9000/send/text', // 통신할 웹문서
-                            method: 'post', // 통신할 방식
-                            data: { // 인자로 보낼 데이터
-                                sender: sender,
-                                receiver: receiver,
-                                content: content,
-                                type: type_check,
-                                send_time: send_time
-                            }
-                        }); // end of axios ...
-                    }
-                    else if(type_check == "image"){ // image 전송일 때
-
-                    }
-                    else{ // audio 전송일 때
-                        var reader = new FileReader();
-                        reader.readAsDataURL(blob);
-            
-                        reader.onloadend = function() {
-                            var base64 = reader.result;
-                            var base64Audio = base64.split(',').reverse()[0];
-            
-                            var bstr = atob(base64Audio); // base64String
-            
-                            axios({
-                                url: 'http://localhost:9000/send/audio', // 통신할 웹문서
-                                method: 'post', // 통신할 방식
-                                data: { // 인자로 보낼 데이터
-                                    sender: sender,
-                                    receiver: receiver,
-                                    content: bstr,
-                                    type: type_check,
-                                    send_time: send_time
-                                }
-                            }); // end of axios ...
-            
-                        } // end of reader.onloadend ...
-            
-                    } // end of else ...
+                li.addEventListener('click', () => {
+                    liClickEvent(value[k], 0)
                 }); // end of addEventListener ...
                 ul.appendChild(li);
-            }   
+            }
         })
     }
 
-    else if(outside.checked == true){ // outside.checked == true
+    else if (outside.checked == true) { // outside.checked == true
         ul.innerHTML = "";
         inside_selected.style.visibility = 'hidden';
         outside_selected.style.visibility = 'visible';
-        CMUsers.setFriendList()
-        .then(value => {
+        if (!customOption) {
+            setCMFriend = CMUsers.setFriendList()
+        }
+
+        setCMFriend.then(value => {
             console.log(`CMUSERS[0] :${value[0].id} `)
             for (let k = 0; k < value.length; k++) {
                 let li = document.createElement("li");
-                li.style.width = "85%";
-                li.style.margin = "0 auto";
-                li.style.color="white";
-                li.style.border="none";
-                li.style.borderRadius="5px";
-                li.style.marginBottom = "5px";
-                li.style.fontWeight="bold";
-                li.style.fontSize="20px";
-                li.value=value[k].friend_id;
+                li.style.border = "none";
+                li.value = value[k].friend_id;
                 const textNode = document.createTextNode(value[k].name);
                 const userImg = document.createElement("img");
-                userImg.setAttribute("src","./image/index/user.png");
-                userImg.setAttribute("width","30px");
-                userImg.setAttribute("height","30px");
-                userImg.style.marginLeft = "35px";
-                userImg.style.marginRight = "40px";
-                userImg.style.verticalAlign="middle";
+                userImg.setAttribute("src", "./image/index/user.png");
                 li.appendChild(userImg);
                 li.appendChild(textNode);
 
                 // connect UI
-                if (value[k].connect == 1){
+                if (value[k].connect == 1) {
                     const isConnect = document.createElement("p");
                     const circle = document.createElement("div");
-                    
-                    circle.style.display="inline-block";
-                    circle.style.marginLeft = "10px";
-                    circle.style.borderRadius = "50%";
-                    circle.style.width = "10px";
-                    circle.style.height = "10px";
+
                     circle.style.backgroundColor = "green";
-    
-                    isConnect.style.display = "inline-block";
-                    isConnect.style.fontSize = "15px";
                     isConnect.innerHTML = "Online";
-                    isConnect.style.float = "right"
-                    isConnect.style.marginTop = "2px";
-                    isConnect.style.marginRight = "100px";
                     isConnect.appendChild(circle);
 
                     li.appendChild(isConnect);
@@ -253,124 +255,137 @@ function showUserBook() {
                 else {
                     const isConnect = document.createElement("p");
                     const circle = document.createElement("div");
-                    
-                    circle.style.display="inline-block";
-                    circle.style.marginLeft = "10px";
-                    circle.style.borderRadius = "50%";
-                    circle.style.width = "10px";
-                    circle.style.height = "10px";
+
                     circle.style.backgroundColor = "gray";
-    
-                    isConnect.style.display = "inline-block";
-                    isConnect.style.fontSize = "15px";
                     isConnect.innerHTML = "Offline";
-                    isConnect.style.float = "right"
-                    isConnect.style.marginTop = "2px";
-                    isConnect.style.marginRight = "100px";
+
                     isConnect.appendChild(circle);
-    
                     li.appendChild(isConnect);
                 }
-                li.addEventListener('click', () =>{
-                    let sender = dbAccess.getId(); // 내 id
-                    let receiver = value[k].id; // 받는 사람 id
-
-                    // 현재 시간 가져오기
-                    let newDate = new Date();
-                    let send_time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
-
-                    // text, image, audio 3개 중 어떤 경우인지 확인
-                    let type_check = 'text';
-                    if(image.checked == true) type_check = "image";
-                    else if(record.checked == true) type_check = "audio";
-
-                    if(type_check == "text") { // text 전송일 때
-                        // text 내용 받아오기
-                        let content = document.querySelector("#textArea").value;
-                        axios({
-                            url: 'http://localhost:9000/send/text', // 통신할 웹문서
-                            method: 'post', // 통신할 방식
-                            data: { // 인자로 보낼 데이터
-                                sender: sender,
-                                receiver: receiver,
-                                content: content,
-                                type: type_check,
-                                send_time: send_time
-                            }
-                        }); // end of axios ...
-                    }
-                    else if(type_check == "image"){ // image 전송일 때
-                        //서버로 메시지를 보내는 이벤트 publish
-                        client.publish('send/image', 'send');
-                        console.log("image send success");
-                        
-                        
-
-                        axios({
-                            url: 'http://223.194.159.229:9000/send/image', // 통신할 웹문서
-                            method: 'post', // 통신할 방식
-                            data: { // 인자로 보낼 데이터
-                                receiver: receiver,
-                                sender: sender,
-                                content: base64String,
-                                type: type_check,
-                                send_time: send_time
-                            }
-                        });
-                    }
-                    else{ // audio 전송일 때
-                        var reader = new FileReader();
-                        reader.readAsDataURL(blob);
-            
-                        reader.onloadend = function() {
-                            var base64 = reader.result;
-                            var base64Audio = base64.split(',').reverse()[0];
-            
-                            var bstr = atob(base64Audio); // base64String
-            
-                            axios({
-                                url: 'http://localhost:9000/send/audio', // 통신할 웹문서
-                                method: 'post', // 통신할 방식
-                                data: { // 인자로 보낼 데이터
-                                    sender: sender,
-                                    receiver: receiver,
-                                    content: bstr,
-                                    type: type_check,
-                                    send_time: send_time
-                                }
-                            }); // end of axios ...
-            
-                        } // end of reader.onloadend ...
-            
-                    } // end of else ...
+                li.addEventListener('click', () => {
+                    liClickEvent(value[k], 1)
                 }); // end of addEventListener ...
                 ul.appendChild(li);
-            }   
+            }
         })
     }
 }
 
-function showTextContent(){
+const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
+    send_modal.style.visibility = "hidden";
+    inside_selected.style.visibility = 'hidden';
+    outside_selected.style.visibility = 'hidden';
+
+    let sender = dbAccess.getId(); // 내 id
+    let receiver = value.id; // 받는 사람 id
+
+    // 현재 시간 가져오기
+    var newDate = new Date();
+    var send_time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
+
+    // text, image, audio 3개 중 어떤 경우인지 확인
+    let type_check = 'text';
+    if (image.checked == true) type_check = "image";
+    else if (record.checked == true) type_check = "audio";
+
+    let content = document.querySelector("#textArea").value;
+
+    const data = { // 인자로 보낼 데이터
+        sender: sender,
+        receiver: receiver,
+        content: content,
+        type: type_check,
+        send_time: send_time
+    }
+    if (send_option == 0) { // 미러 내 사용자
+        if (type_check == "text") { // text 전송일 때
+            // text 내용 받아오기
+            dbAccess.createColumns('message', data)
+        }
+        else if (type_check == "image") { // image 전송일 때
+            //서버로 메시지를 보내는 이벤트 publish
+            client.publish('send/image', 'send');
+            console.log("image send success");
+
+            dbAccess.createColumns('message', data)
+        }
+        else { // audio 전송일 때
+            var reader = new FileReader();
+            reader.readAsDataURL(blob);
+
+            reader.onloadend = function () {
+                var base64 = reader.result;
+                var base64Audio = base64.split(',').reverse()[0];
+
+                var bstr = atob(base64Audio); // base64String
+
+                dbAccess.createColumns('message', data)
+            } // end of reader.onloadend ...
+
+        } // end of else ...
+    }
+    else {
+        if (type_check == "text") { // text 전송일 때
+            // text 내용 받아오기
+            axios({
+                url: 'http://localhost:9000/send/text', // 통신할 웹문서
+                method: 'post', // 통신할 방식
+                data: data,
+            }); // end of axios ...
+        }
+        else if (type_check == "image") { // image 전송일 때
+            //서버로 메시지를 보내는 이벤트 publish
+            client.publish('send/image', 'send');
+            console.log("image send success");
+
+            axios({
+                url: 'http://localhost:9000/send/image', // 통신할 웹문서
+                method: 'post', // 통신할 방식
+                data: data,
+            });
+        }
+        else { // audio 전송일 때
+            var reader = new FileReader();
+            reader.readAsDataURL(blob);
+
+            reader.onloadend = function () {
+                var base64 = reader.result;
+                var base64Audio = base64.split(',').reverse()[0];
+
+                var bstr = atob(base64Audio); // base64String
+
+                axios({
+                    url: 'http://localhost:9000/send/audio', // 통신할 웹문서
+                    method: 'post', // 통신할 방식
+                    data: data,
+                }); // end of axios ...
+
+            } // end of reader.onloadend ...
+
+        } // end of else ...
+    }
+})
+
+function showTextContent() {
     text_content.style.display = "block";
     image_content.style.display = "none";
-    record_content.style.display="none";
+    record_content.style.display = "none";
 }
 
-function showImageContent(){
+function showImageContent() {
     text_content.style.display = "none";
     image_content.style.display = "block";
-    record_content.style.display="none";
+    record_content.style.display = "none";
 }
 
-function showRecordContent(){
+function showRecordContent() {
     text_content.style.display = "none";
     image_content.style.display = "none";
     record_content.style.display = "block";
 }
 
-
 // Write Mode
-function showWrite(){
+function showWrite() {
     write_button.style.display = "none";
     back_button.style.display = "block";
 
@@ -397,44 +412,44 @@ function showWrite(){
 }
 
 // Store Mode
-function showStore(){
+function showStore() {
     write_button.style.display = "block";
     back_button.style.display = "none";
 
     // 라디오 버튼 체크 확인
     let radio = document.querySelectorAll(".option_radio");
     var sel_type = null;
-    for(var i=0;i<radio.length;i++){
-        if(radio[i].checked == true) sel_type = radio[i].value;
+    for (var i = 0; i < radio.length; i++) {
+        if (radio[i].checked == true) sel_type = radio[i].value;
     }
 
-    if(sel_type == "text"){
+    if (sel_type == "text") {
         text_content.style.display = "none";
         image_content.style.display = "none";
-        record_content.style.display="none";
+        record_content.style.display = "none";
     }
-    else if(sel_type == "image"){
+    else if (sel_type == "image") {
         text_content.style.display = "none";
         image_content.style.display = "none";
-        record_content.style.display="none";
+        record_content.style.display = "none";
     }
     else { // sel_type == "record"
         text_content.style.display = "none";
         image_content.style.display = "none";
-        record_content.style.display="none";
+        record_content.style.display = "none";
     }
 }
 
 // radio button
 text.addEventListener('change', () => {
-    if(write_button.style.display == "none") showWrite(); // Writing Mode
+    if (write_button.style.display == "none") showWrite(); // Writing Mode
     else showStore(); // Storage Mode
 })
 image.addEventListener('change', () => {
-    if(write_button.style.display == "none") showWrite(); // Writing Mode
+    if (write_button.style.display == "none") showWrite(); // Writing Mode
     else showStore(); // Storage Mode
 })
 record.addEventListener('change', () => {
-    if(write_button.style.display == "none") showWrite(); // Writing Mode
+    if (write_button.style.display == "none") showWrite(); // Writing Mode
     else showStore(); // Storage Mode
 })

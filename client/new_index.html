@@ -33,8 +33,15 @@
         }
         function callRefusalAlertOff() {
             const callRefusalContainer = document.getElementById('call-refusal-container')
-
             callRefusalContainer.style = 'display: none'
+        }
+        function friendAlertOff() {
+            const sendModal = document.getElementById('send-modal')
+            sendModal.style = 'display: none'
+        }
+        function sttAlertOff() {
+            const sttContainer = document.getElementById('stt-refusal-container')
+            sttContainer.style = 'display: none'
         }
     </script>
 </head>
@@ -245,7 +252,7 @@
             <div class="title">
                 <h3>Mirror user</h3>
             </div>
-            <div class="close-area">✕</div>
+            <div class="close-area" onclick="friendAlertOff()">✕</div>
             <div id="user-select">
                 <div id="select-left">
                     <input type="radio" name="user" id="inside" checked><label for="inside">미러 내부 사용자</label>
@@ -406,7 +413,7 @@
 
 <!-- <script src="message_module/record/new_record.js"></script> -->
 <script src="message_module/record/new_m_record.js"></script>
-<script src="message_module/message_icon.js"></script>
+<!-- <script src="message_module/message_icon.js"></script> -->
 <!-- <script src="memo_module/create_memo.js"></script> -->
 <!-- <script src="./touch.js"></script> -->
 <script src="./new_keyboard_module/keyboard.js"></script>

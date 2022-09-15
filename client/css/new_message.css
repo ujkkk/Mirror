@@ -1,3 +1,38 @@
+#otherUserList li {
+    width : 85%;
+    margin : 0 auto;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+}
+
+#otherUserList img {
+    width: 30px;
+    height: 30px;
+    margin-left: 35px;
+    margin-right: 40px;
+    vertical-align: middle;
+}
+
+#otherUserList p {
+    display: inline-block;
+    font-size: 15px;
+    float: right;
+    margin-left: 2px;
+    margin-right: 100px;
+}
+
+#otherUserList p div {
+    display: inline-block;
+    margin-left: 10px;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: gray;
+}
+
 #message-container {
     position: absolute;
     margin-top: 15vh;
