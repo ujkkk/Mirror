@@ -32,8 +32,6 @@ server.listen(app.get('port'), function () { //포트 연결 및 서버 실행
 
 });
 
-
-
 // connection event handler
 // connection이 수립되면 event handler function의 인자로 socket이 들어온다
 io.on('connection', function (socket) {

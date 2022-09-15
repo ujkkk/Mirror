@@ -15,6 +15,7 @@ mirrorDB.setUser(receivedData)
     require('./message_module/message_socket')
     require('./memo_module/memo')
     require('./new_callbook')
+    require('./message_module/message_icon')
 })
 
 require('./weather_module/new_weather');

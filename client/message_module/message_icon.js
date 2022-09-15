@@ -177,7 +177,6 @@ const userSelect = document.getElementById('user-select')
 function showUserBook() {
 
     if(inside.checked == true) {
-        let setCMuser
         console.log('inside.checked == true');
         send_ul.innerHTML = "";
         inside_selected.style.visibility = 'visible';
@@ -226,13 +225,13 @@ function showUserBook() {
                 li.addEventListener('click', () => {
                     liClickEvent(value[k], 0)
                 }); // end of addEventListener ...
-                ul.appendChild(li);
+                send_ul.appendChild(li);
             }
         })
     }
 
     else if (outside.checked == true) { // outside.checked == true
-        ul.innerHTML = "";
+        send_ul.innerHTML = "";
 
         inside_selected.style.visibility = 'hidden';
         outside_selected.style.visibility = 'visible';
@@ -279,7 +278,7 @@ function showUserBook() {
                 li.addEventListener('click', () => {
                     liClickEvent(value[k], 1)
                 }); // end of addEventListener ...
-                ul.appendChild(li);
+                send_ul.appendChild(li);
 
             }
         })
