@@ -44,11 +44,21 @@ const options = { // 브로커 정보(ip, port)
 const mqttClient = mqtt.connect(options) // mqtt broker 연결
 mqttClient.subscribe('call_request')
 mqttClient.subscribe('video_call_request')
+mqttClient.subscribe('geumBi')
 
 call_option = 0
 
 mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 callback
-    if (topic.toString() == 'call_request') {
+    if(topic.toString() == 'geumBi'){
+        if(message == "geumBi_on"){
+            sttAlert.innerText = '무엇을 도와드릴까요?'
+            sttRefusalContainer.style = 'display: block'
+        }
+        else {
+            sttRefusalContainer.style = 'display: none'
+        }
+    }
+    else if (topic.toString() == 'call_request') {
         call_option = 0
     }
     else if(topic.toString() == 'video_call_request') {
