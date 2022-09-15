@@ -1,5 +1,5 @@
 let mirrorDB = require('../mirror_db');
-require('date-utils');
+const moment = require('moment');
 mirrorDB.userId = mirrorDB.getId();//receivedData;
 
 console.log('message call')

@@ -100,7 +100,7 @@ CMUsers.setCustromFriendList = (name) => new Promise((resolve, reject) => {
             else {
                 axios({
                     method: 'post',
-                    url: 'http://localhost:9000/connect/user',
+                    url: 'http://113.198.84.128:80/connect/user',
                     data: {
                         userData: checkConnectedUser
                     }
@@ -139,7 +139,7 @@ CMUsers.setCustromFriendList = (name) => new Promise((resolve, reject) => {
             console.log("여기가 먼저 불려야함");
             axios({
                 method: 'post',
-                url: 'http://localhost:9000/connect/user',
+                url: 'http://113.198.84.128:80/connect/user',
                 data: {
                     userData: checkConnectedUser
                 }

@@ -1,7 +1,7 @@
 const mqtt = require('mqtt');
 const axios= require('axios');
 const mirror_db = require('../mirror_db');
-require('date-utils');
+const moment = require('moment');
 const fs = require('fs')
 const socket = require('./message_socket')
 const options = {
@@ -86,7 +86,7 @@ client.on('message', async (topic, message, packet) => {
       // var filename =   new Date().getTime() +'.jpg';
 
       var newDate = new Date();
-      var time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
+      var time = moment(newDate).format('YYYY-MM-DD HH24:MI:SS');
       var sender_connent = false;
       //접속되어 있는 유저에게 보낼 때, 소켓 이용
       if(sender_connent){
@@ -102,7 +102,7 @@ client.on('message', async (topic, message, packet) => {
       }
       else{
         var newDate = new Date();
-        var time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
+        var time = moment(newDate).format('YYYY-MM-DD HH24:MI:SS');
         axios({
           url: 'http://223.194.159.229:80/send/image', // 통신할 웹문서
           method: 'post', // 통신할 방식

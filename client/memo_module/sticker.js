@@ -1,6 +1,6 @@
 /* sticker.js */
 const dbAccess = require('../mirror_db.js')
-require('date-utils');
+const moment = require('moment');
 
 console.log('sticker.js || call');
 
@@ -78,7 +78,7 @@ const setStore = function (seq) {
             // 현재 시간 가져오기
             var newDate = new Date();
             // delecte_time 형식 지정
-            var time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
+            var time = moment(newDate).format('YYYY-MM-DD HH24:MI:SS');
             // 변화에 따른 db 업데이트
             dbAccess.update('memo', `store = ${store}`, `id=${dbAccess.userId} and seq=${seq}`);
 
