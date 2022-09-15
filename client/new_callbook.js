@@ -6,11 +6,11 @@ console.log("new_callbook에 들어옴")
 /* HTML UI */
 let mirror_db = require('./mirror_db');
 let callBookBtn = document.getElementById("bar_callbook_button");
-let modal = document.getElementById('modal');
+let modal = document.getElementById('callbook-modal');
 let friendList = document.getElementById("friend-list");
 let findFriend = document.getElementById("find-friend");
 let serachFriendDiv = document.getElementById("search-friend-div");
-let ul = document.getElementById('otherUserList');
+let ul = document.getElementById('callbook-otherUserList');
 let searchBtn = document.getElementById('search-btn');
 let addFriendBtn =  document.getElementById('add-friend-btn');
 let userImg = document.getElementById("user-img");
@@ -73,7 +73,7 @@ mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 
 
 /* Section3. 연락처 관련 동작 */
 function showUserMirrorBook(e){
-    console.log("연락처 클릭됨 :"+ e.type)
+    console.log("연락처 클릭됨 :"+ e.target)
     if (e.type == "click"){
         if (isCallBtnClicked == false){
             isCallBtnClicked = true;
@@ -94,8 +94,8 @@ function showUserMirrorBook(e){
     if(friendList.checked == true){
         ul.style.display = "block";                                                                                             
         serachFriendDiv.style.visibility = "hidden";
-        document.getElementById("inside-selected").style.visibility = "visible";
-        document.getElementById("outside-selected").style.visibility = "hidden";
+        document.getElementById("callbook-inside-selected").style.visibility = "visible";
+        document.getElementById("callbook-outside-selected").style.visibility = "hidden";
         mirror_db.select('friend_id, name','friend',`id=${mirror_db.getId()}`)
         .then(value => { // users에 값 넣기
                 for (let k = 0; k < value.length; k++) {
@@ -136,8 +136,8 @@ function showUserMirrorBook(e){
     else {
         serachFriendDiv.style.visibility = "visible";
         ul.style.display = "none";
-        document.getElementById("inside-selected").style.visibility = "hidden";
-        document.getElementById("outside-selected").style.visibility = "visible";
+        document.getElementById("callbook-inside-selected").style.visibility = "hidden";
+        document.getElementById("callbook-outside-selected").style.visibility = "visible";
 
     }
 }
@@ -180,6 +180,7 @@ function userCheck(){
             }
         })
         .then(res =>{
+            console.log("찾은 사용자 : "+res.data)
             if(res.data != ""){
                 userImg.style.visibility="visible";
                 addFriendBtn.style.visibility = "visible";
@@ -216,7 +217,7 @@ function addFriendDB(){
                 addFriendBtn.style.visibility = "hidden";
                 document.getElementById('find-result').innerHTML = "추가 되었습니다."
                 document.getElementById('find-result').style.marginTop = "-50px";
-                getUserInfo();
+                // getUserInfo();
                 add_id = null;
                 add_name =null;
             }
@@ -244,7 +245,9 @@ function deleteUser(e){
             mirror_db.delete('friend', `id = ${mirror_db.getId()} && friend_id = ${delete_id}`)
             .then(value =>{
                 //테이블 갱신
-                showUserMirrorBook();
+                isCallBtnClicked = false;
+                callBookBtn.click();
+                // showUserMirrorBook();
                 delete_id = null;
                 delete_name = null;
             })
