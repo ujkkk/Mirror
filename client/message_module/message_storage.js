@@ -49,7 +49,7 @@ function create_storage(messages){
             message_send.innerHTML = sender;
             if(message_send.innerHTML =='undefined')
                 message_send.innerHTML ='알 수 없음';
-            message_date.innerHTML = moment(message.send_time).format('MM-DD HH24:MI');
+            message_date.innerHTML = moment(message.send_time).format('MM-DD HH:mm');
             
             //content
             switch(message.type){
@@ -101,7 +101,7 @@ function message_storage_detail(e){
             date.setAttribute('class', 'message_storage_detail_date');
     
             //date, time
-            date.innerHTML = moment(message.send_time).format('MM-DD HH24:MI');
+            date.innerHTML = moment(message.send_time).format('MM-DD HH:mm');
     
             //context
             switch(message.type){

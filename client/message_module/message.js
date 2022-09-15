@@ -20,12 +20,12 @@ messageSendButton.addEventListener('click', () => {
 })
 
 //전체 슬라이드 컨테이너 넓이 설정
-slides.style.width = (slideWidth + slideMargin) * slideCount + 'vw';
+slides.style.width = (slideWidth + slideMargin) * slideCount + 'vh';
 
 function moveSlide(num) {
 
     currentIdx = num;
-    slides.style.left = -  num * (slideWidth - 0.8) + 'vw';
+    slides.style.left = -  num * (slideWidth - 0.8) + 'vh';
     if (num % 2) {
         document.getElementById('point-imag').src = './image/index/point2.png'
         document.getElementById('message-prev').style.visibility = 'visible'
@@ -35,6 +35,7 @@ function moveSlide(num) {
         document.getElementById('message-prev').style.visibility = 'hidden'
         document.getElementById('message-next').style.visibility = 'visible'
     }
+    
     //   if( currentIdx %2==0){
     //     console.log('currentIdx : '+currentIdx);
     //     //slides.style.top =  -parseInt(num/2) *50 + 'px';
@@ -139,7 +140,7 @@ function message_detail(msg_id) {
                     break;
 
             }
-            detail_time_div.innerHTML = moment(selected_msg.time).format('MM-DD HH24:MI')
+            detail_time_div.innerHTML = moment(selected_msg.time).format('MM-DD HH:mm')
         })
 }
 
@@ -232,7 +233,7 @@ function insertNewMessage() {
 function reply_message(element) {
     var receiver_id = document.getElementById('message-sender').getAttribute('value')
     var content = document.getElementById('reply-text').value;
-    var time = moment(new Date()).format('YYYY-MM-DD HH24:MI:SS');
+    var time = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
     socket.emit('realTime/message', {
         sender: mirror_db.getId(),
         receiver: receiver_id,

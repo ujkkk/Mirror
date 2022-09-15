@@ -204,7 +204,7 @@ function showRecord() {
             callerName.style.color = 'red'
 
         call_date = moment(recordArray[i].call_time).format('MM-DD')
-        call_time = moment(recordArray[i].call_time).format('HH24:MI')
+        call_time = moment(recordArray[i].call_time).format('HH:mm')
 
         const timeSpan = document.createElement('span')
         if (date == call_date)

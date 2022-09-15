@@ -14,7 +14,7 @@ var MySQLEvents = require('mysql-events');
 var dsn = {
     host: 'localhost',
     user: 'root',
-    password: '11111111',
+    password: '1234',
 };
 
 var mysqlEventWatcher = MySQLEvents(dsn);
@@ -78,7 +78,7 @@ const setStore = function (seq) {
             // 현재 시간 가져오기
             var newDate = new Date();
             // delecte_time 형식 지정
-            var time = moment(newDate).format('YYYY-MM-DD HH24:MI:SS');
+            var time = moment(newDate).format('YYYY-MM-DD HH:mm:ss');
             // 변화에 따른 db 업데이트
             dbAccess.update('memo', `store = ${store}`, `id=${dbAccess.userId} and seq=${seq}`);
 

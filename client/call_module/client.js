@@ -442,7 +442,7 @@ const callRecord = function (id, friendId, state) {
   // 현재 시간 가져오기
   var newDate = new Date()
   // delecte_time 형식 지정
-  var time = moment(newDate).format('YYYY-MM-DD HH24:MI:SS')
+  var time = moment(newDate).format('YYYY-MM-DD HH:mm:ss')
 
   var data = { id: parseInt(id), friend_id: parseInt(friendId), state: state, call_option: callOption, call_time: time }
   dbAccess.createColumns('call_record', data)
