@@ -131,7 +131,7 @@ io.on('connection', function (socket) {
 
 
 /* ----------------- client가 로그인 후, 본인의 메시지 업데이트와 확인 상태 요청 ----------------- */
-const userConnectUpdate = (req,next) => { // 유저 접속시, 접속중으로 상태 변경
+const userConnectUpdate = (req,res,next) => { // 유저 접속시, 접속중으로 상태 변경
     server_db.update("user", "connect=1", `id=${req.params.id}`)
     .then(()=>{next()})
 }
