@@ -302,11 +302,11 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
 
     let sender = dbAccess.getId(); // 내 id
     let receiver = value.id; // 받는 사람 id
-
+    let connect = value.connect;
     // 현재 시간 가져오기
     var newDate = new Date();
     var send_time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
-
+    console.log('send_time:', send_time);
     // text, image, audio 3개 중 어떤 경우인지 확인
     let type_check = 'text';
     if (image.checked == true) type_check = "image";
@@ -383,7 +383,7 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                 }
                 break;
             case 'image':
-                let img = document.getElementById('message_icon')
+                let img = document.getElementById('message-image')
                 let c = document.createElement('canvas');
                 let ctx = c.getContext('2d');
                 c.width = 600;

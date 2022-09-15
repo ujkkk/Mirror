@@ -113,7 +113,7 @@ function message_detail(msg_id) {
                 //document.getElementById('image').style.display = 'none';
             }
             if (document.getElementById('message-audio')) {
-                document.getElementById('message-audio').removeChild(document.getElementById('message-audio'));
+                document.getElementById('message-content').removeChild(document.getElementById('message-audio'));
                 //document.getElementById('image').style.display = 'none';
             }
             switch (selected_msg.type) {
@@ -131,6 +131,7 @@ function message_detail(msg_id) {
                 case 'audio' :               
                     var audio_folder = './message_module/record/audio/client/';
                     var audio = document.createElement('audio');
+                    detail_content_div.innerHTML = '';
                     audio.setAttribute('id', 'message-audio');
                     audio.src = audio_folder+selected_msg.content+'.wav';
                     audio.controls = 'controls';

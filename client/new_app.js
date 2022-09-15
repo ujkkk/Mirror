@@ -41,6 +41,7 @@ axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
         }
 
         for (let i = 0; i < response.data.contents.length; i++) {
+            console.log(datas[i]);
             let data = {
                 sender: datas[i].sender,
                 receiver: mirrorDB.getId(),
@@ -48,6 +49,7 @@ axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
                 type: '',
                 send_time: datas[i].send_time
             };
+            console.log(data);
             //DB에 삽입
             switch (datas[i].type) {
                 case 'text':
