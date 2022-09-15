@@ -124,7 +124,6 @@ axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
         }
     }).finally(() => {
         const message = require('./message_module/message')
-        message.initMessages();
     })
 // const message = require('./message_module/message')
 // message.initMessages();

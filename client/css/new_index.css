@@ -10,9 +10,9 @@ html {
 
 .alert-container{
     background-color: rgb(47, 47, 47);
-    border-radius: 1.5vh;
-    width: 25vh;
-    height: 13vh;
+    border-radius: 1.5vw;
+    width: 25vw;
+    height: 13vw;
     position: absolute;
     top: 40%;
     right: 50%;
@@ -24,17 +24,17 @@ html {
 .alert-container .close-area {
     display: inline-block;
     position: absolute;
-    right: 2vh;
-    top: 1vh;
+    right: 2vw;
+    top: 1vw;
     cursor: pointer;
-    font-size: 1.3vh;
+    font-size: 1.3vw;
     text-shadow: 1px 1px 2px gray;
     color: white;
 }
 
 .alert-container #stt-alert {
     width: 100%;
-    font-size: 1.5vh;
+    font-size: 1.5vw;
     height: 50%;
     transform: translateY(50%);
 }
@@ -43,12 +43,12 @@ html {
 
     position: absolute;
     width: 88%;
-    height: 6vh;
-    bottom: 2vh;
+    height: 6vw;
+    bottom: 2vw;
     left: 50%;
     transform: translate(-50%);
     background:rgba(255, 255, 255, 0.2);
-    border-radius: 1vh;
+    border-radius: 1vw;
     display: flex;
 /* 
     display: flex;
@@ -88,8 +88,8 @@ html {
 
 .bar_icon {
 
-    height: 3.5vh;
-    width: 3,5vh;
+    height: 3.5vw;
+    width: 3,5vw;
     /* border: solid 1px red; */
     /* height: 80px;
     width: 80px; */

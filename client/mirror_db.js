@@ -197,7 +197,7 @@ dbAccess.addMemo = function (id, from, contents, store) {
     // 현재 시간 가져오기
     var newDate = new Date();
     // delecte_time 형식 지정
-    var time = moment(newDate).format('YYYY-MM-DD HH24:MI:SS');
+    var time = moment(newDate).format('YYYY-MM-DD HH:mm:ss');
 
     // memo table 제작에 필요한 column을 데이터 객체로 형성
     var data = { id: id, from: from, contents: contents, store: store, delete_time: time };

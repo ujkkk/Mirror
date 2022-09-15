@@ -4,8 +4,7 @@ const logger = require('morgan'); // 서버 접속 연결 확인 도와주는 �
 const path = require('path');
 const fs = require('fs');
 const File = require('File')
-const server_db = require('./server_db')
-const moment = require('moment');
+const server_db = require('./server_db');
 const { format } = require('date-fns');
 
 var app = express() // express 는 함수이므로, 반환값을 변수에 저장한다.
