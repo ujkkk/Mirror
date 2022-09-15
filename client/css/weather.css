@@ -6,10 +6,10 @@
 
 #container{
     position: absolute;
-    margin-top: 2.5vh;
-    margin-left: 4vw;
-    width: 12vh;
-    height: 13vh;
+    margin-top: 2.5vw;
+    margin-left: 4vh;
+    width: 12vw;
+    height: 13vw;
     /* border: solid 2px red;  */
 }
 
@@ -19,7 +19,7 @@
     /* margin-left: 40px; */
     /* text-align: center; */
     display: flex;
-    height: 5vh;
+    height: 5vw;
     width: 100%;
     color:white;
     /* background-color: black; */
@@ -31,9 +31,9 @@
     /* float: left; */
     width: 40%;
     height: 100%;
-    margin-left: 1.1vh;
-    font-size: 3.8vh;
-    transform: translateY(0.3vh);
+    margin-left: 1.1vw;
+    font-size: 3.8vw;
+    transform: translateY(0.3vw);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -43,8 +43,8 @@
 #temp {
     width: 60%;
     height: 100%;
-    margin-left: 0.5vh;
-    font-size: 3.8vh;
+    margin-left: 0.5vw;
+    font-size: 3.8vw;
     display: flex;
     align-items: center;
     justify-content: center;
