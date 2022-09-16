@@ -310,7 +310,7 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
 
     // 현재 시간 가져오기
     var newDate = new Date();
-    var send_time = moment(newDate).format('YYYY-MM-DD HH24:MI:SS');
+    var send_time = moment(newDate).format('YYYY-MM-DD HH:mm:ss');
 
     // text, image, audio 3개 중 어떤 경우인지 확인
     let type_check = 'text';
