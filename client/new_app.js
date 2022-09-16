@@ -2,7 +2,6 @@ const moment = require('moment')
 
 // 통화 모듈
 const callAccess = require('./call_module/call')
-const moment = require('moment');
 // 날씨 모듈 불러오기
 require('./weather_module/new_weather')
 const fs = require('fs');
