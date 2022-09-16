@@ -141,7 +141,7 @@ function message_detail(msg_id) {
                     break;
 
             }
-            detail_time_div.innerHTML = moment(selected_msg.time).format('MM-DD HH:mm')
+            detail_time_div.innerHTML = moment(selected_msg.time).format('MM/DD HH:mm')
         })
 }
 

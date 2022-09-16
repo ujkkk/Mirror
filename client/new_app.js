@@ -1,3 +1,5 @@
+const moment = require('moment')
+
 // 통화 모듈
 const callAccess = require('./call_module/call')
 // 날씨 모듈 불러오기
@@ -41,13 +43,13 @@ axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
         }
 
         for (let i = 0; i < response.data.contents.length; i++) {
-            console.log(datas[i]);
+            let send_time = moment(datas[i].send_time).format('YYYY-MM-DD HH:mm:ss')
             let data = {
                 sender: datas[i].sender,
                 receiver: mirrorDB.getId(),
                 content: datas[i].content,
                 type: '',
-                send_time: datas[i].send_time
+                send_time: send_time
             };
             console.log(data);
             //DB에 삽입

@@ -81,6 +81,7 @@
     color:white;
     font-size :1.3vw;
     text-align: center;
+    
 }
 .memo .memo-content>img{
     width: 100%;
@@ -90,7 +91,8 @@
     margin-top: 5%;
     margin-left: 10%;
     color:white;
-    font-size : 0.8vw;
+    font-size : 1vw;
+    transform: translateY(0vw);
 }
 /*btns*/
 .slider-btns {

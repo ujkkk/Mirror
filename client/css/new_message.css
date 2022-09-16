@@ -1,35 +1,35 @@
 #otherUserList li {
     width : 85%;
     margin : 0 auto;
-    border-radius: 5px;
-    margin-bottom: 5px;
+    border-radius: 0.5vh;
+    margin-bottom: 3vh;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 1vw;
     color: white;
 }
 
 #otherUserList img {
-    width: 30px;
-    height: 30px;
-    margin-left: 35px;
-    margin-right: 40px;
+    width: 1.6vw;
+    height: 1.6vw;
+    margin-left: 1.8vw;
+    margin-right: 2vw;
     vertical-align: middle;
 }
 
 #otherUserList p {
     display: inline-block;
-    font-size: 15px;
     float: right;
+    font-size: 0.8vw;
     margin-left: 2px;
     margin-right: 100px;
 }
 
 #otherUserList p div {
     display: inline-block;
-    margin-left: 10px;
+    margin-left: 1vw;
     border-radius: 50%;
-    width: 10px;
-    height: 10px;
+    width: 0.8vw;
+    height: 0.8vw;
     background-color: gray;
 }
 
@@ -168,48 +168,54 @@
 
 }
 
-#message-detail-div #message-sender {
+#message-option #message-sender {
     color: white;
     font-size: 1.3vw;
-    /* margin-top: 3%; */
+    /* margin-top: 3%;
     margin-left: 1.2vw;
-    float: left;
+    float: left; */
+
+    position: absolute;
+    left: 1.5vw;
+    font-size: 1vw;
 }
 
-#message-detail-div #message-time {
+#message-option #message-time {
     color: white;
-    font-size: 0.8vw;
-    margin-left: 60%;
-    margin-top: 3%;
+    position: absolute;
+    right: 1.2vw;
+    font-size: 1vw;
+}
+#message-option {
+    color: white;
+    width: 80%;
+    font-size: 1.7vw;
+    margin: 1vw;
 }
 
 #message-detail-div #message-content {
     color: white;
     width: 80%;
-    height: 35%;
+    height: 50%;
     font-size: 1.7vw;
     margin: 2vw;
+    margin-top: 4vw;
+    line-height: 10vw;
     align-items: center;
     justify-content: center;
     text-align: center;
-    transform: translateY(20%);
-    top: 0%;
-    transform: translate(0%, 50%);
 }
 
 
 #message-detail-div #message-image {
-    position: absolute;
-    right: 3vh;
     width: 30vh;
     height: 20vh;
-    transform: translateY(-3.5vw);
+    
     /* 2/3 */
 
 }
 
 #message-detail-div #message-reply {
-    margin-top: 11%;
     width: 80%;
     height: 20%;
 }
@@ -226,7 +232,6 @@
     background-color: rgba(255, 255, 255, 0.2);
     color: aliceblue;
     position: relative;
-    transform: translateY(2.5vw);
 }
 
 #reply-btn {
@@ -240,6 +245,7 @@
 }
 
 #reply-btn img {
+    transform: translateY(-3.3vw);
     width: 3vw;
     height: 3vw;
 }
