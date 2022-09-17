@@ -1,0 +1,115 @@
+html {
+    transform: rotate(-90deg);
+    transform-origin: top left;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100vh;
+    height: 100vw; 
+}
+
+body{
+    overflow:hidden;
+  }
+  #titleDiv{
+    color: white;
+    font-size: 7vw;
+    text-align: center;
+    font-weight: bold;
+    margin: 20px;
+  }
+  #container{
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .form__group {
+    position: relative;
+    padding: 15px 0 0;
+    margin-top: 10px;
+    width: 50%;
+  }
+  .form__field {
+    font-family: inherit;
+    width: 100%;
+    border: 0;
+    /* border-bottom: 2px solid #9b9b9b; */
+    border-bottom: 2px solid white;
+    outline: 0;
+    font-size: 1.3rem;
+    color: #fff;
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+  }
+  .form__field::placeholder {
+    color: transparent;
+  }
+  .form__field:placeholder-shown ~ .form__label {
+    font-size: 1.3rem;
+    cursor: text;
+    top: 20px;
+  }
+  .form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    /* color: #9b9b9b; */
+    color: white;
+  }
+  .form__field:focus {
+    padding-bottom: 6px;
+    font-weight: 700;
+    border-width: 3px;
+    /* border-image: linear-gradient(to right, #11998e, #38ef7d); */
+    border-image: linear-gradient(to right, #789fa3, #255f8c);
+    border-image-slice: 1;
+  }
+  .form__field:focus ~ .form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: #789fa3;
+    font-weight: 700;
+  }
+  
+    /* reset input */
+  .form__field:required, .form__field:invalid {
+    box-shadow: none;
+  }
+  
+  button {
+    margin-top: 5vw;
+    padding-top: 1vw;
+    padding-bottom: 1vw;
+    width: 25vw;
+    border: solid 2px white;
+    border-radius: 12px;
+    background-color:transparent;
+    color: white;
+    font-size: 1rem;
+  }
+  button:active{
+    border-color: gray;
+    color: gray;
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  /* #message{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: red;
+    text-align: center;
+    font-size: x-large;
+  } */

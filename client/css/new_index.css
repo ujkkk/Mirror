@@ -119,7 +119,7 @@ html {
     top: 1500px;
     display: flex;
 
-    background: rgba(255, 255, 255, 0.4);
+    background: rgb(84, 84, 84);
     border-radius: 0px 0px 20px 20px;
     /* position: absolute;
     bottom: 20%;
@@ -158,7 +158,7 @@ html {
     left: 60px;
     top: 660px;
 
-    background: rgba(255, 255, 255, 0.4);
+    background: rgb(84, 84, 84);
     border-radius: 20px 20px 0px 0px;
     /* position: absolute;
     bottom: 23%;

@@ -1,6 +1,6 @@
 #message_storage_view{
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.244);
+    background-color: rgba(101, 101, 101, 0.244);
     /* display: none; */
 }
 #message_storage_contents{
@@ -112,7 +112,7 @@
 }
 
 #storage-audio{
-    width: 25vw;
+    width: 14vw;
     height: 5vw;
 }
 .message_storage_detail_content .message_storage_detail_context img{

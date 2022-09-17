@@ -114,7 +114,7 @@ function create_memo_div(memos){
         memo_time.setAttribute('class','memo-time')
 
         //time
-        time= moment(memo.time).format('MM-DD HH:mm')
+        time= moment(memo.time).format('MM/DD')
         // time = (String(memo.time)).substring(5,memo_time.length);
         // time = time.split(':')
         memo_time.innerHTML = time

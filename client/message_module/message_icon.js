@@ -59,11 +59,11 @@ mqttClient.subscribe('image_request')
 
 mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 callback
     customFriend = null
-    if (message.friendName == null) {
+    if (message == null) {
         customOption = false
     }
     else {
-        friendName = message.friendName
+        friendName = message
         customOption = true
         setCMFriend = CMUsers.setCustromFriendList(friendName)
         setCMuser = CMUsers.setCustromUserList(friendName)
@@ -105,6 +105,12 @@ mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 
     }
 
     if (topic.toString() == 'message_request') {
+        if(value.includes("라고")) {
+            let callValue = value.split('라고')
+            let callName = callValue[0].split("에게")
+            console.log(`메시지 내용: ${callName[callName.length - 1]}`)
+            document.querySelector("#textArea").value = `${callName[callName.length - 1]}`
+        }
         write_button.click()
     }
     else if (topic.toString() == 'audio_message_request') {
