@@ -380,7 +380,7 @@ function keyClickEvent(e){
 					console.log("새로 조합한 문자 : " + hangeul);
 					
 					text=text.substring(0,text.length-1);		
-					document.getElementById(`${currentTarget}`).val(text+hangeul);
+					document.getElementById(`${currentTarget}`).value = text+hangeul;
 					document.getElementById(`${currentTarget}`).focus();				
 					
 				}
