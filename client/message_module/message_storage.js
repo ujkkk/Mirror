@@ -1,8 +1,9 @@
 const _db = require('../mirror_db')
 const moment = require('moment')
 
+//사용자가 로그인시 메시함의 content 추가
 function showMessageStorage(){
-    console.log('showMessageStorage');
+    console.log('#####showMessageStorage#####');
    _db.select('*','message',`receiver =${_db.getId()}`)
    .then(messages =>{
         create_storage(messages);
@@ -12,6 +13,7 @@ function showMessageStorage(){
 var freinds_obj2 ={};
 function create_storage(messages){
 
+    document.getElementById('message_storage_contents').replaceChildren();
     var message_list = new Array();
     freinds_obj = {};
     _db.select('*','friend', `id=${_db.getId()}`)
@@ -25,8 +27,9 @@ function create_storage(messages){
         for(var i=0; i<messages.length; i++){
            
             var message = messages[i];
+            console.log(message);
             var sender = freinds_obj[message.sender];
-            if(sender == 0) return;
+            if(sender == 2) continue;
            
             var message_div= document.createElement('div');
 
@@ -66,10 +69,10 @@ function create_storage(messages){
             message_div.appendChild(message_send);
             message_div.appendChild(message_date);
             message_div.appendChild(message_content);
-
+            console.log('삽입');
             message_content.addEventListener("click", (e)=>{message_storage_detail(e.target)});
             document.getElementById('message_storage_contents').prepend(message_div);
-            freinds_obj[message.sender] = 0;
+            freinds_obj[message.sender] = 2;
 
         }
     })
@@ -89,7 +92,7 @@ function message_storage_detail(e){
 
     // if(sender =='undefined')  document.getElementById('message_storage_detail_sender').innerHTML = '알 수 없음';
     // else document.getElementById('message_storage_detail_sender').innerHTML = sender;
-    _db.select('*', 'message', `sender=${sender_id} &&receiver=${_db.getId()}`)
+    _db.select('*', 'message', `sender=${sender_id} and receiver=${_db.getId()}`)
     .then((messages) =>{
         messages.forEach(message =>{
             let content = document.createElement('div');
@@ -112,6 +115,7 @@ function message_storage_detail(e){
                     let img = document.createElement('img');
                     img.src = './image/message/' + message.content +'.jpg';
                     context.appendChild(img);
+                    break;
                 case 'audio':
                     var audio_folder = './message_module/record/audio/client/';
                     var audio = document.createElement('audio');
@@ -119,11 +123,11 @@ function message_storage_detail(e){
                     audio.controls = 'controls';
                     audio.src = audio_folder + message.content+'.wav';
                     context.appendChild(audio);
+                    break;
                    
             }
             content.appendChild(context);
             content.appendChild(date);
-
             contents.appendChild(content);
 
         })
@@ -132,4 +136,6 @@ function message_storage_detail(e){
     })
     
 }
-showMessageStorage();
+
+module.exports = {showMessageStorage}
+

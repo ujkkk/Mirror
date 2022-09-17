@@ -339,7 +339,6 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
             reader.onloadend = function () {
                 var base64 = reader.result;
                 var base64Audio = base64.split(',').reverse()[0];
-
                 var bstr = atob(base64Audio); // base64String
 
                 dbAccess.createColumns('message', data)
@@ -349,12 +348,12 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
     }
     //외부 사용자
     else {
-
         switch (type_check) {
             case 'text':
                 let content = document.querySelector("#textArea").value;
                 //online user
                 if (connect) {
+                    //소켓으로 메시지 전송
                     socket.emit('realTime/message', {
                         sender: sender,
                         receiver: receiver,
@@ -364,21 +363,22 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                     });
                     //offline user 
                 } else {
+                    //서버에 메시지를 저장하는 방법으로 메시지를 보냄
                     axios({
-                        url: 'http://localhost:9000/send/text', // 통신할 웹문서
+                        url: 'http://113.198.84.128:80/send/text', // 통신할 웹문서
                         method: 'post', // 통신할 방식
                         data: { // 인자로 보낼 데이터
                             sender: sender,
                             receiver: receiver,
                             content: content,
-                            type: type_check,
+                            type: 'text',
                             send_time: send_time
                         }
                     }); // end of axios ...
                 }
                 break;
             case 'image':
-                let img = document.getElementById('message-image')
+                let img = document.getElementById('msg-img')
                 let c = document.createElement('canvas');
                 let ctx = c.getContext('2d');
                 c.width = 600;
@@ -395,13 +395,13 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                     });
                 } else {
                     axios({
-                        url: 'http://localhost:9000/send/image', // 통신할 웹문서
+                        url: 'http://113.198.84.128:80/send/image', // 통신할 웹문서
                         method: 'post', // 통신할 방식
                         data: { // 인자로 보낼 데이터
                             receiver: receiver,
                             sender: sender,
                             content: base64String,
-                            type: type_check,
+                            type: 'image',
                             send_time: send_time
                         }
                     });
@@ -430,21 +430,20 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                             });
                         } else {
                             axios({
-                                url: 'http://localhost:9000/send/audio', // 통신할 웹문서
+                                url: 'http://113.198.84.128:80/send/audio', // 통신할 웹문서
                                 method: 'post', // 통신할 방식
                                 data: { // 인자로 보낼 데이터
-                                    sender: sender,
                                     receiver: receiver,
+                                    sender: sender, 
                                     content: bstr,
-                                    type: type_check,
+                                    type: 'audio',
                                     send_time: send_time
                                 }
                             }); // end of axios ...
                         }
                     }).catch(() => "audio error")
                 }
-                break;
-            
+                break;     
         }
 
     } // end of else ...

@@ -147,6 +147,7 @@ function message_detail(msg_id) {
 
 //해당 함수 호출시 미러 내 message DB에서 메시지를 가져와 나에게 온 메세지를 띄움
 function initMessages() {
+    console.log('#####initMessages#####');
     message_list = Array()
     mirror_db.select('*', 'message', `receiver = ${mirror_db.getId()}`)
         .then(messages => {
@@ -177,7 +178,8 @@ function insertMessageContent(message, type) {
     let message_contents_ui = document.getElementById('message-contents-ui');
     let messageContent = document.createElement('li');
     messageContent.setAttribute('class', 'message-content');
-    messageContent.setAttribute('value', message.msg_id);
+    console.log(message)
+   
     //messageContent.setAttribute('onclick', `message_detail(${message.msg_id})`);
     //보낸 사람이 누군지 friend DB에서 이름을 찾음
     mirror_db.select('name', 'friend', `friend_id =${message.sender}`)
@@ -214,7 +216,7 @@ function insertMessageContent(message, type) {
             }
             message_contents_ui.prepend(messageContent);
             messageContent.addEventListener("click", function () { message_detail(message.msg_id) })
-        })
+        }).then(() =>  messageContent.setAttribute('value', message.msg_id))
 }
 
 
@@ -233,6 +235,11 @@ function insertNewMessage() {
 //소켓으로 통신
 function reply_message(element) {
     var receiver_id = document.getElementById('message-sender').getAttribute('value')
+    // axios({
+    //     url: 'http://113.198.84.128:80/connect/user', // 통신할 웹문서
+    //     method: 'post', // 통신할 방식
+    //     data: { fileName: data.content }
+    // })
     var content = document.getElementById('reply-text').value;
     var time = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
     socket.emit('realTime/message', {
@@ -240,7 +247,7 @@ function reply_message(element) {
         receiver: receiver_id,
         content: content,
         type: 'text',
-        time: time
+        send_time: time
     });
     document.getElementById('reply-text').value = '';
 
