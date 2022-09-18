@@ -131,6 +131,19 @@ html {
     border-radius: 0px 0px 10px 10px; */
 }
 
+#memo_radio_container{
+    position: absolute;
+    width: 690px;
+    height: 60px;
+    left: 60px;
+    top: 1500px;
+    display: flex;
+
+    background: rgb(84, 84, 84);
+    border-radius: 0px 0px 20px 20px;
+
+}
+
 .menu {
     flex: 1;
     /* font-size: 0.8rem;
@@ -149,6 +162,14 @@ html {
 .option_radio:checked + .menu {
     color:white;
     /* font-weight: bold; */
+}
+
+.memo_option_radio{
+    display: none;
+}
+
+.memo_option_radio:checked + .menu {
+    color:white;
 }
 
 #content {
@@ -197,12 +218,24 @@ html {
     top: 6%; */
 }
 
+#memo_write_button {
+    position: absolute;
+    top: 45px;
+    right: 45px;
+    /* right: 5%;
+    top: 6%; */
+}
+
 #back_button {
     position: absolute;
     top: 45px;
     left: 45px;
-    /* left: 5%;
-    top: 6%; */
+}
+
+#memo_back_button {
+    position: absolute;
+    top: 45px;
+    left: 45px;
 }
 
 #select_content {
@@ -231,5 +264,23 @@ html {
 }
 
 #textArea:focus {
+    outline: 2px solid darkgray;
+}
+
+#memo_textArea{
+    position:absolute; 
+    width: 65%; 
+    height: 35%;
+    background-color: gray; 
+    border: none;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    font-size: 25px;
+    color: white;
+    padding: 5%;
+}
+
+#memo_textArea:focus {
     outline: 2px solid darkgray;
 }

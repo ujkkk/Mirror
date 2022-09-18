@@ -3,6 +3,13 @@
     background-color: rgba(101, 101, 101, 0.244);
     /* display: none; */
 }
+
+#memo_storage_view{
+    position: absolute;
+    background-color: rgba(101, 101, 101, 0.244);
+    /* display: none; */
+}
+
 #message_storage_contents{
     float: left;
     position: relative;

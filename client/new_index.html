@@ -118,7 +118,7 @@
         <button class="bar_button" id="bar_phone_button" ><img class="bar_icon" src="./image/index/bar_phone.png"></button>
         <button class="bar_button" id="bar_callbook_button"><img class="bar_icon" src="./image/index/bar_callbook.png"></button>
         <button class="bar_button" id="bar_message_button"><img class="bar_icon" src="./image/index/bar_message2.png"></button>
-        <button class="bar_button" id="bar_memmo_button" onclick="barMemo()"><img class="bar_icon" src="./image/index/bar_memo.png"></button>
+        <button class="bar_button" id="bar_memo_button"><img class="bar_icon" src="./image/index/bar_memo.png"></button>
     </div>
     <!-- end of menu bar -->
     <div id="message_memo_container" style="display: none;">
@@ -199,6 +199,84 @@
         </div>
     </div>
 
+    <!-- ===================================  memo container =================================== -->
+    <div id="memo_container" style="display: none;">
+        <div id="memo_radio_container">
+            <input type="radio" name="option" class="memo_option_radio" id="memo_text" value="text" checked><label class="menu" for="memo_text">Text</label>
+            <input type="radio" name="option" class="memo_option_radio" id="memo_image" value="image"><label class="menu" for="memo_image">Image</label>
+            <input type="radio" name="option" class="memo_option_radio" id="memo_record" value="record"><label class="menu" for="memo_record">Record</label>
+        </div> 
+        <div id="content">
+            <button class="option_button" id="memo_write_button"><img class="option_icon" src="./image/index/write_icon.png"></button>
+            <button class="option_button" id="memo_back_button" style="display: none;"><img class="option_icon" src="./image/index/back_icon.png"></button>
+            <div id="select_content">
+                <!-- 메모 함-->
+                <div id="memo_storage_view" style="position: absolute;  width: 100%; height: 100%;">
+                    <!-- <h3 style="text-align:center;">Message</h3> -->
+
+                    <div id="message_storage_contents">
+                        <!-- <div class="message_storage_content">
+                            <div class="message_storage_content_sender">송연</div>
+                            <div class="message_storage_content_date">09-14 06:24</div>
+                            <div class="message_storage_content_context">밥 먹었어?</div>
+                                            
+                        </div>
+                        <div class="message_storage_content">
+                            <div class="message_stoage_content_sender">채원</div>
+                            <div class="message_storage_content_date">09-14 12:30</div>
+                            <div class="message_storage_content_context">(음성 메시지)</div>                         
+                        </div> -->
+                    </div>
+                    <div id="message_storage_detail">
+                        <div id="message_storage_detail_sender"></div>
+                        <div id="message_storage_detail_contents"></div>
+                    </div>
+                </div>
+                <div id="memo_text_content" style="display: none;">
+                    <textarea id="memo_textArea"></textarea>
+                    <button id="save_text_button" class="save_button" style=" position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 200px; font-size: 20px;">SAVE</button>
+                </div>
+                <!-- start of record_content -->
+                <div id="memo_record_content" style="position: absolute; display: none; width: 100%; height: 100%;">
+                    <div id="memo_recordbars_div" style="display: none;">
+                        <div id="memo_bars"> 
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                    </div>
+                    <!-- end of recordbars_div -->
+                    <div class="record_button_container">
+                        <input type="checkbox" id="memo_record_button"/>
+                        <label for="memo_record_button" id="memo_record_button_label"></label> 
+                        <div class="record_time">
+                            <div class="h_m"></div > 
+                            <div class="s_ms"></div>
+                        </div>
+                    </div>
+                    <!-- end of record_button_container -->
+                    <button id="save_record_button" class="save_button" style="display: none; position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 347px; font-size: 20px;">SAVE</button>
+                    <audio id="memo_player" controls style="position: absolute; display: none; left: 50%; top: 240px; transform: translate(-50%, -50%);"></audio>
+                </div>
+                <!-- end of record_content -->
+                <!-- start of image_content -->
+                <div id="memo_image_content" style="position: absolute; display: none; width: 100%; height: 100%;">
+                    <img id='msg-img' src='./message_module/image/media/test.jpg' style="position: absolute; left: 50%; top: 250px; transform: translate(-50%, -50%); width: 550px;" >
+                    <button id="save_image_button" class="send_button" style=" position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 200px; font-size: 20px;">SAVE</button>
+                    <button id="shutter_button" style="background-color: transparent; border: none;"><img src="./image/index/shutter_icon.png" style="position: absolute; width: 70px; height: 70px; left: 50%; bottom: 50px; transform:translate(-50%, -50%);"></button>
+                </div>
+            </div>
+            <!-- end of select_content... -->
+        </div>
+    </div>
+  <!-- ===================================  memo container =================================== -->
 
 
     <!-- call //////////////////////////////////////////// -->
@@ -450,7 +528,7 @@
 <!— <script src="message_module/message_icon.js"></script> —>
 <!— <script src="memo_module/create_memo.js"></script> —>
 <!— <script src="./touch.js"></script> —> -->
-
+<script src="./memo_module/memo_icon.js"></script>
 <script src="./new_keyboard_module/keyboard.js"></script>
 <script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
 <script src="new_app.js"></script>
