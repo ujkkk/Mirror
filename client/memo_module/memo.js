@@ -129,7 +129,7 @@ function create_memo_div(memos){
                 image_forlder = './image/memo/'
                 memo_content.innerHTML = '';
                 let img = document.createElement('img')
-                img.src = image_forlder + memo.content;
+                img.src = image_forlder + memo.content + '.jpg';
                 console.log('img.src :' + img.src)
                 memo_content.appendChild(img);
                 break;

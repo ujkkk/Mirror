@@ -126,6 +126,8 @@ axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
         message.initMessages()
         const message_storage = require('./message_module/message_storage')
         message_storage.showMessageStorage();
+        const memo_stroage = require('./memo_module/memo_storage');
+        memo_stroage.showMemoStorage();
     }).then(() =>{
         //서버에게 메시지 잘 받았다고 보내기
         axios({

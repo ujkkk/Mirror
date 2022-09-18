@@ -17,6 +17,7 @@
     <link  href="css/new_callbook.css" rel="stylesheet">
     <link href="css/call.css" rel="stylesheet">
     <link href="css/message-views.css" rel="stylesheet">
+    <link href="css/memo_storage.css" rel="stylesheet">
     <!-- <link href="css/touch.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="./new_keyboard_module/keyboard.css">
     <script>
@@ -214,7 +215,10 @@
                 <div id="memo_storage_view" style="position: absolute;  width: 100%; height: 100%;">
                     <!-- <h3 style="text-align:center;">Message</h3> -->
 
-                    <div id="message_storage_contents">
+                    <div id="memo_storage_contents">
+                        <div class="memo-storage_content">
+                           
+                        </div>
                         <!-- <div class="message_storage_content">
                             <div class="message_storage_content_sender">송연</div>
                             <div class="message_storage_content_date">09-14 06:24</div>
@@ -227,9 +231,11 @@
                             <div class="message_storage_content_context">(음성 메시지)</div>                         
                         </div> -->
                     </div>
-                    <div id="message_storage_detail">
-                        <div id="message_storage_detail_sender"></div>
-                        <div id="message_storage_detail_contents"></div>
+                    <div id="memo_storage_detail">                 
+                        <div id="memo_storage_detail_content">
+                            <div id="memo_storage_detail_context"></div>
+                            <div id="memo_storage_detail_date"></div>
+                        </div>             
                     </div>
                 </div>
                 <div id="memo_text_content" style="display: none;">

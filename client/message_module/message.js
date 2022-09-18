@@ -134,10 +134,8 @@ function insertMessageContent(messages, type) {
 
             let msg_slider = document.getElementById('msg-slider');
             msg_slider.textContent = '';
-            for ( i; i < messages.length; i++) {
-               
-                let message = messages[i];
-    
+            for ( i; i < messages.length; i++) {    
+                let message = messages[i];  
                 let messageContent = document.createElement('div');
                 messageContent.setAttribute('class', 'message-content');
                 var sender_name = freinds_obj[messages[i].sender];
@@ -208,8 +206,7 @@ function insertMessageContent(messages, type) {
                         li.appendChild(msg_list[i - 1]);
                         msg_slider.prepend(li);
                     }
-                    console.log(messages.length);
-                    console.log(i);
+
                     if(i== messages.length -1){
                         if(type =='new'){
                             var new_span = document.createElement('span');
