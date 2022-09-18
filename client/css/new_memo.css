@@ -4,7 +4,7 @@
 #memo-container{
     position: absolute;
     top: 33vw;
-    right: 1vw;
+    right: 3vw;
     height: 30vw;
     width: 26vh;
 }
@@ -112,26 +112,29 @@
     background: rgba(0, 0, 0, 0.3);
 }
 #memo_next {
- 
-    right: -20%;
+    top:40%  !important;
+    height: 4vw!important;
+    right: -10%;
     border-radius: 7px 0px 0px 7px;
     color: #eee;
 }
 
 #memo_previous {
-    left: -20%;
+    height: 4vw!important;
+    top:40%  !important;
+    left: -3vh;
     border-radius: 0px 7px 7px 7px;
     color: #eee;
 }
-#memo-slider-wrap.active #next {
+/* #memo-slider-wrap.active #next {
     position:absolute;
-    right: -3vh;
+   
 }
 
 #memo-slider-wrap.active #previous {
     position:absolute;
     left: -3vh;
-}
+} */
 
 /*ANIMATION*/
 #memo-slider-wrap ul,

@@ -14,11 +14,11 @@ console.log("memo_icon 여기 들어옴");
 
 memo_textArea.addEventListener('click', function (e) { showKeyboard(e) });
 
-
+const client = require('./message_module/message_mqtt');
 const memo_text = document.querySelector("#memo_text");
 const memo_image = document.querySelector("#memo_image");
 const memo_record = document.querySelector("#memo_record");
-const shutter_button = document.querySelector("#shutter_button");
+const shutter_button = document.querySelector("#memo_shutter_button");
 const save_button = document.querySelectorAll('.save_button');
 
 const sttRefusalContainer = document.getElementById('stt-refusal-container')
@@ -155,7 +155,7 @@ bar_memo_button.addEventListener('click', () => {
 
         memo_container.style.display = "none";
         // camera off
-        // client.publish('camera/close', 'ok')
+        client.publish('camera/close', 'ok')
     }
 })
 
@@ -166,7 +166,8 @@ for (let i = 0; i < save_button.length; i++) {
 }
 
 shutter_button.addEventListener('click', () => {
-    client.publish('capture/camera', "start");
+    console.log('셔터 버튼 클릭')
+    client.publish('capture/camera', "memo");
 });
 
 

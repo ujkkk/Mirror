@@ -309,6 +309,16 @@ function msg_addEvent(length) {
     //set width to be 'x' times the number of slides
     var slider = document.querySelector('#msg-slider-wrap ul#msg-slider');
     slider.style.width = sliderWidth * totalSlides + 'px';
+
+     // hover
+     slideWrapper.addEventListener('mouseover', function () {
+        this.classList.add('active');
+
+    });
+    slideWrapper.addEventListener('mouseleave', function () {
+        this.classList.remove('active');
+
+    });
 }
 // next, prev
 nextBtn = document.getElementById('message-next');

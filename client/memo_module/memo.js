@@ -7,14 +7,19 @@ var slideIndex = 0;
 //items
 var memo_slides = document.querySelectorAll('#memo-slider-wrap ul li');
 //number of slides
-var totalSlides = memo_slides.length;
+var totalSlides ;
 //get the slide width
 var sliderWidth = slideWrapper.clientWidth;
 var slider = document.querySelector('#memo-slider-wrap ul#memo-slider');
 var nextBtn = document.getElementById('memo_next');
 var prevBtn = document.getElementById('memo_previous');
 
-function addEvent(){
+function addEvent(length){
+   
+    if(length%2==1)
+        totalSlides = (length/2)+0.5;
+    else totalSlides = length/2;
+    console.log('memo_addEvent :', totalSlides);
     //slide-wrap
     slideWrapper = document.getElementById('memo-slider-wrap');
     //current slideIndexition
@@ -22,7 +27,7 @@ function addEvent(){
     //items
     memo_slides = document.querySelectorAll('#memo-slider-wrap ul li');
     //number of slides
-    totalSlides = memo_slides.length;
+    //totalSlides = memo_slides.length;
     //get the slide width
     sliderWidth = slideWrapper.clientWidth;
     //set width of items
@@ -34,8 +39,8 @@ function addEvent(){
     slider.style.width = sliderWidth * totalSlides + 'px';
 
     // next, prev
-    var nextBtn = document.getElementById('memo_next');
-    var prevBtn = document.getElementById('memo_previous');
+    nextBtn = document.getElementById('memo_next');
+    prevBtn = document.getElementById('memo_previous');
     nextBtn.addEventListener('click', function () {
         plusSlides(1);
     });
@@ -103,7 +108,15 @@ function initMemo() {
 
 function create_memo_div(memos){
     var memo_list = new Array()
+    if(memos.length%2==1)
+        totalSlides = (memos.length/2)+0.5;
+    else totalSlides = memos.length/2;
+
+    let memo_slider = document.getElementById('memo-slider');
+    memo_slider.textContent = '';
+    console.log('<memos.lengt',memos.length);
     for(var i=0; i<memos.length; i++){
+        
         var memo = memos[i];
         var memo_div= document.createElement('div');
         memo_div.setAttribute('class','memo');
@@ -138,15 +151,42 @@ function create_memo_div(memos){
         memo_div.appendChild(memo_content);
         memo_div.appendChild(memo_time);
         memo_list[i] = memo_div;
-        if(i%2 != 0){
-            var li = document.createElement('li');
-            li.setAttribute('class','memo-li');
-            li.appendChild(memo_list[i]);
-            li.appendChild(memo_list[i-1]);
-            document.getElementById('memo-slider').append(li);
+
+
+        //홀수 일 때
+        if( memos.length %2==1){
+            if(i==0) continue;
+            if (i % 2 == 0) {
+                var li = document.createElement('li');
+                li.setAttribute('class', 'memo-li');
+                li.appendChild(memo_list[i]);
+                li.appendChild(memo_list[i - 1]);
+
+                document.getElementById('memo-slider').prepend(li);
+            }
+            
+        //짝수일 때  
+        }else{
+            if (i % 2 == 1) {
+                var li = document.createElement('li');
+                li.setAttribute('class', 'memo-li');
+                li.appendChild(memo_list[i]);
+                li.appendChild(memo_list[i - 1]);
+               
+                document.getElementById('memo-slider').prepend(li);
+            }
         }
     }
-    addEvent();
+
+      //홀수일 때 마지막 메시지만 li에 content 1개 삽입
+      if(memos.length %2==1){
+        var li = document.createElement('li');
+        li.setAttribute('class', 'memo-li');
+        li.appendChild(memo_list[0]);
+        document.getElementById('memo-slider').appendChild(li);
+        
+    }
+    addEvent(memos.length);
 }
 
 //메모를 2개씩 묶어서 하나의 li로 만들기
