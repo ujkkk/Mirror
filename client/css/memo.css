@@ -108,23 +108,23 @@
     background: rgba(0, 0, 0, 0.3);
 }
 #memo_next {
-    right: -20%;
+    
     border-radius: 7px 0px 0px 7px;
     color: #eee;
 }
 
 #memo_previous {
-    left: -20%;
+   
     border-radius: 0px 7px 7px 7px;
     color: #eee;
 }
 #memo-slider-wrap.active #memo_next {
-    right: -10%
+    
     
 }
 
 #memo-slider-wrap.active #memo_previous {
-    left: -10%;
+   
 }
 
 /*ANIMATION*/
