@@ -9,22 +9,19 @@ const receivedData = location.href.split('?')[1]
 let mirrorDB = require('./mirror_db')
 mirrorDB.setUser(receivedData)
     .then((user) => {
+           
+
+        // const message = require('./message_module/message')
+        // const message_storage = require('./message_module/message_storage')
         callAccess.setCall(user.id, user.name)
-        require("./message_module/record/new_m_record.js")
-        require('./message_module/message_socket')
-      
-        require("./message_module/message_icon.js")
+        require("./message_module/record/new_m_record")
+
+        require('./message_module/message')
+        require('./message_module/message_storage')
+        require("./message_module/message_icon")
         require('./memo_module/memo')
         require('./new_callbook')
-   
-
-   const message = require('./message_module/message')
-   const message_storage = require('./message_module/message_storage')
-   
-    require('./message_module/message_socket')
-    require('./memo_module/memo')
-    require('./new_callbook')
-    require('./message_module/message_icon')
+        require('./message_module/message_socket')
 })
 
 require('./weather_module/new_weather');

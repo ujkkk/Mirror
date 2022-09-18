@@ -1,6 +1,7 @@
 const mirror_db = require('../mirror_db');
+
+const message_storage = require('./message_storage');
 const message = require('./message');
-const message_storage = require('./message_storage')
 const { io } = require("socket.io-client");
 const fs = require('fs');
 const { resolve } = require('path');
@@ -10,8 +11,8 @@ const moment = require('moment');
 
 var socket = io('http://113.198.84.128:80/', { transports : ['websocket'] });
 
-
-
+console.log("$$$$$$$$$$$$$$$$$$$$$$메시지 소켓.js 호출", mirror_db.getId());
+console.log(message,message_storage)
 socket.on("connect", () => {
     console.log("connection socket server", mirror_db.getId());
 });
@@ -33,8 +34,10 @@ socket.on(`${mirror_db.getId()}`, req => {
             };
             mirror_db.createColumns('message', data)
             .then(() => {
+                message_storage.showMessageStorage();
+                
                 message.insertNewMessage();
-                message_storage.showMessageStorage();})
+               })
             break;
 
         case 'image':
@@ -75,7 +78,7 @@ socket.on(`${mirror_db.getId()}`, req => {
                       };
                       mirror_db.createColumns('message', data)
                       .then(()=> {
-                        mesaage.insertNewMessage();
+                        message.insertNewMessage();
                         message_storage.showMessageStorage();
                     })
               })
@@ -117,7 +120,7 @@ socket.on(`${mirror_db.getId()}`, req => {
                       };
                       mirror_db.createColumns('message', data)
                       .then(()=> {
-                        mesaage.insertNewMessage();
+                        message.insertNewMessage();
                         message_storage.showMessageStorage();
                       })
               })

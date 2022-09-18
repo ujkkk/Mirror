@@ -11,8 +11,8 @@ var totalSlides = memo_slides.length;
 //get the slide width
 var sliderWidth = slideWrapper.clientWidth;
 var slider = document.querySelector('#memo-slider-wrap ul#memo-slider');
-var nextBtn = document.getElementById('next');
-var prevBtn = document.getElementById('previous');
+var nextBtn = document.getElementById('memo_next');
+var prevBtn = document.getElementById('memo_previous');
 
 function addEvent(){
     //slide-wrap
@@ -34,8 +34,8 @@ function addEvent(){
     slider.style.width = sliderWidth * totalSlides + 'px';
 
     // next, prev
-    var nextBtn = document.getElementById('next');
-    var prevBtn = document.getElementById('previous');
+    var nextBtn = document.getElementById('memo_next');
+    var prevBtn = document.getElementById('memo_previous');
     nextBtn.addEventListener('click', function () {
         plusSlides(1);
     });

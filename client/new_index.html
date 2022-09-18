@@ -65,19 +65,19 @@
     </article>
     <!-- end of weather & clock & time -->
     <div id="message-container">
-        <div id="parent">
+        <div id="message-div">
+            <div class="slider-btns" id="message-next"><span>▼</span></div>
+            <div class="slider-btns" id="message-previous"><span>▲</span></div>
             <div id="message-img"><img id='message_icon' src=./image/index/message.png></div>
             <div id="message-text-div">Message</div>
-            <div id='message-contents'>
-                <ul class="message-slides" id='message-contents-ui'>
+            <!--<div id='message-contents'>-->
+
+            <div id='msg-slider-wrap'>
+                <ul id="msg-slider"></ul>
                 
-                </ul>
             </div>
-            <img id='point-imag' src='./image/index/point1.png' width="45px" height="45px">
-            <p class="message-controller">
-                <span class="prev" id='message-prev' style="visibility:hidden">&lang;</span>
-                <span class="next" id="message-next">&rang;</span>
-            </p>
+        
+            <div id='msg_index' width="45px" height="45px"></div>
             <!-- &lang: 왼쪽 방향 화살표
             &rang: 오른쪽 방향 화살표 -->
         </div>
@@ -106,8 +106,8 @@
             <div id='memo-slider-wrap'>
                 <ul id="memo-slider">
                 </ul>
-                <div class="slider-btns" id="next"><span>&rang;</span></div>
-                <div class="slider-btns" id="previous"><span>&lang;</span></div>
+                <div class="slider-btns" id="memo_next"><span>&rang;</span></div>
+                <div class="slider-btns" id="memo_previous"><span>&lang;</span></div>
             
             </div>
         </div>
