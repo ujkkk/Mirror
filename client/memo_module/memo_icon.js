@@ -28,7 +28,7 @@ const sttAlert = document.getElementById('stt-alert')
 const { write } = require("fs");
 const CMUsers = require("./CMUserInfo");
 
-let record_obj = require('./message_module/record/memo_record');
+let record_obj = require('./memo_module/memo_record');
 const { setQuarter } = require('date-fns');
 const { Store } = require('mqtt');
 
@@ -171,13 +171,17 @@ shutter_button.addEventListener('click', () => {
 
 
 function saveMemoContent(e){
-
-   if(e.target.id == "save_text_button"){
+    
+    var newDate = new Date();
+    var time = moment(newDate).format('YYYY-MM-DD HH:mm:ss');
+   
+    if(e.target.id == "save_text_button"){
         let data = {
             id:mirror_db.getId(),
-            contents:memo_textArea.value,
+            content:memo_textArea.value,
             store:1,
             delete_time:"2026-04-04 4:44:44",
+            time: time,
             type:"text"
         }
         mirror_db.createColumns('memo',data);
