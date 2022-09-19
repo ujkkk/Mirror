@@ -14,14 +14,14 @@ setTimeout(function () { // 5초 후 실행
 }, 1000)
 
 
-// 메모
+// // 메모
 // setTimeout(function () { // 5초 후 실행
 //   console.log("memo call");
-//   mqttClient.publish('memo_request', '집가고싶다라고 메모 남겨줘')
+//   mqttClient.publish('memo_request', '배고파 죽겠어라고 메모 남겨줘')
 // }, 2000)
 
 
-// 메시지 1
+// // 메시지 1
 // setTimeout(function () { // 5초 후 실행
 //   console.log("message call");
 //   mqttClient.publish('message_request', '채원?배고프다라고 메시지 보내줘')
@@ -38,3 +38,14 @@ setTimeout(function () { // 5초 후 실행
 }, 3000)
 
 
+// // 사진
+// setTimeout(function () { // 5초 후 실행
+//   console.log("memo call");
+//   mqttClient.publish('image_request', '채원')
+// }, 2000)
+
+// // 오디오
+// setTimeout(function () { // 5초 후 실행
+//   console.log("memo call");
+//   mqttClient.publish('audio_message_request', '채원')
+// }, 2000)
