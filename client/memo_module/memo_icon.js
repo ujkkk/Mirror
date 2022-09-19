@@ -31,8 +31,6 @@ const CMUsers = require("./CMUserInfo");
 let record_obj = require('./memo_module/memo_record');
 const { setQuarter } = require('date-fns');
 const { Store } = require('mqtt');
-// const { keyboard } = require('../new_keyboard_module/keyboard');
-// const keyboardTarget = require('../new_keyboard_module/keyboard');
 
 // const mqtt = require('mqtt');
 // const dbAccess = require("../mirror_db");
@@ -44,7 +42,7 @@ let setCMuser
 let setCMFriend
 let customFriend = null
 
-
+const memo_storage = require('./memo_module/memo_storage');
 /* mqtt 브로커 연결 및 topic subscribe */
 const options = { // 브로커 정보(ip, port)
     host: '127.0.0.1',
@@ -177,6 +175,7 @@ function saveMemoContent(e){
     
     var newDate = new Date();
     var time = moment(newDate).format('YYYY-MM-DD HH:mm:ss');
+
     hideKeyboard()
     if(e.target.id == "save_text_button"){
         let data = {
@@ -192,9 +191,31 @@ function saveMemoContent(e){
    }
    else if (e.target.id == "save_image_button"){
 
+        if(e.target.id == "save_text_button"){
+            hideKeyboard()
+            let data = {
+                id:mirror_db.getId(),
+                content:memo_textArea.value,
+                store:1,
+                delete_time:"2026-04-04 4:44:44",
+                time: time,
+                type:"text"
+            }
     
-   }
+            mirror_db.createColumns('memo',data).
+            then(()=>{
+                memo_storage.showMemoStorage();
+                memo_textArea.value = "";
+            })
+            
+         
+       }
+       else if (e.target.id == "save_image_button"){
+    
 
+       }
+    
+    }
 }
 
 function showTextContent() {
@@ -217,7 +238,17 @@ function showRecordContent() {
 
 // Write Mode
 function showWrite() {
+
     hideKeyboard()
+
+
+    // 처음 메시지 창을 띄울 때 text content 부터 보여주기
+    if(memo_back_button.style.display == "none"){
+        memo_write_button.style.display = "none";
+        memo_back_button.style.display = "block";
+        memo_text.checked = true;
+    }
+
     memo_write_button.style.display = "none";
     memo_back_button.style.display = "block";
     memo_player.style.display = "none";
