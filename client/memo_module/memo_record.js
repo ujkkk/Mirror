@@ -83,6 +83,7 @@ save_record_button.onclick = function (event){ // 여기서 메모 DB에 저장
         var base64Audio = base64.split(',').reverse()[0];
 
         var bstr = atob(base64Audio); // base64String
+        console.log(`memo bstr : ${bstr}`);
 
         var n = bstr.length;
         console.log("bstr.length : " + n);

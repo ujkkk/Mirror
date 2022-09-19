@@ -42,7 +42,7 @@ let setCMuser
 let setCMFriend
 let customFriend = null
 
-
+const memo_storage = require('./memo_module/memo_storage');
 /* mqtt 브로커 연결 및 topic subscribe */
 const options = { // 브로커 정보(ip, port)
     host: '127.0.0.1',
@@ -99,12 +99,38 @@ function saveMemoContent(e){
     if(e.target.id == "save_text_button"){
         hideKeyboard()
         mirror_db.addMemo(mirror_db.getId(), memo_textArea.value , 0, 'text')
+
         memo_textArea.value = "";
    }
    else if (e.target.id == "save_image_button"){
 
+        if(e.target.id == "save_text_button"){
+            hideKeyboard()
+            let data = {
+                id:mirror_db.getId(),
+                content:memo_textArea.value,
+                store:1,
+                delete_time:"2026-04-04 4:44:44",
+                time: time,
+                type:"text"
+            }
     
-   }
+            mirror_db.createColumns('memo',data).
+            then(()=>{
+                memo_storage.showMemoStorage();
+                memo_textArea.value = "";
+            })
+            
+         
+       }
+       else if (e.target.id == "save_image_button"){
+    
+
+
+       }
+    
+    }
+
 }
 
 function showTextContent() {
@@ -127,6 +153,14 @@ function showRecordContent() {
 
 // Write Mode
 function showWrite() {
+    hideKeyboard()
+
+    // 처음 메시지 창을 띄울 때 text content 부터 보여주기
+    if(memo_back_button.style.display == "none"){
+        memo_write_button.style.display = "none";
+        memo_back_button.style.display = "block";
+        memo_text.checked = true;
+    }
 
     memo_write_button.style.display = "none";
     memo_back_button.style.display = "block";
@@ -202,8 +236,11 @@ memo_record.addEventListener('change', () => {
 })
 
 function showKeyboard(e) {
-    keyboardTarget.setCurrentTarget(e.target.id);
-    keyboardTarget.keyboard.style.display = "block";
+
+    if(keyboardTarget.keyboard.style.display == "none"){
+        keyboardTarget.setCurrentTarget(e.target.id);
+        keyboardTarget.keyboard.style.display = "block";
+    }
 }
 
 function hideKeyboard() {

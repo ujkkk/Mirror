@@ -17,11 +17,21 @@ var sliderHeight = slideWrapper.clientHeight
 var slider = document.querySelector('#msg-slider-wrap ul#msg-slider');
 var nextBtn = document.getElementById('message-next');
 var prevBtn = document.getElementById('message-previous');
+const CMUsers = require('../CMUserInfo');
+const { rejects } = require('assert');
+//const socket = require('./message_socket');
 
+
+var reply_btn = document.getElementById('reply_btn');
+reply_btn.onclick= () =>{reply_message();}
+
+// var reply_text = document.getElementById('reply-text');
+// reply_text.addEventListener('change', ()=>)
+reply_btn.addEventListener('click', reply_message());
 //선택한 메시지 디테일 메시지 창에 띄우기
 function message_detail(msg_id) {
     var contents = document.getElementsByClassName('message-content')
-
+    
     for (var i = 0; i < contents.length; i++) {
         // var content = contents.item(i)
         contents[i].style.backgroundColor = 'black';
@@ -31,15 +41,11 @@ function message_detail(msg_id) {
             if(contents[i].hasChildNodes()){
                 var children = contents[i].childNodes;
                 if(children<2) continue;
-                for(var i=0; i<children.length; i++){
-                    contents[i].innerText =  (String)(contents[i].innerText).replace('new','');
-
-                  //  contents[i].removeChild(children[0]);                    
-                    } 
+                    contents[i].innerText = (String)(contents[i].innerText).replace('new','');                                 
                 }
             }       
         }
-    
+    console.log('3333');
     document.getElementById('message-detail-container').style.visibility = 'visible';
     //선택된 메시지를 message DB에서 찾음
     mirror_db.select('*', 'message', `msg_id=${msg_id}`)
@@ -50,6 +56,7 @@ function message_detail(msg_id) {
                 return;
             }
             selected_msg = selected_msg[0];
+            console.log('44444');
             //선택한 메시지 
             let message_detail_div = document.getElementById('message-detail-div')
             message_detail_div.setAttribute('value', msg_id)
@@ -105,6 +112,7 @@ function message_detail(msg_id) {
             }
             detail_time_div.innerHTML = moment(selected_msg.time).format('MM/DD HH:mm')
         })
+        
 }
 
 //해당 함수 호출시 미러 내 message DB에서 메시지를 가져와 나에게 온 메세지를 띄움
@@ -162,30 +170,9 @@ function insertMessageContent(messages, type) {
                 else
                     messageContent.innerHTML = `[${sender_name}] ${content}`
 
-
-                messageContent.addEventListener("click", function (e) {
-                    console.log("이 이벤트 리스너가 불리긴 함")
-                    let currentTargetId = e.target.value; // 현재 클릭된 li
-
-                    if (currentTargetId != lastClickedId) {  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 다를 때 -> message_detail함수 호출 + 마지막으로 클릭된 아이디 갱신
-                        console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 다를 때")
-                        console.log(`current:${currentTargetId}, last:${lastClickedId}`)
-                        message_detail(message.msg_id)
-                        lastClickedId = currentTargetId;
-                    }
-                    else {  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 같을 때 -> detail 창 닫기
-                        console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 같을 때")
-                        console.log(`current:${currentTargetId}, last:${lastClickedId}`)
-                        lastClickedId = "";
-                        e.target.style.backgroundColor = "black"
-                        document.getElementById('message-detail-container').style.visibility = 'hidden';
-                    }
-                })
+            
                 
                 msg_list[i] = messageContent;
-
-              
-
                 //홀수 일 때
                 if( messages.length %2==1){
                     if(i==0) continue;
@@ -216,6 +203,27 @@ function insertMessageContent(messages, type) {
                         }
                     }
                 }
+
+                messageContent.addEventListener("click", function (e) {
+                    //console.log("이 이벤트 리스너가 불리긴 함")
+                  
+                    let msg_id = e.target.getAttribute('value');
+                    let currentTargetId = e.target.value; // 현재 클릭된 li
+                    console.log(msg_id);
+                    if (currentTargetId != lastClickedId) {  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 다를 때 -> message_detail함수 호출 + 마지막으로 클릭된 아이디 갱신
+                        // console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 다를 때")
+                        // console.log(`current:${currentTargetId}, last:${lastClickedId}`)
+                        lastClickedId = currentTargetId;
+                        message_detail(msg_id)
+                    }
+                    else {  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 같을 때 -> detail 창 닫기
+                        // console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 같을 때")
+                        // console.log(`current:${currentTargetId}, last:${lastClickedId}`)
+                        lastClickedId = "";
+                        e.target.style.backgroundColor = "black"
+                        document.getElementById('message-detail-container').style.visibility = 'hidden';
+                    }
+                })
             }
             //홀수일 때 마지막 메시지만 li에 content 1개 삽입
             if(messages.length %2==1){
@@ -250,7 +258,6 @@ function insertMessageContent(messages, type) {
 
 
 //메시지가 새로 와서 메시지함을 갱신하는 함수
-//메시지 하나만 새로 추가
 function insertNewMessage() {
     mirror_db.select('*', 'message', `receiver = ${mirror_db.getId()}`)
         .then(messages => {
@@ -262,23 +269,74 @@ function insertNewMessage() {
 
 // detail-message 창에서 바로 답장
 //소켓으로 통신
-function reply_message(element) {
+function reply_message() {
+    console.log('reply_message 들어옴')
+    if(mirror_db.getId()==null) return;
     var receiver_id = document.getElementById('message-sender').getAttribute('value')
-    axios({
-        url: 'http://113.198.84.128:80/connect/user', // 통신할 웹문서
-        method: 'post', // 통신할 방식
-        data: { fileName: data.content }
+    if(receiver_id == 0) return;
+    //reciever 이름 알아오기
+    mirror_db.select('*', 'friend',`id=${mirror_db.getId()} and friend_id=${receiver_id}`)
+    .then((value) => {
+        if(value.length <=0) {
+            console.log('reply_message : 오류');
+            return;
+        }
+        //reciever의 접속 여부 알아내기
+        console.log('(value[0].name: ',(value[0].name));
+        axios({method:'post',url:'http://113.198.84.128:80/get/connect', data:{id:receiver_id}})
+        .then((response) =>{
+           // console.log(response);
+           if(response.connect == 'fail'){
+                console.log('reply_message : 서버에서 연결여부 불러오기 오류');
+                return;
+           }
+            //서버에 해당 유저가 없다면 오류
+            // if(values.length<=0){
+            //     console.log('reply_message : 서버에서 연결여부 불러오기 오류');
+            //     return;
+            // }
+            // console.log(values);
+
+            //답장 전달     
+            var content = document.getElementById("reply_text").value; 
+            // document.getElementById("reply-text").onkeyup = () =>{
+               
+            //     document.getElementById("reply-text").value; = document.getElementById("reply-text").value;
+            // }
+            //var content = document.getElementById('reply-text').textContent;
+            console.log('content 객체',document.getElementById('reply-text'))
+            console.log('content',content)
+            // var content = document.getElementById('reply-text').getAttribute('value');
+            // console.log('content',content)
+            var time = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+            //상대가 접속 되어 있으면 소켓으로 전달
+            if(response.connect){
+                socket.emit('realTime/message', {
+                    sender: mirror_db.getId(),
+                    receiver: receiver_id,
+                    content: content,
+                    type: 'text',
+                    send_time: time
+                });
+            //그렇지 않다면 서버 DB에 해당 메시지를 저장
+            }else{
+                //서버에 메시지를 저장하는 방법으로 메시지를 보냄
+                axios({
+                    url: 'http://113.198.84.128:80/send/text', // 통신할 웹문서
+                    method: 'post', // 통신할 방식
+                    data: { // 인자로 보낼 데이터
+                        sender: mirror_db.getId(),
+                        receiver: receiver_id,
+                        content: content,
+                        type: 'text',
+                        send_time: time
+                    }
+                }); // end of axios ...
+            }
+        }).then(()=>{document.getElementById('reply_text').value = '';})
     })
-    var content = document.getElementById('reply-text').value;
-    var time = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-    socket.emit('realTime/message', {
-        sender: mirror_db.getId(),
-        receiver: receiver_id,
-        content: content,
-        type: 'text',
-        send_time: time
-    });
-    document.getElementById('reply-text').value = '';
+ 
+   
 
 }
 

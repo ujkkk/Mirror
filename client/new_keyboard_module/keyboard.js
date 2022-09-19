@@ -126,6 +126,10 @@ function keyClickEvent(e){
 		}
 		document.getElementById(`${currentTarget}`).focus();
 	}
+	else if (key == "✕"){
+		setCurrentTarget(null);
+		keyboard.style.display="none";
+	}
 	else{
 		if(lasttext!=""){//마지막 문자가 공백이 아닐 경우만 실행 
 

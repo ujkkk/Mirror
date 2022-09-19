@@ -230,8 +230,8 @@
 
 #message-detail-div #message-content::-webkit-scrollbar{
     display: none;
-}
 
+}
 #message-detail-div #message-image {
     width: 17vw;
     height: 11vw;
@@ -245,7 +245,7 @@
     height: 20%;
 }
 
-#message-detail-div #message-reply #reply-text {
+#message-detail-div #message-reply #reply_text {
     margin-left: 10%;
     width: 100%;
     height: 65%;
@@ -259,7 +259,7 @@
     position: relative;
 }
 
-#reply-btn {
+#reply_btn{
     background: transparent;
     border: none;
     flex: 1;
@@ -269,7 +269,7 @@
     position: absolute;
 }
 
-#reply-btn img {
+#reply_btn #reply_img {
     transform: translateY(-3.3vw);
     width: 3vw;
     height: 3vw;
