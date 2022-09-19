@@ -434,6 +434,7 @@ function showRecordContent() {
 // Write Mode
 function showWrite() {
 
+    hideKeyboard()
     write_button.style.display = "none";
     back_button.style.display = "block";
     document.getElementById('message_storage_view').style.display = "none";
@@ -462,6 +463,7 @@ function showWrite() {
 
 // Store Mode
 function showStore() {
+    hideKeyboard()
     write_button.style.display = "block";
     back_button.style.display = "none";
 
@@ -502,5 +504,16 @@ record.addEventListener('change', () => {
     if (write_button.style.display == "none") showWrite(); // Writing Mode
     else showStore(); // Storage Mode
 })
+
+// keyboard
+function showKeyboard(e){
+    keyboardTarget.setCurrentTarget(e.target.id);
+    keyboardTarget.keyboard.style.display="block";
+}
+
+function hideKeyboard(){
+    keyboardTarget.setCurrentTarget(null);
+    keyboardTarget.keyboard.style.display="none";
+}
 
 module.exports = messageAccess
