@@ -40,14 +40,8 @@
         function claseSendModal(e){
            e.style =  'display: none'
         }
-        function friendAlertOff() {
-            const sendModal = document.getElementById('send-modal')
-            sendModal.style = 'display: none'
-        }
-        function sttAlertOff() {
-            const sttContainer = document.getElementById('stt-refusal-container')
-            sttContainer.style = 'display: none'
-        }
+        
+        
     </script>
 </head>
 <body>
@@ -336,8 +330,9 @@
 
     <!-- stt alert -->
     <div class="alert-container" id="stt-refusal-container" style="display: none">
-        <div class="close-area" onclick="sttAlertOff()">✕</div>
-        <div id="stt-alert"></div>
+        <div class="close-area" id="stt-close-area">✕</div>
+        <div id="stt-alert">채원님에게 '안녕'이라고 <br> 보내시겠습니까?</div>
+        <button id="stt-sned-button">send</button>
     </div>
     
     <!-- <div id="memo_ui" class="blur_effect">
@@ -367,10 +362,10 @@
             <div class="title">
                 <h3>Mirror user</h3>
             </div>
-            <div class="close-area" onclick="friendAlertOff()">✕</div>
+            <div class="close-area" id="send-modal-close">✕</div>
             <div id="user-select">
                 <div id="select-left">
-                    <input type="radio" name="user" id="inside" checked><label for="inside">미러 내부 사용자</label>
+                    <input type="radio" name="user" id="inside" checked><label id="inside-label" for="inside">미러 내부 사용자</label>
                     <div id="inside-selected" class="selected-div"></div>
                 </div>
                 <div id = "select-right">

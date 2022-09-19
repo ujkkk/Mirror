@@ -33,10 +33,23 @@ html {
 }
 
 .alert-container #stt-alert {
-    width: 100%;
-    font-size: 1.5vw;
-    height: 50%;
+    width: 80%;
+    font-size: 1.4vw;
+    height: 35%;
+    margin-top: 1.7vw;
+    padding-left: 10%;
+    padding-right: 10%;
     transform: translateY(50%);
+}
+
+#stt-sned-button  {
+    background: transparent;
+    border: none;
+    flex: 1;
+    color:white;
+    transform: translateY(3vw);
+    font-size: 1.1vw;
+    visibility :hidden;
 }
 
 #bar_container {

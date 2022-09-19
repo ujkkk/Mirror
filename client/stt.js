@@ -6,7 +6,6 @@ const options = {  //broker 연동 위한 옵션(브로커 IP 및 포트번호)
 };
 mqttClient = mqtt.connect(options);
 
-
 /* Section2. stt client 및 stt에 사용될 recorder 준비 */
 const recorder = require('node-record-lpcm16'); // recoder 사용 위한 모듈 import
 
@@ -47,21 +46,28 @@ const recognizeStream = client
     )
   );
 
-var create_memo = 0
-let geumBi = true
 let create_message = false
-let message_content
+let message_content = null
 
-const getFriendName = function (value, keyword) {
+const getFriendName = function (value) {
+  let keyword = ""
+  if (value.includes("이한테")) {
+    keyword = "이한테"
+  }
+  else if (value.includes("한테")) {
+    keyword = "한테"
+  }
+  else if (value.includes("이에게")) {
+    keyword = "이에게"
+  }
+  else if (value.includes("에게")) {
+    keyword = "에게"
+  }
+
   let callValue = value.split(keyword)
-  let callName = callValue[0].split(" ")
   message_content = callValue[1]
+  let callName = callValue[0].split(" ")
   return callName[callName.length - 1]
-}
-
-const setGeumbi = () => {
-  //geumBi = false
-  mqttClient.publish('geumBi', 'geumBi_off')
 }
 
 function stt(data) {
@@ -69,86 +75,63 @@ function stt(data) {
     ? `${data.results[0].alternatives[0].transcript}\n`
     : '\n\nReached transcription time limit, press Ctrl+C\n'
 
-  if (!geumBi) {
-    if (value.includes("금비")) {
-      mqttClient.publish('geumBi', 'geumBi_on')
-      geumBi = true
-      return `받은 내용: ${value} -> 금비 호출\n`
-    }
-    return `받은 내용: ${value} -> 금비 호출 X\n`
-  }
-  else {
     let friendName = null
-    if (value.includes("이한테")) {
-      friendName = getFriendName(value, "이한테")
-    }
-    else if (value.includes("이에게")) {
-      friendName = getFriendName(value, "이에게")
-    }
-    else if (value.includes("한테")) {
-      friendName = getFriendName(value, "한테")
-    }
-    else if (value.includes("에게")) {
-      friendName = getFriendName(value, "에게")
+
+    if (value.includes("한테") || value.includes("에게")) {
+      friendName = getFriendName(value)
     }
 
-    if (!create_message) {
-      if (value.includes("전화")) {
-        mqttClient.publish('call_request', friendName)
-        setGeumbi()
-        return `받은 내용: ${value} -> 전화 호출\n`
-      }
-      else if (value.includes("영상 통화") || value.includes("영상통화")) {
-        mqttClient.publish('video_call_request', friendName)
-        setGeumbi()
-        return `받은 내용: ${value} -> 영상통화 호출\n`
-      }
+    if (value.includes("전화")) {
+      mqttClient.publish('call_request', friendName)
+      console.log( `받은 내용: ${value} -> 전화 호출\n`)
+    }
+    else if (value.includes("영상 통화") || value.includes("영상통화")) {
+      mqttClient.publish('video_call_request', friendName)
+      console.log( `받은 내용: ${value} -> 영상통화 호출\n`)
+    }
 
-      else if (value.includes("음성 메시지") || value.includes("음성 메세지") || value.includes("음성메시지") || value.includes("음성메세지")) {
-        mqttClient.publish('audio_message_request', friendName)
-        return `받은 내용: ${value} -> 음성 메시지 호출\n`
-      }
+    else if (value.includes("음성 메시지") || value.includes("음성 메세지") || value.includes("음성메시지") || value.includes("음성메세지")) {
+      mqttClient.publish('audio_message_request', friendName)
+      console.log( `받은 내용: ${value} -> 음성 메시지 호출\n`)
+    }
 
-      else if (value.includes("메시지") || value.includes("메세지")) {
-        mqttClient.publish('message_request', friendName)
+    else if (value.includes("메시지") || value.includes("메세지")) {
+      mqttClient.publish('message_request', `${friendName}? ${message_content}`)
+      if (!value.includes("라고") && !value.includes("이라고")) {
+        create_message = true
         return `받은 내용: ${value} -> 메시지 호출\n`
       }
-
-      else if (value.includes("사진")) {
-        mqttClient.publish('image_request', friendName)
-        return `받은 내용: ${value} -> 사진 호출\n`
-      }
-
-      else if (value.includes("메모")) {
-        create_memo = 1;
-        //publish('create_memo',"create");
-        mqttClient.publish('create_memo', friendName);
-        setGeumbi()
-        return `받은 내용: ${value} -> 메모 호출\n`;
-      }
-
-      else if (value.includes("연락처")) {
-        mqttClient.publish('callbook_request', friendName)
-        setGeumbi()
-        return `받은 내용: ${value} ->  호출\n`
-      }
-
-      setGeumbi()
-      return `받은 내용: ${value}\n`;
+      console.log( `받은 내용: ${value} -> 메시지 호출\n`)
     }
-    else if (create_message) {
-      setGeumbi()
+
+    else if (value.includes("사진")) {
+      mqttClient.publish('image_request', friendName)
+      console.log( `받은 내용: ${value} -> 사진 호출\n`)
+    }
+
+    else if (value.includes("메모")) {
+      mqttClient.publish('memo_request', value);
+      console.log( `받은 내용: ${value} -> 메모 호출\n`)
+    }
+
+    else if (value.includes("연락처")) {
+      mqttClient.publish('callbook_request', friendName)
+      console.log( `받은 내용: ${value} ->  호출\n`)
+    }
+
+    if (create_message) {
       mqttClient.publish('message_content', value);
-      return `메시지 전달 내용: ${value}\n`;
+      create_message = false
+      console.log(`message_content -> ${value}`)
     }
+
+    if (value.includes("금비")) {
+      mqttClient.publish('geumBi', 'geumBi_on')
+      console.log( `받은 내용: ${value} -> 금비 호출\n`)
+    }
+
+    return ` `;
   }
-  if (create_memo == 1) {
-    create_memo = 0;
-    //publish('memo_content',value);
-    mqttClient.publish('memo_content', value);
-    return `메모 전달 내용: ${value}\n`;
-  }
-}
 
 // Start recording and send the microphone input to the Speech API.
 // Ensure SoX is installed, see https://www.npmjs.com/package/node-record-lpcm16#dependencies

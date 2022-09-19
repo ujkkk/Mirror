@@ -30,88 +30,92 @@ const callerConponent = document.getElementsByClassName('caller')
 
 let phoneIconTouch = 0
 let callAccess = {} // 모듈 제작을 위한 변수
-let friend = [{}] // 다른 사용자 DB (friend Table) 정보([{id, name}])
-let recordArray = [{}]
+let friend = [] // 다른 사용자 DB (friend Table) 정보([{id, name}])
+let recordArray = []
+
+callAccess.setFriend = (new_friend) => {
+    friend = new_friend
+}
 
 // MQTT 이용 =====================================================================
 
-/* mqtt 브로커 연결 및 topic subscribe */
-const options = { // 브로커 정보(ip, port)
-    host: '127.0.0.1',
-    port: 1883
-}
+// /* mqtt 브로커 연결 및 topic subscribe */
+// const options = { // 브로커 정보(ip, port)
+//     host: '127.0.0.1',
+//     port: 1883
+// }
 
-const mqttClient = mqtt.connect(options) // mqtt broker 연결
-mqttClient.subscribe('call_request')
-mqttClient.subscribe('video_call_request')
-mqttClient.subscribe('geumBi')
+// const mqttClient = mqtt.connect(options) // mqtt broker 연결
+// mqttClient.subscribe('call_request')
+// mqttClient.subscribe('video_call_request')
+// mqttClient.subscribe('geumBi')
 
-call_option = 0
+// call_option = 0
 
-mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 callback
-    if(topic.toString() == 'geumBi'){
-        if(message == "geumBi_on"){
-            sttAlert.innerText = '무엇을 도와드릴까요?'
-            sttRefusalContainer.style = 'display: block'
-        }
-        else {
-            sttRefusalContainer.style = 'display: none'
-        }
-    }
-    else if (topic.toString() == 'call_request') {
-        call_option = 0
-    }
-    else if(topic.toString() == 'video_call_request') {
-        call_option = 1
-    }
+// mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 callback
+//     if(topic.toString() == 'geumBi'){
+//         if(message == "geumBi_on"){
+//             sttAlert.innerText = '무엇을 도와드릴까요?'
+//             sttRefusalContainer.style = 'display: block'
+//         }
+//         else {
+//             sttRefusalContainer.style = 'display: none'
+//         }
+//     }
+//     else if (topic.toString() == 'call_request') {
+//         call_option = 0
+//     }
+//     else if(topic.toString() == 'video_call_request') {
+//         call_option = 1
+//     }
     
-    if(message == null){
-        phoneButton.click()
-    }
-    else {
-        getCallFriendName(message, call_option)
-    }
-})
+//     if(message == null){
+//         phoneButton.click()
+//     }
+//     else {
+//         getCallFriendName(message, call_option)
+//     }
+// })
 
-const getCallFriendName = function(name, call_option) {
-    dbAccess.select(`name, friend_id`,'friend',`id=${dbAccess.getId()} and name like '%${name}%'`)
-    .then((value)=>{
-        if(value.length==0){
-            console.log('이름이 존재하지 않습니다')
-            sttAlert.innerText = `${name}이를 찾을 수 없습니다`
-            sttRefusalContainer.style = 'display: block'
-        }
-        else if(value.length>=2) {
-            console.log('이름이 두개이상입니다'+value[0].name+', '+value[1].name)
+// const getCallFriendName = function(name, call_option) {
+//     dbAccess.select(`name, friend_id`,'friend',`id=${dbAccess.getId()} and name like '%${name}%'`)
+//     .then((value)=>{
+//         if(value.length==0){
+//             console.log('이름이 존재하지 않습니다')
+//             sttAlert.innerText = `${name}이를 찾을 수 없습니다`
+//             sttRefusalContainer.style = 'display: block'
+//         }
+//         else if(value.length>=2) {
+//             console.log('이름이 두개이상입니다'+value[0].name+', '+value[1].name)
 
-            sttAlert.innerText = '이름이 두개이상입니다 '+value[0].name+', '+value[1].name
-            sttRefusalContainer.style = 'display: block'
-            setTimeout(function () { // 5초 후 실행
-                sttRefusalContainer.style = 'display: none'
-                phoneContainer.style = 'display: block'
-                callRecordComponent.style = 'display: none'
-                addressBookComponent.style = 'display: block'
-                recordSetComponent.style = 'display: none'
-            }, 5000)
+//             sttAlert.innerText = '이름이 두개이상입니다 '+value[0].name+', '+value[1].name
+//             sttRefusalContainer.style = 'display: block'
+//             setTimeout(function () { // 5초 후 실행
+//                 sttRefusalContainer.style = 'display: none'
+//                 phoneContainer.style = 'display: block'
+//                 callRecordComponent.style = 'display: none'
+//                 addressBookComponent.style = 'display: block'
+//                 recordSetComponent.style = 'display: none'
+//             }, 5000)
             
 
-            friend = [{}]
-            for (let i = 0; i < value.length; i++) {
-                friend[i] = { "id": value[i].friend_id, "name": value[i].name }
-            }
-            showCallAddress() // friend 목록 보여줌 
-        }
-        else {
-            console.log(`이름은 ${value[0].name}`)
-            sttAlert.innerText = `${name}님에게 전화 걸겠습니다`
-            sttRefusalContainer.style = 'display: block'
-            setTimeout(function () { // 5초 후 실행
-                sttRefusalContainer.style = 'display: none'
-                callAccess.startCall({ 'id': value[0].friend_id, 'name': value[0].name }, call_option)
-            }, 5000)
-        }
-    })
-}
+//             friend = []
+//             for (let i = 0; i < value.length; i++) {
+//                 friend[i] = { "id": value[i].friend_id, "name": value[i].name }
+//             }
+//             showCallAddress() // friend 목록 보여줌 
+//         }
+//         else {
+//             console.log(`이름은 ${value[0].name}`)
+//             sttAlert.innerText = `${name}님에게 전화 걸겠습니다`
+//             sttRefusalContainer.style = 'display: block'
+//             setTimeout(function () { // 5초 후 실행
+//                 sttRefusalContainer.style = 'display: none'
+//                 callAccess.startCall({ 'id': value[0].friend_id, 'name': value[0].name }, call_option)
+//             }, 5000)
+//         }
+//     })
+// }
 
 // BUTTON LISTENER ============================================================
 
@@ -167,7 +171,7 @@ const setCallRecord = async function () {
     callRecord.innerHTML = ""
     dbAccess.select('state, friend_id, call_time, call_option', 'call_record', `id=${dbAccess.getId()}`) // 현재 call_record정보 불러오기
         .then((value) => {
-            recordArray = [{}]
+            recordArray = []
             for (let i = 0; i < value.length; i++) {
                 recordArray[i] = { "state": value[i].state, "friend_id": value[i].friend_id, 'call_time': value[i].call_time, 'call_option': value[i].call_option }
             }
@@ -180,7 +184,7 @@ const setAbsensce = async function () {
     callRecord.innerHTML = ""
     dbAccess.select('friend_id, call_time, call_option', 'call_record', `id=${dbAccess.getId()} and state=2`) // 현재 call_record정보 불러오기
         .then((value) => {
-            recordArray = [{}]
+            recordArray = []
             for (let i = 0; i < value.length; i++) {
                 recordArray[i] = { "state": 2, "friend_id": value[i].friend_id, 'call_time': value[i].call_time, 'call_option':value[i].call_option }
             }
@@ -288,6 +292,8 @@ function showCallAddress() {
         addressBookComponent.append(div)
     }
 }
+
+callAccess.showCallAddress = showCallAddress
 
 /* 선택한 mirror에 전화 걸기 -> 해당 미러 socket room 입장 */
 callAccess.startCall = function (mirror, callOption) {
