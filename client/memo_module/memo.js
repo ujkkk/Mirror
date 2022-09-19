@@ -108,7 +108,7 @@ function initMemo() {
 
 function create_memo_div(memos){
     var memo_list = new Array()
-<<<<<<< Updated upstream
+
     if(memos.length%2==1)
         totalSlides = (memos.length/2)+0.5;
     else totalSlides = memos.length/2;
@@ -116,9 +116,7 @@ function create_memo_div(memos){
     let memo_slider = document.getElementById('memo-slider');
     memo_slider.textContent = '';
     console.log('<memos.lengt',memos.length);
-=======
-   
->>>>>>> Stashed changes
+
     for(var i=0; i<memos.length; i++){
         
         var memo = memos[i];
