@@ -87,6 +87,23 @@
     width: 100%;
     height: 100%;
 }
+
+.memo .memo-content>#audio-img{
+    width: 50px;
+    height: 50px;
+    display:inline-block;
+    margin: 0 auto;
+    margin-top:40px;
+}
+
+.memo .memo-contnet #slide_memo_player{
+    position: absolute; 
+    display: inline-block; 
+    left: 50%; 
+    top: 240px; 
+    transform: translate(-50%, -50%);
+}
+
 .memo .memo-time{
     margin-top: 5%;
     margin-left: 10%;

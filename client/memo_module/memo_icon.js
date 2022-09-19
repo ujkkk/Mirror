@@ -177,6 +177,7 @@ function saveMemoContent(e){
     var time = moment(newDate).format('YYYY-MM-DD HH:mm:ss');
    
     if(e.target.id == "save_text_button"){
+        hideKeyboard()
         let data = {
             id:mirror_db.getId(),
             content:memo_textArea.value,

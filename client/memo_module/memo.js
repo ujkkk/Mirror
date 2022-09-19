@@ -108,6 +108,7 @@ function initMemo() {
 
 function create_memo_div(memos){
     var memo_list = new Array()
+<<<<<<< Updated upstream
     if(memos.length%2==1)
         totalSlides = (memos.length/2)+0.5;
     else totalSlides = memos.length/2;
@@ -115,9 +116,13 @@ function create_memo_div(memos){
     let memo_slider = document.getElementById('memo-slider');
     memo_slider.textContent = '';
     console.log('<memos.lengt',memos.length);
+=======
+   
+>>>>>>> Stashed changes
     for(var i=0; i<memos.length; i++){
         
         var memo = memos[i];
+        console.log(i,memo)
         var memo_div= document.createElement('div');
         memo_div.setAttribute('class','memo');
 
@@ -142,9 +147,49 @@ function create_memo_div(memos){
                 image_forlder = './image/memo/'
                 memo_content.innerHTML = '';
                 let img = document.createElement('img')
+                
                 img.src = image_forlder + memo.content + '.jpg';
                 console.log('img.src :' + img.src)
+
                 memo_content.appendChild(img);
+                break;
+            case 'audio':
+                record_forlder = './memo_module/record/'
+                let audio_img = document.createElement('img')
+                audio_img.src = "./image/index/play.png"
+                audio_img.value = "0"
+                audio_img.id = "audio-img"
+
+                let audio_player = document.createElement('audio')
+                audio_player.style = "position: absolute; visibility:hidden; left: 50%; top: 240px; transform: translate(-50%, -50%);"
+                audio_player.id = "slide_memo_player"
+                audio_player.controls="controls"
+                audio_player.style.width="80%";
+                audio_player.style.height= "20px";
+                audio_player.src = record_forlder+memo.content+".wav"
+
+                audio_img.addEventListener("click",function(e){
+                    console.log("audio_img clicked 됨")
+
+                    if (e.target.value == "0"){
+                        e.target.value = "1"
+                        audio_player.play();
+                    }
+                    else {
+                        e.target.value = "0"
+                        audio_player.pause();
+                    }
+                })
+                audio_player.addEventListener('play',()=>{audio_img.src = "./image/index/stop.png"})
+                audio_player.addEventListener('pause',()=>{ audio_img.src = "./image/index/play.png"})
+                audio_player.addEventListener('ended',function(){
+                    audio_img.src = "./image/index/play.png"
+                    audio_img.value = "0"
+                })
+              
+
+                memo_content.appendChild(audio_img);
+                memo_content.appendChild(audio_player)
                 break;
         }    
 
