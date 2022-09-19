@@ -2,7 +2,7 @@
 let dbAccess = {};
 let id;
 
-let mirror_id = 200; 
+let mirror_id; 
 
 let name;
 
