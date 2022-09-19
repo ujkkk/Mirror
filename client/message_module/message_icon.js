@@ -78,6 +78,8 @@ function friendAlertOff() {
 bar_message_button.addEventListener('click', () => {
     console.log('bar_message_button click!');
     document.querySelector("#textArea").value = "";
+    customFriend = null
+    customOption = false
     if (message_memo_container.style.display == "none") {
         message_memo_container.style.display = "block"
 
@@ -98,9 +100,6 @@ bar_message_button.addEventListener('click', () => {
         client.publish('camera/on', "start");
     }
     else {
-        if (customOption) {
-            customOption = false
-        }
 
         message_memo_container.style.display = "none";
         // camera off
@@ -438,7 +437,7 @@ function showWrite() {
     back_button.style.display = "block";
     document.getElementById('message_storage_view').style.display = "none";
     // 라디오 버튼 체크 확인
-    let radio = document.querySelectorAll(".memo_option_radio");
+    let radio = document.querySelectorAll(".option_radio");
     // var radio = document.getElementsByName("option");
     var sel_type = null;
     for (var i = 0; i < radio.length; i++) {
@@ -464,9 +463,10 @@ function showWrite() {
 function showStore() {
     write_button.style.display = "block";
     back_button.style.display = "none";
+    
 
     // 라디오 버튼 체크 확인
-    let radio = document.querySelectorAll(".memo_option_radio");
+    let radio = document.querySelectorAll(".option_radio");
     var sel_type = null;
     for (var i = 0; i < radio.length; i++) {
         if (radio[i].checked == true) sel_type = radio[i].value;
@@ -502,5 +502,16 @@ record.addEventListener('change', () => {
     if (write_button.style.display == "none") showWrite(); // Writing Mode
     else showStore(); // Storage Mode
 })
+
+function showKeyboard(e) {
+    keyboardTarget.setCurrentTarget(e.target.id);
+    keyboardTarget.keyboard.style.display = "block";
+}
+
+function hideKeyboard() {
+    keyboardTarget.setCurrentTarget(null);
+    keyboardTarget.keyboard.style.display = "none";
+}
+
 
 module.exports = messageAccess

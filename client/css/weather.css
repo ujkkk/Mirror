@@ -51,20 +51,3 @@
     line-height: 2;
     /* border: solid 2px hotpink; */
 }
-
-.wi-degrees {
-    font-size: 100px;
-    padding-right: 10px;
-    margin-left: -5px;
-}
-
-.wi-humidity {
-    font-size: 20px;
-}
-
-#weather {
-    margin-top: 3px;
-    padding-right: 5px;
-    font-size: 15px;
-    font-family: 'IBM Plex Sans KR', sans-serif;
-}

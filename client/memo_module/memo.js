@@ -118,17 +118,31 @@ function create_memo_div(memos){
     console.log('<memos.lengt',memos.length);
 
     for(var i=0; i<memos.length; i++){
-        
         var memo = memos[i];
-        console.log(i,memo)
-        var memo_div= document.createElement('div');
+        console.log(i,memo, memos[i])
+        const memo_div = document.createElement('div');
         memo_div.setAttribute('class','memo');
+        memo_div.id = memos[i].seq;
 
-        var memo_content = document.createElement('div');
+        const memo_store = document.createElement('div');
+        memo_store.setAttribute('class','memo_store');
+
+        if (memo.store == 1)
+            memo_store.style.visibility = 'visible';
+        else
+            memo_store.style.visibility = 'hidden';
+
+        const store_image = document.createElement('img');
+        store_image.src = "./image/index/star_icon.png";
+        memo_store.prepend(store_image)
+        memo_div.prepend(memo_store)
+
+        const memo_content = document.createElement('div');
         memo_content.setAttribute('class','memo-content');
-        var memo_time = document.createElement('div');
+        const memo_time = document.createElement('div');
         memo_time.setAttribute('class','memo-time')
 
+        memo_time.addEventListener("click", function () { setStore(memo_div.id) });
         //time
         time= moment(memo.time).format('MM/DD')
         // time = (String(memo.time)).substring(5,memo_time.length);
@@ -159,12 +173,11 @@ function create_memo_div(memos){
                 audio_img.id = "audio-img"
 
                 let audio_player = document.createElement('audio')
-                audio_player.style = "position: absolute; visibility:hidden; left: 50%; top: 240px; transform: translate(-50%, -50%);"
+                audio_player.style = "visibility:hidden"
                 audio_player.id = "slide_memo_player"
                 audio_player.controls="controls"
-                audio_player.style.width="80%";
-                audio_player.style.height= "20px";
                 audio_player.src = record_forlder+memo.content+".wav"
+                memo_content.appendChild(audio_player);
 
                 audio_img.addEventListener("click",function(e){
                     console.log("audio_img clicked 됨")
@@ -184,8 +197,6 @@ function create_memo_div(memos){
                     audio_img.src = "./image/index/play.png"
                     audio_img.value = "0"
                 })
-              
-
                 memo_content.appendChild(audio_img);
                 memo_content.appendChild(audio_player)
                 break;
@@ -253,5 +264,59 @@ function create_list(memo_list){
         document.getElementById('memo-slider').append(li);
     }
 }
+
+/* store을 변경하는 함수 */
+// seq 번호를 변수로 받아 그 seq의 store 값을 알아내 값에 1을 더해 2로 나누어 store값을 변경
+const setStore = function (seq) {
+    console.log('setStore call: ' + seq);
+    dbAccess.select('store', 'memo', `id=${dbAccess.getId()} and seq=${seq}`)
+        .then(value => {
+            // store가 0일 경우 1로, 1일 경우 0으로
+            const store = (value[0].store + 1) % 2;
+            /* delete time 설정 */
+            // 현재 시간 가져오기
+            var newDate = new Date();
+            // delecte_time 형식 지정
+            var time = moment(newDate).format('YYYY-MM-DD HH:mm:ss');
+            // 변화에 따른 db 업데이트
+            dbAccess.update('memo', `store = ${store}`, `id=${dbAccess.getId()} and seq=${seq}`);
+            // store가 1이 될 경우 고정 아이콘 띄우기
+
+            console.log(value[0].store);
+            if (store == 1){
+                document.getElementById(seq).firstChild.style.visibility = 'visible';
+            }
+            else {
+                document.getElementById(seq).firstChild.style.visibility = 'hidden';
+                dbAccess.update('memo', `delete_time = '${time}'`, `id=${dbAccess.getId()} and seq=${seq}`);
+            }
+        });
+}
+
+
+/* mysql의 행의 변화(삭제, 삽입, 수정)가 생겼을 때 이벤트 처리 기능 */
+var MySQLEvents = require('mysql-events');
+// 데이터베이스 연결
+var dsn = {
+    host: 'localhost',
+    user: 'root',
+    password: '1234',
+};
+
+var mysqlEventWatcher = MySQLEvents(dsn);
+
+// watcher 은 감시자
+var watcher = mysqlEventWatcher.add(
+    // mirror_db라는 DB에서 memo라는 테이블의 변화가 생겼을 때를 감지하게 설정
+    'mirror_db.memo',
+
+    function (oldRow, newRow, event) {
+        // 행이 삽입됬을 때 호출
+        console.log('sticker.js: start');
+        initMemo();
+    },
+    'Active'
+);
+
 
 initMemo();

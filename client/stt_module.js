@@ -35,6 +35,7 @@ let setCMFriend
 let messageValue = null
 let geumBiTime
 let sttAlertTime
+let messageTime
 
 // stt 받기 ===========================================================
 
@@ -68,7 +69,7 @@ mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 
     if (create_message) {
         // 메시지 내용 입력 =======================================================================================================
         if (topic.toString() == 'message_content') {
-            clearTimeout(messageWaiting)
+            clearTimeout(messageTime)
             clearTimeout(sttAlertTime)
             setGeumBi()
             if (!messageAccess.getcustomOption()) {
@@ -308,7 +309,7 @@ function MessageFriendCheck(user, friend) {
     }
     sttRefusalContainer.style = 'display: block'
     create_message = true
-    messageWaiting = setTimeout(function () { // 10초 후 일시정지
+    messageTime = setTimeout(function () { // 10초 후 일시정지
         create_message = false
         sttAlertOff()
         setGeumBi()

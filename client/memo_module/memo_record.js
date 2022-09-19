@@ -112,7 +112,7 @@ save_record_button.onclick = function (event){ // 여기서 메모 DB에 저장
         }
         console.log(`data  = === == ${data.content}`)
     
-        await mirror_db.createColumns('memo',data)
+        mirror_db.addMemo(mirror_db.getId(), save_time , 0, "audio")
 
         memo_player.style.display = "none";
         save_record_button.style.display = "none";
