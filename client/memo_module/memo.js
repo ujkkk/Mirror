@@ -164,6 +164,7 @@ function create_memo_div(memos){
                 audio_player.style.width="80%";
                 audio_player.style.height= "20px";
                 audio_player.src = record_forlder+memo.content+".wav"
+                memo_content.appendChild(audio_player);
 
                 audio_img.addEventListener("click",function(e){
                     console.log("audio_img clicked 됨")
