@@ -418,6 +418,7 @@ function setRemoteStream(event) {
 /* 원격 스트림을 위한 설정, 다른이에게 내 비디오 condidate 주기 */
 function sendIceCandidate(event) {
   setTimeout(function () { // 10초 후 일시정지
+
     if (event.candidate) {
     
       roomId = roomInformation.newRoomId

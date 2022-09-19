@@ -10,11 +10,11 @@ html {
 
 /* ****** init.html css ****** */
 .container {
-    position:absolute;
+    /* position:absolute;
     top: 70%;
     left:50%;
     transform: translate(-50%, -50%);
-    text-align: center;
+    text-align: center; */
 }
 img{
     display: inline-block;

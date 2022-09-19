@@ -84,3 +84,9 @@ Button:active{
     top: 60%;
     margin: 2vw;
 }
+
+#memo_player{
+    position: relative;
+    top: 60%;
+    margin: 2vw;
+}

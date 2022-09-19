@@ -1,6 +1,7 @@
 const _db = require('../mirror_db')
 const moment = require('moment')
 
+
 function showMessageStorage() {
     console.log('showMessageStorage');
     _db.select('*', 'message', `receiver =${_db.getId()}`)
@@ -12,6 +13,7 @@ function showMessageStorage() {
 var freinds_obj2 = {};
 function create_storage(messages) {
 
+    document.getElementById('message_storage_contents').replaceChildren();
     var message_list = new Array();
     freinds_obj = {};
     _db.select('*', 'friend', `id=${_db.getId()}`)
@@ -23,7 +25,6 @@ function create_storage(messages) {
         }).then(() => {
 
             for (var i = 0; i < messages.length; i++) {
-
                 var message = messages[i];
                 var sender = freinds_obj[message.sender];
                 if (sender == 0) return;
@@ -75,6 +76,7 @@ function create_storage(messages) {
         })
 }
 
+
 var currunt_sender = '';
 //메시지 함에서 오른쪽 메시지 클릭시 과거의 메시지 모두 출력
 function message_storage_detail(e) {
@@ -112,6 +114,7 @@ function message_storage_detail(e) {
                         let img = document.createElement('img');
                         img.src = './image/message/' + message.content + '.jpg';
                         context.appendChild(img);
+                        break;
                     case 'audio':
                         var audio_folder = './message_module/record/audio/client/';
                         var audio = document.createElement('audio');
@@ -119,17 +122,16 @@ function message_storage_detail(e) {
                         audio.controls = 'controls';
                         audio.src = audio_folder + message.content + '.wav';
                         context.appendChild(audio);
+                        break;
 
                 }
                 content.appendChild(context);
                 content.appendChild(date);
-
                 contents.appendChild(content);
+
 
             })
 
-
         })
-
-}
-showMessageStorage();
+    }
+module.exports = { showMessageStorage }

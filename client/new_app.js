@@ -9,9 +9,14 @@ const receivedData = location.href.split('?')[1]
 let mirrorDB = require('./mirror_db')
 mirrorDB.setUser(receivedData)
     .then((user) => {
+           
+
+        // const message = require('./message_module/message')
+        // const message_storage = require('./message_module/message_storage')
         callAccess.setCall(user.id, user.name)
-        require("./message_module/record/new_m_record.js")
-        require('./message_module/message_socket')
+        require("./message_module/record/new_m_record")
+
+        require('./message_module/message')
         require('./message_module/message_storage')
         require('./memo_module/memo')
         require('./new_callbook')
@@ -23,7 +28,6 @@ mirrorDB.setUser(receivedData)
     require('./memo_module/memo')
     require('./new_callbook')
     require('./message_module/message_icon')
-})
 
 require('./weather_module/new_weather');
 
@@ -35,8 +39,6 @@ var datas = [];
 
 axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
     .then(response => {
-
-        console.log("app.js axios test | get data : " + response.data.status);
 
         for (let i = 0; i < response.data.contents.length; i++) {
             datas[i] = response.data.contents[i];
@@ -52,7 +54,6 @@ axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
                 type: '',
                 send_time: send_time
             };
-            console.log(data);
             //DB에 삽입
             switch (datas[i].type) {
                 case 'text':
@@ -125,8 +126,20 @@ axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
                     })
             }
         }
-    }).finally(() => {
+    }).then(() => {
         const message = require('./message_module/message')
+        message.initMessages()
+        const message_storage = require('./message_module/message_storage')
+        message_storage.showMessageStorage();
+        const memo_stroage = require('./memo_module/memo_storage');
+        memo_stroage.showMemoStorage();
+    }).then(() =>{
+        //서버에게 메시지 잘 받았다고 보내기
+        axios({
+            url: 'http://113.198.84.128:80/set/userState', // 통신할 웹문서
+            method: 'post', // 통신할 방식
+            data: { id:mirrorDB.getId()}
+        })
     })
 // const message = require('./message_module/message')
 // message.initMessages();

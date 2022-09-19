@@ -100,10 +100,6 @@
     cursor: pointer;
     color:white;
     z-index: 100;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -ms-user-select: none;
     -webkit-transition: all 0.1s ease;
     -o-transition: all 0.1s ease;
     transition: all 0.1s ease;
@@ -111,24 +107,24 @@
 .slider-btns:hover {
     background: rgba(0, 0, 0, 0.3);
 }
-#next {
-    right: -20%;
+#memo_next {
+    
     border-radius: 7px 0px 0px 7px;
     color: #eee;
 }
 
-#previous {
-    left: -20%;
+#memo_previous {
+   
     border-radius: 0px 7px 7px 7px;
     color: #eee;
 }
-#memo-slider-wrap.active #next {
-    right: -10%
+#memo-slider-wrap.active #memo_next {
+    
     
 }
 
-#memo-slider-wrap.active #previous {
-    left: -10%;
+#memo-slider-wrap.active #memo_previous {
+   
 }
 
 /*ANIMATION*/

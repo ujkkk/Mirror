@@ -1,83 +1,45 @@
 const mirror_db = require('../mirror_db');
-const socket = require('./message_socket')
+// const socket = require('./message_socket')
 const moment = require('moment');
 let fs = require('fs');
-
-console.log('message call')
-
-const slides = document.querySelector('.message-slides'); //전체 슬라이드 컨테이너
-const slideImg = document.querySelectorAll('.message-slides li'); //모든 슬라이드들
-let currentIdx = 0; //현재 슬라이드 index
-const slideCount = 2; // 슬라이드 개수
-const prev = document.querySelector('#message-prev'); //이전 버튼
-const next = document.querySelector('#message-next'); //다음 버튼
-const slideWidth = 36.8; //한개의 슬라이드 넓이
-const slideMargin = 2; //슬라이드간의 margin 값
-const messageSendButton = document.getElementById('reply-btn')
-
-messageSendButton.addEventListener('click', () => {
-    reply_message()
-})
-
-//전체 슬라이드 컨테이너 넓이 설정
-slides.style.width = (slideWidth + slideMargin) * slideCount + 'vh';
-
-function moveSlide(num) {
-
-    currentIdx = num;
-    slides.style.left = -  num * (slideWidth - 0.8) + 'vh';
-    if (num % 2) {
-        document.getElementById('point-imag').src = './image/index/point2.png'
-        document.getElementById('message-prev').style.visibility = 'visible'
-        document.getElementById('message-next').style.visibility = 'hidden'
-    } else {
-        document.getElementById('point-imag').src = './image/index/point1.png'
-        document.getElementById('message-prev').style.visibility = 'hidden'
-        document.getElementById('message-next').style.visibility = 'visible'
-    }
-    
-    //   if( currentIdx %2==0){
-    //     console.log('currentIdx : '+currentIdx);
-    //     //slides.style.top =  -parseInt(num/2) *50 + 'px';
-    //     slides.style.left =0 + 'px';
-    // }
-    //   else{
-
-    //     slides.style.top =  parseInt((num/2)) *50 + 'px';
-    //     slides.style.left = -num * 285 + 'px';
-    //   }
-}
-
-prev.addEventListener('click', () => {
-    /*첫 번째 슬라이드로 표시 됐을때는 
-    이전 버튼 눌러도 아무런 반응 없게 하기 위해 
-    currentIdx !==0일때만 moveSlide 함수 불러옴 */
-
-    if (currentIdx !== 0) moveSlide(currentIdx - 1);
-});
-
-next.addEventListener('click', () => {
-    /* 마지막 슬라이드로 표시 됐을때는 
-    다음 버튼 눌러도 아무런 반응 없게 하기 위해
-    currentIdx !==slideCount - 1 일때만 
-    moveSlide 함수 불러옴 */
-    if (currentIdx !== slideCount - 1) {
-        moveSlide(currentIdx + 1);
-    }
-});
-
+const { showMessageStorage } = require('./message_storage');
+//slide-wrap
+var slideWrapper = document.getElementById('msg-slider-wrap');
+//current slideIndexition
+var slideIndex = 0;
+//items
+var slides = document.querySelectorAll('#msg-slider-wrap ul li');
+//number of slides
+let totalSlides;
+//get the slide width
+var sliderWidth = slideWrapper.clientWidth;
+var sliderHeight = slideWrapper.clientHeight
+var slider = document.querySelector('#msg-slider-wrap ul#msg-slider');
+var nextBtn = document.getElementById('message-next');
+var prevBtn = document.getElementById('message-previous');
 
 //선택한 메시지 디테일 메시지 창에 띄우기
 function message_detail(msg_id) {
     var contents = document.getElementsByClassName('message-content')
+
     for (var i = 0; i < contents.length; i++) {
         // var content = contents.item(i)
         contents[i].style.backgroundColor = 'black';
         if (contents[i].getAttribute('value') == msg_id) {
             contents[i].style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-        }
+            //new 떼기
+            if(contents[i].hasChildNodes()){
+                var children = contents[i].childNodes;
+                if(children<2) continue;
+                for(var i=0; i<children.length; i++){
+                    contents[i].innerText =  (String)(contents[i].innerText).replace('new','');
 
-    }
+                  //  contents[i].removeChild(children[0]);                    
+                    } 
+                }
+            }       
+        }
+    
     document.getElementById('message-detail-container').style.visibility = 'visible';
     //선택된 메시지를 message DB에서 찾음
     mirror_db.select('*', 'message', `msg_id=${msg_id}`)
@@ -147,92 +109,143 @@ function message_detail(msg_id) {
 
 //해당 함수 호출시 미러 내 message DB에서 메시지를 가져와 나에게 온 메세지를 띄움
 function initMessages() {
+    console.log('#####initMessages#####');
     message_list = Array()
     mirror_db.select('*', 'message', `receiver = ${mirror_db.getId()}`)
-        .then(messages => {
-            messages.forEach(message => { message_list.unshift(message); })
-            for (var i = 0; i < 4; i++) {
-                insertMessageContent(message_list[i], 'init');
-            }
+        .then(messages => { insertMessageContent(messages, 'init') })
 
-            // insertMessageContent(message_list[2], 'init');
-            // insertMessageContent(message_list[1], 'init');
-            // insertMessageContent(message_list[3], 'init');
-            // while(message_list.length>0){
-            //     //리스트에서 가장 앞 원소를 꺼냄
-            //     message = message_list.shift();
-            //     console.log(message)
-            //     insertMessageContent(message, 'init');
-            // }
-
-        })
-
-    // message_list.forEach(message => { })
 }
 
 
 //message 객체를 message 목록(html)에 삽입
 let lastClickedId; // 마지막으로 클릭된 msg li의 id
-function insertMessageContent(message, type) {
-
-    let message_contents_ui = document.getElementById('message-contents-ui');
-    let messageContent = document.createElement('li');
-    messageContent.setAttribute('class', 'message-content');
-    messageContent.setAttribute('value', message.msg_id);
-    //messageContent.setAttribute('onclick', `message_detail(${message.msg_id})`);
-    //보낸 사람이 누군지 friend DB에서 이름을 찾음
-    mirror_db.select('name', 'friend', `friend_id =${message.sender}`)
-        .then(sender => {
-            let content;
-            //message 미리보기 내용
-            switch (message.type) {
-                case 'text':
-                    content = message.content;
-                    if (content.length > 12)
-                        content = content.substring(0, 12) + ' ...'
-                    break;
-                case 'image':
-                    content = '(이미지)';
-                    break;
-                case 'audio':
-                    content = '(음성 메시지)';
-                    break;
-            }
-
-            //보낸이
-            if (sender.length <= 0) {
-                messageContent.innerHTML = `[알 수 없음] ${content}`
-            }
-            else
-                messageContent.innerHTML = `[${sender[0].name}] ${content}`
-
-            switch (type) {
-                case 'init':
-                    break;
-                case 'new':
-                    messageContent.style.color = 'blue';
-                    break;
-            }
-            message_contents_ui.prepend(messageContent);
-            messageContent.addEventListener("click", function (e) { 
-                console.log("이 이벤트 리스너가 불리긴 함")
-                let currentTargetId = e.target.value; // 현재 클릭된 li
-               
-                if(currentTargetId != lastClickedId){  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 다를 때 -> message_detail함수 호출 + 마지막으로 클릭된 아이디 갱신
-                    console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 다를 때")
-                    console.log(`current:${currentTargetId}, last:${lastClickedId}`)
-                    message_detail(message.msg_id) 
-                    lastClickedId = currentTargetId;
-                }
-                else {  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 같을 때 -> detail 창 닫기
-                    console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 같을 때")
-                    console.log(`current:${currentTargetId}, last:${lastClickedId}`)
-                    lastClickedId = "";
-                    e.target.style.backgroundColor = "black"
-                    document.getElementById('message-detail-container').style.visibility = 'hidden';
-                }
+function insertMessageContent(messages, type) {
+    var freinds_obj = {};
+    var msg_list = new Array()
+    //friend {id : name} 객체 생성
+    mirror_db.select('*', 'friend', `id=${mirror_db.getId()}`)
+        .then(friends => {
+            friends.forEach(element => {
+                freinds_obj[element.friend_id] = element.name;
             })
         })
+        .then(() => {
+            var i=0;
+
+            let msg_slider = document.getElementById('msg-slider');
+            msg_slider.textContent = '';
+            for ( i; i < messages.length; i++) {    
+                let message = messages[i];  
+                let messageContent = document.createElement('div');
+                messageContent.setAttribute('class', 'message-content');
+                var sender_name = freinds_obj[messages[i].sender];
+                let content;
+                //message 미리보기 내용
+                switch (message.type) {
+                    case 'text':
+                        content = message.content;
+                        if (content.length > 12)
+                            content = content.substring(0, 12) + ' ...'
+                        break;
+                    case 'image':
+                        content = '(이미지)';
+                        break;
+                    case 'audio':
+                        content = '(음성 메시지)';
+                        break;
+                }
+                //보낸이
+                console.log('sender_name.type',sender_name);
+                if (sender_name == null) {
+                    messageContent.innerHTML = `[${message.sender}] ${content}`
+                }
+                else
+                    messageContent.innerHTML = `[${sender_name}] ${content}`
+
+
+                messageContent.addEventListener("click", function (e) {
+                    console.log("이 이벤트 리스너가 불리긴 함")
+                    let currentTargetId = e.target.value; // 현재 클릭된 li
+
+                    if (currentTargetId != lastClickedId) {  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 다를 때 -> message_detail함수 호출 + 마지막으로 클릭된 아이디 갱신
+                        console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 다를 때")
+                        console.log(`current:${currentTargetId}, last:${lastClickedId}`)
+                        message_detail(message.msg_id)
+                        lastClickedId = currentTargetId;
+                    }
+                    else {  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 같을 때 -> detail 창 닫기
+                        console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 같을 때")
+                        console.log(`current:${currentTargetId}, last:${lastClickedId}`)
+                        lastClickedId = "";
+                        e.target.style.backgroundColor = "black"
+                        document.getElementById('message-detail-container').style.visibility = 'hidden';
+                    }
+                })
+                
+                msg_list[i] = messageContent;
+
+              
+
+                //홀수 일 때
+                if( messages.length %2==1){
+                    if(i==0) continue;
+                    if (i % 2 == 0) {
+                        var li = document.createElement('li');
+                        li.setAttribute('class', 'msg-li');
+                        li.appendChild(msg_list[i]);
+                        li.appendChild(msg_list[i - 1]);
+                        msg_slider.prepend(li);
+                    }
+                    
+                //짝수일 때  
+                }else{
+                    if (i % 2 == 1) {
+                        var li = document.createElement('li');
+                        li.setAttribute('class', 'msg-li');
+                        li.appendChild(msg_list[i]);
+                        li.appendChild(msg_list[i - 1]);
+                        msg_slider.prepend(li);
+                    }
+
+                    if(i== messages.length -1){
+                        if(type =='new'){
+                            var new_span = document.createElement('span');
+                            new_span.setAttribute('id', 'new');
+                            new_span.innerHTML = 'new'
+                            msg_list[ messages.length -1].innerHTML +=  "  <sapn id='new'>new</sapn>"
+                        }
+                    }
+                }
+            }
+            //홀수일 때 마지막 메시지만 li에 content 1개 삽입
+            if(messages.length %2==1){
+                var li = document.createElement('li');
+                li.setAttribute('class', 'msg-li');
+                li.appendChild(msg_list[0]);
+                msg_slider.appendChild(li);
+                 //새로온 메시지
+                if(type =='new'){
+                    var new_span = document.createElement('span');
+                    new_span.setAttribute('id', 'new');
+                    new_span.innerHTML = 'new'
+                    msg_list[ messages.length -1].innerHTML += "  <sapn id='new'>new</sapn>"
+                   // console.log('new_홀수', msg_list[0]);
+                }
+            }
+
+        })
+        //message에 value 지정
+        .then(() => {
+            for (var i = 0; i < msg_list.length; i++) {
+                msg_list[i].setAttribute('value', messages[i].msg_id);
+            }
+            msg_addEvent(msg_list.length);
+            if(msg_list.length%2==1)
+                totalSlides = (msg_list.length/2)+0.5;
+            else totalSlides = msg_list.length/2;
+            document.getElementById('msg_index').innerHTML =`-${1}/${totalSlides}-`;
+        })
+       
 }
 
 
@@ -242,8 +255,8 @@ function insertNewMessage() {
     mirror_db.select('*', 'message', `receiver = ${mirror_db.getId()}`)
         .then(messages => {
             //가장 마지막에 추가된 메시지 가져오기
-            message = messages[messages.length - 1];
-            insertMessageContent(message, 'new');
+            //message = messages[messages.length - 1];
+            insertMessageContent(messages, 'new');
         })
 }
 
@@ -251,6 +264,11 @@ function insertNewMessage() {
 //소켓으로 통신
 function reply_message(element) {
     var receiver_id = document.getElementById('message-sender').getAttribute('value')
+    axios({
+        url: 'http://113.198.84.128:80/connect/user', // 통신할 웹문서
+        method: 'post', // 통신할 방식
+        data: { fileName: data.content }
+    })
     var content = document.getElementById('reply-text').value;
     var time = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
     socket.emit('realTime/message', {
@@ -258,9 +276,77 @@ function reply_message(element) {
         receiver: receiver_id,
         content: content,
         type: 'text',
-        time: time
+        send_time: time
     });
     document.getElementById('reply-text').value = '';
 
 }
-module.exports = { initMessages, insertNewMessage };
+
+
+
+
+function msg_addEvent(length) {
+    console.log('msg_addEvent :', length);
+    //slide-wrap
+    slideWrapper = document.getElementById('msg-slider-wrap');
+    //current slideIndexition
+    slideIndex = 0;
+    //items
+    slides = document.querySelectorAll('#msg-slider-wrap ul li');
+    if(length%2==1)
+        totalSlides = (length/2)+0.5;
+    else totalSlides = length/2;
+    //number of slides
+  
+    //get the slide width
+    sliderWidth = slideWrapper.clientWidth;
+    sliderHeight = slideWrapper.clientHeight
+    //set width of items
+    slides.forEach(function (element) {
+        element.style.width = sliderWidth + 'px';
+        element.style.height = sliderHeight + 'px';
+    })
+    //set width to be 'x' times the number of slides
+    var slider = document.querySelector('#msg-slider-wrap ul#msg-slider');
+    slider.style.width = sliderWidth * totalSlides + 'px';
+
+     // hover
+     slideWrapper.addEventListener('mouseover', function () {
+        this.classList.add('active');
+
+    });
+    slideWrapper.addEventListener('mouseleave', function () {
+        this.classList.remove('active');
+
+    });
+}
+// next, prev
+nextBtn = document.getElementById('message-next');
+prevBtn = document.getElementById('message-previous');
+nextBtn.addEventListener('click', function () {
+    plusSlides(1);
+});
+prevBtn.addEventListener('click', function () {
+    plusSlides(-1);
+});
+function plusSlides(n) {
+    showSlides(slideIndex += n);
+}
+
+function currentSlides(n) {
+    showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+    slideIndex = n;
+    console.log('slideIndex: ',slideIndex);
+    if (slideIndex == -1) {
+        slideIndex = totalSlides - 1;
+    } else if (slideIndex === totalSlides) {
+        slideIndex = 0;
+    }
+    document.getElementById('msg_index').innerHTML =`-${slideIndex+1}/${totalSlides}-`;
+    slider.style.top = -(sliderHeight * slideIndex) + 'px';
+}
+
+module.exports = { initMessages, insertNewMessage};

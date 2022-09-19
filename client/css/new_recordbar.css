@@ -27,7 +27,31 @@
     /* z-index: 1; */
     /* border: solid 1px hotpink; */
 }
+
+#memo_recordbars_div{
+    /* display: block; */
+    position: absolute;
+    /* top: 50%;
+    left: 50%; */
+    top: 238px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: max-content;
+    /* transform: translate(-50%, -50%); */
+    justify-content: center;
+    /* z-index: 1; */
+    /* border: solid 1px hotpink; */
+}
+
 #bars {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*     background: black; */
+}
+
+#memo_bars {
     display: flex;
     justify-content: center;
     align-items: center;

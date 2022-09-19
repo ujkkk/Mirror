@@ -1,0 +1,116 @@
+
+#memo_storage_view{
+    position: absolute;
+    background-color: rgba(101, 101, 101, 0.244);
+    /* display: none; */
+}
+
+#memo_storage_contents{
+    float: left;
+    position: relative;
+    width: 44%;
+    height: 100%;
+    margin-left: 1%;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    background-color: rgba(0, 0, 0, 0.299);
+}
+
+#memo_storage_contents::-webkit-scrollbar{
+    display:none;
+}
+
+
+.memo_storage_content {
+    background-color: rgba(0, 0, 0, 0.355);
+    border-radius: 15px;
+    float: left;
+    width: 90%;
+    height: 12%;
+    margin-left: 5%;
+    margin-top: 5%;
+    margin-bottom: 2%;
+    overflow: hidden;
+    cursor: pointer;
+    /* border : 2px solid rgb(255, 255, 255); */
+}
+
+.memo_storage_content .memo_storage_content_date{
+    /* float: right; */
+    margin-top: 2%;
+    margin-left: 80%;
+    font-size: 12px;
+   
+}
+ .memo_storage_content .memo_storage_content_context{
+    width: 80%;
+    height: 45%;
+    font-size: 14px;
+    margin-left: 10%;
+    margin-top:5%;
+    top: 40%;
+    left: 50%;
+    overflow: hidden;
+}
+
+
+
+
+#memo_storage_detail{
+    float: right;
+    position: absolute;
+    width: 55%;
+    height: 100%;
+    margin-left: 46%;
+    background-color: rgba(0, 0, 0, 0.299);
+}
+/* #memo_storage_detail #memo_storage_detail_contents{
+    width: 90%;
+    height: 90%;
+    margin-left: 5%;
+    margin-top:5%;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+   flex-direction:column-reverse;
+    display:flex; 
+} 
+*/
+
+#memo_storage_detail_content{
+    width: 90%;
+    height: 50%;
+    /* display: inline-block; */
+    background-color: rgb(108, 105, 81);
+    margin: 2%;
+    margin-top: 5%;
+    margin-left: 3%;
+    border-radius: 15px;
+    position: relative;
+
+}
+#memo_storage_detail_content #memo_storage_detail_context{
+    position: absolute;
+    width: 80%;
+    top: 40%;
+    left: 50%;
+    font-size: 25px;
+    transform: translate(-50%, -50%);
+}
+
+/* #storage-audio{
+    width: 14vw;
+    height: 5vw;
+} */
+#memo_storage_detail_content #memo_storage_detail_context img{
+    width:100%;
+    margin-top :25%;   
+    font-size: 25px;
+
+}
+#memo_storage_detail_date{
+    font-size: 20px;
+    margin-left: 60%;
+
+    bottom: 90% !important;
+
+}

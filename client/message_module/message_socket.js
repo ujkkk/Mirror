@@ -1,15 +1,18 @@
 const mirror_db = require('../mirror_db');
-const {insertNewMessage } = require('./message');
+
+const message_storage = require('./message_storage');
+const message = require('./message');
 const { io } = require("socket.io-client");
 const fs = require('fs');
 const { resolve } = require('path');
+const moment = require('moment');
 //const mirror_db = require('./mirror_db');
 //npm install @types/socket.io-client --save
 
 var socket = io('http://113.198.84.128:80/', { transports : ['websocket'] });
 
-
-
+console.log("$$$$$$$$$$$$$$$$$$$$$$메시지 소켓.js 호출", mirror_db.getId());
+console.log(message,message_storage)
 socket.on("connect", () => {
     console.log("connection socket server", mirror_db.getId());
 });
@@ -19,7 +22,7 @@ socket.on("connect", () => {
 socket.on(`${mirror_db.getId()}`, req => {
 
     console.log('소켓메시지 도착', req);
-
+    var send_time = moment(req.send_time).format('YYYY-MM-DD HH:mm:ss');
     switch (req.type){
         case 'text':
             let data = {
@@ -27,27 +30,32 @@ socket.on(`${mirror_db.getId()}`, req => {
                 receiver : mirror_db.getId(),
                 content : req.content,
                 type : 'text',
-                send_time : req.send_time
+                send_time : send_time
             };
             mirror_db.createColumns('message', data)
-            .then(() => insertNewMessage())
+            .then(() => {
+                message_storage.showMessageStorage();
+                
+                message.insertNewMessage();
+               })
             break;
 
         case 'image':
             new Promise((resolve, reject) =>{
                 var time = new Date().getTime();
                 var folder = './image/message/'
-                var filename = time + '.jpg';
-                url = req.content.split(',')[1];;
+                var filename = time ;
+                var url = req.content.split(',')[1];
                 var bstr = atob(url);
                 var n = bstr.length;
                 // base64 인코딩을 바이트 코드로 변환
                 var u8arr = new Uint8Array(n);
-                fs.open(folder + filename, 'w+', (err, fd)=>{
+                console.log(u8arr);
+                fs.open(folder + filename+'.jpg', 'w+', (err, fd)=>{
                   if(err)
                       console.log('open() 실패!');
                   else{
-                      fs.writeFile(folder + filename, u8arr, 'utf8', (err)=>{
+                      fs.writeFile(folder + filename+'.jpg', u8arr, 'utf8', (err)=>{
                           if(err)
                               console.log('퍄일 쓰기 실패');
                       });
@@ -59,34 +67,38 @@ socket.on(`${mirror_db.getId()}`, req => {
                 resolve(filename);
                 //mesaage DB에 저장
               }).then(filename =>{
+
                   //본인의 id는 어떻게 알아낼지
                       let data = {
                           sender : req.sender,
                           receiver : mirrorDB.getId(),
                           content : filename,
                           type : 'image',
-                          send_time : req.send_time
+                          send_time : send_time
                       };
                       mirror_db.createColumns('message', data)
-                      .then(()=> insertNewMessage())
+                      .then(()=> {
+                        message.insertNewMessage();
+                        message_storage.showMessageStorage();
+                    })
               })
               break;
         case 'audio':
             new Promise((resolve, reject) =>{
                 var time = new Date().getTime();
                 var folder = './message_module/record/audio/client/';
-                var filename = time + '.wav';
-                url = req.content.split(',')[1];;
-                var bstr = atob(url);
+                var filename = time;
+                //var url = req.content.split(',')[1];;
+                var bstr = atob(req.content);
                 var n = bstr.length;
                 // base64 인코딩을 바이트 코드로 변환
                 var u8arr = new Uint8Array(n);
 
-                fs.open(folder + filename, 'w+', (err, fd)=>{
+                fs.open(folder + filename+ '.wav', 'w+', (err, fd)=>{
                   if(err)
                       console.log('open() 실패!');
                   else{
-                      fs.writeFile(folder + filename, u8arr, 'utf8', (err)=>{
+                      fs.writeFile(folder + filename+ '.wav', u8arr, 'utf8', (err)=>{
                           if(err)
                               console.log('퍄일 쓰기 실패');
                       });
@@ -104,10 +116,13 @@ socket.on(`${mirror_db.getId()}`, req => {
                           receiver : mirrorDB.getId(),
                           content : filename,
                           type : 'audio',
-                          send_time : req.send_time
+                          send_time : send_time
                       };
                       mirror_db.createColumns('message', data)
-                      .then(()=> insertNewMessage())
+                      .then(()=> {
+                        message.insertNewMessage();
+                        message_storage.showMessageStorage();
+                      })
               })
            
        
