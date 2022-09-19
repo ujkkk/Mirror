@@ -217,6 +217,13 @@ function showRecordContent() {
 // Write Mode
 function showWrite() {
 
+    // 처음 메시지 창을 띄울 때 text content 부터 보여주기
+    if(memo_back_button.style.display == "none"){
+        memo_write_button.style.display = "none";
+        memo_back_button.style.display = "block";
+        memo_text.checked = true;
+    }
+
     memo_write_button.style.display = "none";
     memo_back_button.style.display = "block";
     memo_player.style.display = "none";
