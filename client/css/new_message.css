@@ -208,8 +208,8 @@
 
 
 #message-detail-div #message-image {
-    width: 30vh;
-    height: 20vh;
+    width: 17vw;
+    height: 11vw;
     
     /* 2/3 */
 
@@ -249,3 +249,4 @@
     width: 3vw;
     height: 3vw;
 }
+

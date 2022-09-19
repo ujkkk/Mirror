@@ -184,7 +184,7 @@ const addUser = (name) => new Promise((resolve, reject) => {
 dbAccess.addUser = addUser;
 
 /* 메모 생성하는 함수 (memo table에 새로운 columns insert) */
-dbAccess.addMemo = function (id, from, contents, store) {
+dbAccess.addMemo = function (id, content, store, type) {
     // db 연결 설정이 제대로 안됐을 경우 
     if (!pool) {
         console.log('error');
@@ -200,7 +200,7 @@ dbAccess.addMemo = function (id, from, contents, store) {
     var time = moment(newDate).format('YYYY-MM-DD HH:mm:ss');
 
     // memo table 제작에 필요한 column을 데이터 객체로 형성
-    var data = { id: id, from: from, contents: contents, store: store, delete_time: time };
+    var data = { id: id, content: content, store: store, delete_time: time, type: type, time: time };
     // memo 행 제작
     createColumns('memo', data);
 }

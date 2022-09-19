@@ -20,10 +20,11 @@ const inside = document.querySelector('#inside');
 const outside = document.querySelector('#outside');
 const inside_selected = document.querySelector('#inside-selected');
 const outside_selected = document.querySelector('#outside-selected');
-
+const inside_label = document.querySelector('#inside-label')
 
 const sttRefusalContainer = document.getElementById('stt-refusal-container')
 const sttAlert = document.getElementById('stt-alert')
+const sttSendButton = document.getElementById('stt-sned-button')
 
 // const axios = require('axios');
 const { write } = require("fs");
@@ -32,107 +33,49 @@ const CMUsers = require("../CMUserInfo");
 const client = require("../message_module/message_mqtt");
 const socket = require('../message_module/message_socket');
 let record_obj = require('../message_module/record/new_m_record');
-
-const mqtt = require('mqtt');
 const dbAccess = require("../mirror_db");
 
-// stt 실행 =======================================================================================
-let customOption = false
-let friendName
+let messageAccess = {} // 모듈 제작을 위한 변수
+
 let setCMuser
 let setCMFriend
-let customFriend = null
+let customOption = false
 
-console.log('message icon')
-
-/* mqtt 브로커 연결 및 topic subscribe */
-const options = { // 브로커 정보(ip, port)
-    host: '127.0.0.1',
-    port: 1883
+messageAccess.setCMuser = (new_CMuser) => {
+    setCMuser = new_CMuser
 }
 
-const mqttClient = mqtt.connect(options) // mqtt broker 연결
-mqttClient.subscribe('message_request')
-mqttClient.subscribe('audio_message_request')
-mqttClient.subscribe('image_request')
+messageAccess.setCMFriend = (new_CMFriend) => {
+    setCMFriend = new_CMFriend
+}
 
+messageAccess.setcustomOption = (new_customOption) => {
+    customOption = new_customOption
+}
 
-mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 callback
-    customFriend = null
-    if (message == null) {
-        customOption = false
-    }
-    else {
-        friendName = message
-        customOption = true
-        setCMFriend = CMUsers.setCustromFriendList(friendName)
-        setCMuser = CMUsers.setCustromUserList(friendName)
-
-        setCMuser.then(user => {
-            setCMFriend.then(friend => {
-                console.log(`user value len: ${user.length}, ${friend.length} = ${user.length + friend.length}`)
-                if (user.length + friend.length == 0) {
-                    sttAlert.innerText = `${friendName}이를 찾을 수 없습니다`
-                    sttRefusalContainer.style = 'display: block'
-                    customOption = false
-                    return;
-                }
-                else if (user.length + friend.length == 1) {
-                    if (message_memo_container.style.display == "none") {
-                        message_memo_container.style.display = "block"
-                    }
-                    if (user.length == 1) {
-                        friendName = user[0].name
-                        customFriend = { name: user[0].name, id: user[0].id, send_option: 0 }
-                    }
-                    else {
-                        friendName = friend[0].name
-                        customFriend = { name: friend[0].name, id: friend[0].id, send_option: 1 }
-                    }
-                    console.log(`이름은 ${friendName}`)
-                    sttAlert.innerText = `${friendName}님에게 보낼 메시지를 입력바랍니다`
-                    sttRefusalContainer.style = 'display: block'
-                }
-                else {
-                    if (message_memo_container.style.display == "none") {
-                        message_memo_container.style.display = "block"
-                    }
-                    sttAlert.innerText = `보낼 메시지를 입력바랍니다`
-                    sttRefusalContainer.style = 'display: block'
-                }
-            })
-        })
-    }
-
-    if (topic.toString() == 'message_request') {
-        if(value.includes("라고")) {
-            let callValue = value.split('라고')
-            let callName = callValue[0].split("에게")
-            console.log(`메시지 내용: ${callName[callName.length - 1]}`)
-            document.querySelector("#textArea").value = `${callName[callName.length - 1]}`
-        }
-        write_button.click()
-    }
-    else if (topic.toString() == 'audio_message_request') {
-        write_button.click()
-        record.click()
-
-    }
-    else if (topic.toString() == 'image_request') {
-        write_button.click()
-        image.click()
-    }
+messageAccess.getcustomOption = () => {
+    return customOption
+}
+document.querySelector('#send-modal-close').addEventListener('click', () => {
+    friendAlertOff()
 })
 
-
-// stt 실행 ======================================================================================
+function friendAlertOff() {
+    send_modal.style.visibility = "hidden";
+    inside_selected.style.visibility = 'hidden';
+    outside_selected.style.visibility = 'hidden';
+}
 
 // message display ON/OFF
 bar_message_button.addEventListener('click', () => {
     console.log('bar_message_button click!');
     document.querySelector("#textArea").value = "";
     if (message_memo_container.style.display == "none") {
-        message_memo_container.style.display = "block";
+        message_memo_container.style.display = "block"
+
+        sttRefusalContainer.style.display = "none"
+        sttSendButton.style = "display: none"
+
         // text.style.display = "none";
         // image.style.display = "none";
         // record.style.display = "none";
@@ -147,9 +90,7 @@ bar_message_button.addEventListener('click', () => {
         client.publish('camera/on', "start");
     }
     else {
-
         if (customOption) {
-            customFriend = null
             customOption = false
         }
 
@@ -171,28 +112,29 @@ shutter_button.addEventListener('click', () => {
     client.publish('capture/camera', "start");
 });
 
-
-//CMUsers.setCustromFriendList
-
-
 function showSendModal() {
+    inside_label.click()
     hideKeyboard();
     console.log("showSendModal");
+    MessageSenderView(null)
+}
+
+function MessageSenderView(customFriend) {
     if (customFriend != null) {
         liClickEvent({ id: customFriend.id, name: customFriend.name }, customFriend.send_option)
     }
     else {
-        send_modal.style.visibility = "visible";
-        showUserBook();
+        inside_label.click()
+        messageAccess.showUserBook();
     }
 }
 
-const userSelect = document.getElementById('user-select')
+messageAccess.MessageSenderView = MessageSenderView
 
 function showUserBook() {
-
-    if(inside.checked == true) {
-
+    send_modal.style.visibility = "visible";
+    //
+    if (inside.checked == true) {
         console.log('inside.checked == true');
         send_ul.innerHTML = "";
         inside_selected.style.visibility = 'visible';
@@ -202,7 +144,7 @@ function showUserBook() {
             setCMuser = CMUsers.setCMUserList()
         }
         setCMuser.then(value => {
-            console.log(`CMUSERS[0] :${value[0].id} `)
+            //console.log(`CMUSERS[0] :${value[0].id} `)
             for (let k = 0; k < value.length; k++) {
                 let li = document.createElement("li");
 
@@ -301,8 +243,11 @@ function showUserBook() {
     }
 }
 
+messageAccess.showUserBook = showUserBook
+
 const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
-    send_modal.style.visibility = "hidden";
+    friendAlertOff()
+    //bar_message_button.click();
 
     let sender = dbAccess.getId(); // 내 id
     let receiver = value.id; // 받는 사람 id
@@ -450,12 +395,11 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                     }).catch(() => "audio error")
                 }
                 break;
-            
         }
-
     } // end of else ...
-
 })
+
+messageAccess.liClickEvent = liClickEvent
 
 function showTextContent() {
     text_content.style.display = "block";
@@ -555,3 +499,5 @@ function hideKeyboard() {
     keyboardTarget.setCurrentTarget(null);
     keyboardTarget.keyboard.style.display = "none";
 }
+
+module.exports = messageAccess

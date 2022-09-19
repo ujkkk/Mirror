@@ -93,22 +93,19 @@ CMUsers.setCustromFriendList = (name) => new Promise((resolve, reject) => {
         )
         .then(() => {
             console.log("여기가 먼저 불려야함");
-            if(value.length == 0){
-                resolve(friendUsers);
-                return
-            }
-            else {
-                axios({
-                    method: 'post',
-                    url: 'http://113.198.84.128:80/connect/user',
-                    data: {
-                        userData: checkConnectedUser
+
+            axios({
+                method: 'post',
+                url: 'http://113.198.84.128:80/connect/user',
+                data: {
+                    userData: checkConnectedUser
+                }
+            })
+                .then(response => {
+                    if (response.data == null) {
+                        resolve(friendUsers)
                     }
-                })
-                    .then(response => {
-                        if(response.data == null){
-                            resolve(friendUsers)
-                        }
+                    else {
                         let results = response.data.result;
 
                         for (let i = 0; i < results.length; i++) {
@@ -116,9 +113,9 @@ CMUsers.setCustromFriendList = (name) => new Promise((resolve, reject) => {
                                 friendUsers[i].connect = results[i].connect;
                             }
                         }
-                    })
-                resolve(friendUsers);
-            }
+                    }
+                })
+            resolve(friendUsers);
         })
         .catch(
             () => {
@@ -145,7 +142,7 @@ CMUsers.setCustromFriendList = (name) => new Promise((resolve, reject) => {
                 }
             })
                 .then(response => {
-                    if(response.data == null){
+                    if (response.data == null) {
                         resolve(friendUsers)
                         return;
                     }

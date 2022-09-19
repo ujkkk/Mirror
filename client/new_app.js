@@ -13,10 +13,9 @@ mirrorDB.setUser(receivedData)
         require("./message_module/record/new_m_record.js")
         require('./message_module/message_socket')
         require('./message_module/message_storage')
-        require("./message_module/message_icon.js")
         require('./memo_module/memo')
         require('./new_callbook')
-   
+        require('./stt_module')
 
     const message = require('./message_module/message')
     message.initMessages()
