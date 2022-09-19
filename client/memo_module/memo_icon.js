@@ -31,6 +31,8 @@ const CMUsers = require("./CMUserInfo");
 let record_obj = require('./memo_module/memo_record');
 const { setQuarter } = require('date-fns');
 const { Store } = require('mqtt');
+// const { keyboard } = require('../new_keyboard_module/keyboard');
+// const keyboardTarget = require('../new_keyboard_module/keyboard');
 
 // const mqtt = require('mqtt');
 // const dbAccess = require("../mirror_db");
@@ -175,9 +177,8 @@ function saveMemoContent(e){
     
     var newDate = new Date();
     var time = moment(newDate).format('YYYY-MM-DD HH:mm:ss');
-   
+    hideKeyboard()
     if(e.target.id == "save_text_button"){
-        hideKeyboard()
         let data = {
             id:mirror_db.getId(),
             content:memo_textArea.value,
@@ -216,7 +217,7 @@ function showRecordContent() {
 
 // Write Mode
 function showWrite() {
-
+    hideKeyboard()
     memo_write_button.style.display = "none";
     memo_back_button.style.display = "block";
     memo_player.style.display = "none";
@@ -291,8 +292,11 @@ memo_record.addEventListener('change', () => {
 })
 
 function showKeyboard(e) {
-    keyboardTarget.setCurrentTarget(e.target.id);
-    keyboardTarget.keyboard.style.display = "block";
+
+    if(keyboardTarget.keyboard.style.display == "none"){
+        keyboardTarget.setCurrentTarget(e.target.id);
+        keyboardTarget.keyboard.style.display = "block";
+    }
 }
 
 function hideKeyboard() {

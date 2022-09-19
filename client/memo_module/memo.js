@@ -108,7 +108,6 @@ function initMemo() {
 
 function create_memo_div(memos){
     var memo_list = new Array()
-
     if(memos.length%2==1)
         totalSlides = (memos.length/2)+0.5;
     else totalSlides = memos.length/2;
@@ -178,7 +177,7 @@ function create_memo_div(memos){
                         audio_player.pause();
                     }
                 })
-                audio_player.addEventListener('play',()=>{audio_img.src = "./image/index/stop.png"})
+                audio_player.addEventListener('play',()=>{audio_img.src = "./image/index/pause.png"})
                 audio_player.addEventListener('pause',()=>{ audio_img.src = "./image/index/play.png"})
                 audio_player.addEventListener('ended',function(){
                     audio_img.src = "./image/index/play.png"
