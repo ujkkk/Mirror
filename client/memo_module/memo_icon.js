@@ -238,9 +238,7 @@ function showRecordContent() {
 
 // Write Mode
 function showWrite() {
-
     hideKeyboard()
-
 
     // 처음 메시지 창을 띄울 때 text content 부터 보여주기
     if(memo_back_button.style.display == "none"){

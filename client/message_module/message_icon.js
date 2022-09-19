@@ -375,6 +375,8 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                     var base64Audio = base64.split(',').reverse()[0];
                     new Promise((resolve, reject) => {
                         var bstr = atob(base64Audio); // base64String  
+                        console.log(`bstr : ${bstr}`);
+                        console.log(`bstr type : ${typeof(bstr)}`);
                         resolve(bstr);
                     }).then((bstr) => {
                         console.log(bstr)
@@ -429,16 +431,17 @@ function showRecordContent() {
 // Write Mode
 function showWrite() {
 
-    hideKeyboard()
-    write_button.style.display = "none";
-    back_button.style.display = "block";
-
     // 처음 메시지 창을 띄울 때 text content 부터 보여주기
     if(back_button.style.display == "none"){
         write_button.style.display = "none";
         back_button.style.display = "block";
         text.checked = true;
     }
+
+    hideKeyboard()
+    write_button.style.display = "none";
+    back_button.style.display = "block";
+
     
     // 메시지함 숨기기
     document.getElementById('message_storage_view').style.display = "none";
