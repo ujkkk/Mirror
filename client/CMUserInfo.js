@@ -67,7 +67,7 @@ CMUsers.setCustromUserList = (name) => new Promise((resolve, reject) => {
     console.log("거울 내 사용자 목록 불러오기");
     users = [];
     console.log(`setCMUserList my id : ${dbAccess.getId()}`);
-    dbAccess.select('id, name', 'user', `id <> ${dbAccess.getId()} and name like '%${name}%'`) // 현재 사용자가 아닌 다른 사용자 User DB 정보 불러오기
+    dbAccess.select('id, name', 'user', `id <> ${dbAccess.getId()} and name like '${name}'`) // 현재 사용자가 아닌 다른 사용자 User DB 정보 불러오기
         .then(value => { // users에 값 넣기
             let i = 0;
             for (i = 0; i < value.length; i++) { // 미러내 유저
@@ -123,7 +123,7 @@ CMUsers.setCustromFriendList = (name) => new Promise((resolve, reject) => {
             }
         );
 
-    dbAccess.select('friend_id, name', 'friend', `id = ${dbAccess.getId()} and name like '%${name}%'`)
+    dbAccess.select('friend_id, name', 'friend', `id = ${dbAccess.getId()} and name like '${name}'`)
         .then(value => { // users에 값 넣기
             friendUsers = [];
             for (let k = 0; k < value.length; k++) {
@@ -146,8 +146,8 @@ CMUsers.setCustromFriendList = (name) => new Promise((resolve, reject) => {
                         resolve(friendUsers)
                         return;
                     }
-
-                    let results = response.data.result;
+                    else{
+                        let results = response.data.result;
 
                     for (let i = 0; i < results.length; i++) {
                         if (friendUsers[i].id == results[i].user) {
@@ -155,6 +155,7 @@ CMUsers.setCustromFriendList = (name) => new Promise((resolve, reject) => {
                         }
                     }
                     resolve(friendUsers);
+                    }
                 })
 
         })

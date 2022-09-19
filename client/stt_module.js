@@ -32,7 +32,6 @@ const inside_label = document.querySelector('#inside-label')
 let friendName
 let setCMuser
 let setCMFriend
-let customFriend = null
 let messageValue = null
 let geumBiTime
 let sttAlertTime
@@ -147,14 +146,16 @@ mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 
                     friendName = message_value[0]
                     messageAccess.setcustomOption(true)
 
-                    setCMFriend = CMUsers.setCustromFriendList(friendName)
-                    setCMuser = CMUsers.setCustromUserList(friendName)
+                    setCMFriend = CMUsers.setCustromFriendList(`%${friendName}%`)
+                    setCMuser = CMUsers.setCustromUserList(`%${friendName}%`)
 
                     setCMuser.then(user => {
                         messageAccess.setCMuser(setCMuser)
 
                         setCMFriend.then(friend => {
                             messageAccess.setCMFriend(setCMFriend)
+
+                            messageAccess.setCustomFriend(null)
 
                             if (message_value.length > 1) {
                                 if (message_value[1].includes("라고") || message_value[1].includes("이라고")) {
@@ -174,7 +175,16 @@ mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 
                                 setGeumBi()
                                 return;
                             }
-
+                            else if (user.length + friend.length == 1) {
+                                if (user.length == 1) {
+                                    friendName = user[0].name
+                                    messageAccess.setCustomFriend({ name: user[0].name, id: user[0].id, send_option: 0 })
+                                }
+                                else {
+                                    friendName = friend[0].name
+                                    messageAccess.setCustomFriend({ name: friend[0].name, id: friend[0].id, send_option: 1 })
+                                }
+                            }
                             if (topic.toString() == 'message_request') {
                                 MessageFriendCheck(user, friend)
                             }
@@ -241,7 +251,7 @@ mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 
 
 sttSendButton.addEventListener('click', () => {
     sttAlertOff()
-    messageAccess.MessageSenderView(customFriend)
+    messageAccess.MessageSenderView()
 })
 
 sttCloseArea.addEventListener('click', () => {
@@ -262,18 +272,9 @@ function sttAlertOff() {
 }
 
 function MessageFriendCheck(user, friend) {
-    customFriend = null
     console.log(`user value len: ${user.length}, ${friend.length} = ${user.length + friend.length}`)
 
     if (user.length + friend.length == 1) {
-        if (user.length == 1) {
-            friendName = user[0].name
-            customFriend = { name: user[0].name, id: user[0].id, send_option: 0 }
-        }
-        else {
-            friendName = friend[0].name
-            customFriend = { name: friend[0].name, id: friend[0].id, send_option: 1 }
-        }
         console.log(`이름은 ${friendName}`)
 
         if (messageValue == null) {
@@ -298,7 +299,7 @@ function MessageFriendCheck(user, friend) {
         }
         else {
             //message_memo_container.style.display = "block"
-            sttAlert.innerText = `${friendName}님에게 \n <strong>'${messageValue[0]}'<strong>라고 보내시겠습니까?`
+            sttAlert.innerText = `${friendName}님에게 \n '${messageValue[0]}'라고 보내시겠습니까?`
             sttRefusalContainer.style = 'display: block'
             sttSendButton.style.visibility = "visible"
             document.querySelector("#textArea").value = `${messageValue[0]}`

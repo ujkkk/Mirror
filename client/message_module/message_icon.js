@@ -21,10 +21,8 @@ const outside = document.querySelector('#outside');
 const inside_selected = document.querySelector('#inside-selected');
 const outside_selected = document.querySelector('#outside-selected');
 const inside_label = document.querySelector('#inside-label')
+//const outside_label = document.querySelector('#outside-label')
 
-const sttRefusalContainer = document.getElementById('stt-refusal-container')
-const sttAlert = document.getElementById('stt-alert')
-const sttSendButton = document.getElementById('stt-sned-button')
 
 // const axios = require('axios');
 const { write } = require("fs");
@@ -40,6 +38,16 @@ let messageAccess = {} // 모듈 제작을 위한 변수
 let setCMuser
 let setCMFriend
 let customOption = false
+let customFriend = null
+
+
+messageAccess.setCustomFriend = (new_customFriend) => {
+    customFriend = new_customFriend
+}
+
+messageAccess.getCustomFriend = () => {
+    return customFriend
+}
 
 messageAccess.setCMuser = (new_CMuser) => {
     setCMuser = new_CMuser
@@ -73,8 +81,8 @@ bar_message_button.addEventListener('click', () => {
     if (message_memo_container.style.display == "none") {
         message_memo_container.style.display = "block"
 
-        sttRefusalContainer.style.display = "none"
-        sttSendButton.style = "display: none"
+        // sttRefusalContainer.style.display = "none"
+        // sttSendButton.style = "visibility: hidden"
 
         // text.style.display = "none";
         // image.style.display = "none";
@@ -116,16 +124,16 @@ function showSendModal() {
     inside_label.click()
     hideKeyboard();
     console.log("showSendModal");
-    MessageSenderView(null)
+    MessageSenderView()
 }
 
-function MessageSenderView(customFriend) {
+function MessageSenderView() {
     if (customFriend != null) {
         liClickEvent({ id: customFriend.id, name: customFriend.name }, customFriend.send_option)
     }
     else {
         inside_label.click()
-        messageAccess.showUserBook();
+        messageAccess.showUserBook()
     }
 }
 
@@ -144,6 +152,9 @@ function showUserBook() {
             setCMuser = CMUsers.setCMUserList()
         }
         setCMuser.then(value => {
+            // if(value.length == 0){
+            //     outside_label.click()
+            // }
             //console.log(`CMUSERS[0] :${value[0].id} `)
             for (let k = 0; k < value.length; k++) {
                 let li = document.createElement("li");
@@ -246,7 +257,7 @@ function showUserBook() {
 messageAccess.showUserBook = showUserBook
 
 const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
-    friendAlertOff()
+    
     //bar_message_button.click();
 
     let sender = dbAccess.getId(); // 내 id
@@ -397,6 +408,7 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                 break;
         } // end of else ...
     }
+    friendAlertOff()
 })
 
 messageAccess.liClickEvent = liClickEvent
@@ -426,7 +438,7 @@ function showWrite() {
     back_button.style.display = "block";
     document.getElementById('message_storage_view').style.display = "none";
     // 라디오 버튼 체크 확인
-    let radio = document.querySelectorAll(".option_radio");
+    let radio = document.querySelectorAll(".memo_option_radio");
     // var radio = document.getElementsByName("option");
     var sel_type = null;
     for (var i = 0; i < radio.length; i++) {
@@ -447,13 +459,14 @@ function showWrite() {
     }
 }
 
+
 // Store Mode
 function showStore() {
     write_button.style.display = "block";
     back_button.style.display = "none";
-    document.getElementById('message_storage_view').style.display = "block";
+
     // 라디오 버튼 체크 확인
-    let radio = document.querySelectorAll(".option_radio");
+    let radio = document.querySelectorAll(".memo_option_radio");
     var sel_type = null;
     for (var i = 0; i < radio.length; i++) {
         if (radio[i].checked == true) sel_type = radio[i].value;
@@ -489,15 +502,5 @@ record.addEventListener('change', () => {
     if (write_button.style.display == "none") showWrite(); // Writing Mode
     else showStore(); // Storage Mode
 })
-
-function showKeyboard(e) {
-    keyboardTarget.setCurrentTarget(e.target.id);
-    keyboardTarget.keyboard.style.display = "block";
-}
-
-function hideKeyboard() {
-    keyboardTarget.setCurrentTarget(null);
-    keyboardTarget.keyboard.style.display = "none";
-}
 
 module.exports = messageAccess
