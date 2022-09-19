@@ -82,7 +82,7 @@ CMUsers.setCustromUserList = (name) => new Promise((resolve, reject) => {
 CMUsers.setCustromFriendList = (name) => new Promise((resolve, reject) => {
     console.log("거울 외부 사용자 목록 불러오기");
     friendUsers = []
-    dbAccess.select('friend_id, name', 'friend', `id = ${dbAccess.getId()} and name like '%${name}%'`)
+    dbAccess.select('friend_id, name', 'friend', `id = ${dbAccess.getId()} and name like '${name}'`)
         .then(value => { // users에 값 넣기
             for (let k = 0; k < value.length; k++) {
                 friendUsers[k] = { "id": value[k].friend_id, "name": value[k].name, "connect": 0 };
