@@ -13,8 +13,9 @@ function createLoginMessage(user){
 
 function createMessage(msg){
 
-    var loginMessageDiv = document.getElementById("loginMessage");
-    loginMessageDiv.innerHTML=  '<h3>' + msg + '</h3>'  
+    // var loginMessageDiv = document.getElementById("loginMessage");
+    // loginMessageDiv.innerHTML=  '<h3>' + msg + '</h3>'  
 }
+
 
 module.exports = {createLoginMessage, createMessage}

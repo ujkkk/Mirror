@@ -21,9 +21,9 @@ function createWindow() {
     const win = new BrowserWindow(options)
 
 
-    win.loadFile("init.html");
-    // win.loadFile("faceRecognition/home.html");
-    // win.loadFile("record_module/record.html");
+  // win.loadFile("init.html");
+    win.loadFile("faceRecognition/home.html");
+   // win.loadFile("record_module/record.html");
 
     let screenElectron = electron.screen;
     let mainScreen = screenElectron.getPrimaryDisplay();
@@ -33,6 +33,7 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+    
     createWindow()
 
     app.on("activate", () => {

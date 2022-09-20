@@ -1,7 +1,7 @@
 <html>
     <head>
         <link href="../css/signUp.css" rel="stylesheet">
-        
+        <link rel="stylesheet" type="text/css" href="css/loading.css">
         <script src="loading.js"></script>
         <script>
             const client = require("./mqtt");
@@ -55,6 +55,7 @@
         </script>
     </head>
     <body>
+        <div id="createAccountMessage"></div>
         <div id="loadingDiv">
             <div id="loading" style="display: none;"></div>
         </div>

@@ -39,6 +39,7 @@ require('./weather_module/new_weather');
 /* 여기서 서버에 접근 + DB에 받아오기 */
 const { default: axios } = require('axios');
 const dbAccess = require('./mirror_db');
+const { contextIsolated } = require('process');
 var datas = [];
 
 axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
@@ -114,17 +115,18 @@ axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
                     .then(response => {
                         // 클라이언트에s 저장되는 파일명
                         var file_name = './message_module/record/audio/client/' + data.content + '.wav';
-
+                        console.log('오디오 겟:',file_name);
                         // 서버에서 받아온 파일의 base64String
-                        var bstr = atob(response.data.file_bstr);
-                        var n = bstr.length;
+                       // var bstr = atob(response.data.file_bstr);
+                        //console.log(bstr);
+                        var n = (response.data.file_bstr).length;
                         var u8arr = new Uint8Array(n);
 
                         // 클라이언트에 파일 저장하기
                         fs.writeFile(file_name, u8arr, 'utf8', function (error) {
                         });
                         while (n--) {
-                            u8arr[n] = bstr.charCodeAt(n);
+                            u8arr[n] =  (response.data.file_bstr).charCodeAt(n);
                         }
 
                     })

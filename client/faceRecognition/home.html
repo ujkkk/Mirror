@@ -10,16 +10,17 @@
         <div id="loadingDiv">
             <div id="loading" style="display: none;"></div>
         </div>
-        <div id="loginMessage"></div>
+        <div id="loginMessage" style="color:aliceblue"></div>
         <div class="container">
             <div class="btnDiv" id="loginDiv"><button class="btn" id="loginBtn" onclick="login()">Login</button></div>
             <div class="btnDiv" id="signUpDiv"><button class="btn" id="signUpBtn" onclick="signUp()">Sign Up</button></div>
-            <div class="btnDiv" id="deleteDiv"><button class="btn" id="deleteBtn" onclick="deleteUser()">Delte</button></div>
-            <!--div class="btnDiv" id="modelDiv"><button class="btn" id="modelBtn" onclick="model()">Train</button></!--div> -->
+            <div class="btnDiv" id="deleteDiv"><button class="btn" id="deleteBtn" onclick="deleteUser()">Delete</button></div>
+            <div class="btnDiv" id="modelDiv"><button class="btn" id="modelBtn" onclick="model()">Train</button></div>
         </div>
         <div id="message"></div>
 
         <script src="loading.js"></script>
+        <!-- <script src="mqtt.js"></script> -->
         <script>   
             const client = require("./mqtt");
             const _db = require('../mirror_db')
