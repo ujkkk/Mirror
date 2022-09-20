@@ -30,12 +30,12 @@ setTimeout(function () { // 5초 후 실행
 // 메시지 2
 setTimeout(function () { // 5초 후 실행
   console.log("message call");
-  mqttClient.publish('message_request', '유진?메시지 보내줘')
+  mqttClient.publish('message_request', '채원?메시지 보내줘')
   setTimeout(function () { // 5초 후 실행
     console.log("content call");
   mqttClient.publish('message_content', '딸기라떼 먹고싶어')
   }, 3000)  
-}, 5000)
+}, 3000)
 
 
 // // 사진

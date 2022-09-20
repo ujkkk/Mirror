@@ -125,12 +125,12 @@ function stt(data) {
       console.log(`message_content -> ${value}`)
     }
 
-    if (value.includes("금비")) {
+    if (value.includes("금비") || value.includes("은비")) {
       mqttClient.publish('geumBi', 'geumBi_on')
       console.log( `받은 내용: ${value} -> 금비 호출\n`)
     }
 
-    return ` `;
+    return `${value}`;
   }
 
 // Start recording and send the microphone input to the Speech API.

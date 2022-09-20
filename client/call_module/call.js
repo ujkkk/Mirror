@@ -49,7 +49,6 @@ if (phoneButton != null) {
         }
         else
             phoneContainer.style = 'display: none'
-        phoneIconTouch++
     })
 
     // 주소록 아이콘 클릭시 이벤트
