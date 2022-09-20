@@ -34,8 +34,8 @@ setTimeout(function () { // 5초 후 실행
   setTimeout(function () { // 5초 후 실행
     console.log("content call");
   mqttClient.publish('message_content', '딸기라떼 먹고싶어')
-  }, 1000)  
-}, 3000)
+  }, 3000)  
+}, 5000)
 
 
 // // 사진

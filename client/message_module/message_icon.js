@@ -41,6 +41,15 @@ let messageAccess = {} // 모듈 제작을 위한 변수
 let setCMuser
 let setCMFriend
 let customOption = false
+let customFriend = null
+
+messageAccess.setCustomFriend = (new_customFriend) => {
+    customFriend = new_customFriend
+}
+
+messageAccess.getCustomFriend = () => {
+    return customFriend
+}
 
 messageAccess.setCMuser = (new_CMuser) => {
     setCMuser = new_CMuser
@@ -71,7 +80,8 @@ function friendAlertOff() {
 bar_message_button.addEventListener('click', () => {
     console.log('bar_message_button click!');
     document.querySelector("#textArea").value = "";
-
+    customFriend = null
+    customOption = false
     if (message_memo_container.style.display == "none") {
         message_memo_container.style.display = "block"
 
@@ -126,7 +136,7 @@ function showSendModal() {
     MessageSenderView(null)
 }
 
-function MessageSenderView(customFriend) {
+function MessageSenderView() {
     if (customFriend != null) {
         liClickEvent({ id: customFriend.id, name: customFriend.name }, customFriend.send_option)
     }
