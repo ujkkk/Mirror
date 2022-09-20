@@ -35,11 +35,18 @@
 
 #message-container{
     position: absolute;
-    margin-top: 25%;
-    margin-left: 3%;
-    height: 10%;
-    width: 40%;
+    margin-top: 15vw;
+    margin-left: 3vh;
+    height: 10vw;
+    width: 40vh;
 }
+
+#parent {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
 #message-div {
     margin-top: 10px;
     margin-left: -10px;
@@ -47,24 +54,25 @@
     height: 100%;
     width: 100%;
   } 
+
 #message-img #message_icon {
     /* position: absolute; */
     display: inline;
-    height: 25px;
-    width: 25px;
-    font-size: 2em;
-}
-#message-img{
-    margin-left:7%;
-    float:left;
-}
-#message-text-div {
-    color :white;
-    font-size: 13px;
-    display: inline;
-    margin-left: 2%;
+    height: 1.8vw;
+    width: 1.8vw;
+    font-size: 1.8vw;
 }
 
+#message-img {
+    margin-left: 1vw;
+    float: left;
+}
+#message-text-div {
+    color: white;
+    font-size: 1.3vw;
+    display: inline;
+    margin-left: 0.5vw;
+}
 
 #msg-slider-wrap {
 
@@ -99,22 +107,24 @@
 
 
 #message-next {
-    top: 40%;
-    left: -50px;
-    margin-left: -10px;
+    top: 4.1vw;
+    /* left: -50px;
+    margin-left: -10px; */
+    left: -1vw;
     border-radius: 7px 0px 0px 7px;
     color: #eee;
+    font-size: 1vw;
 }
 
 #message-previous {
-    top: 20%;
-    left: -50px;
-    margin-left: -10px;
+    top: 2.1vw;
+    /* left: -50px;
+    margin-left: -10px; */
+    left: -1vw;
     border-radius: 0px 7px 7px 7px;
     color: #eee;
+    font-size: 1vw;
 }
-s
-
 
 /*ANIMATION*/
 #msg-slider-wrap ul,
@@ -131,6 +141,10 @@ s
     position: relative;
     overflow: hidden;  
 } */
+#message-contents {
+    margin-left: 2vw;
+}
+
 
 .message-content {
     margin-bottom: 0.8vh;
@@ -146,12 +160,13 @@ s
 }
 .message-content #new{
     color:red;
-    font-size: 13px;
+    font-size: 1vw;
 }
 #msg_index{
-    margin-top :-5%;
-    margin-left:45%;
-    font-size: 12px;
+    margin-top :-2vw;
+    padding-right: 2vw;
+    text-align: right;
+    font-size: 1vw;
 }
 
 
@@ -201,7 +216,6 @@ s
 }
 
 #message-detail-div #message-content {
-    
     color: white;
     width: 80%;
     height: 50%;
@@ -212,13 +226,12 @@ s
     justify-content: center;
     text-align: center;
     overflow-y:scroll ;
-   
 }
 
-#message-content::-webkit-scrollbar{
-    display:none;
-}
+#message-detail-div #message-content::-webkit-scrollbar{
+    display: none;
 
+}
 #message-detail-div #message-image {
     width: 17vw;
     height: 11vw;
@@ -238,9 +251,9 @@ s
     height: 65%;
     font-size: 1.2vw;
     border: 0;
-    border-radius: 15px;
+    border-radius: 1vw;
     outline: none;
-    padding-left: 10px;
+    padding-left: 1vw;
     background-color: rgba(255, 255, 255, 0.2);
     color: aliceblue;
     position: relative;

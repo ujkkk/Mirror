@@ -20,6 +20,7 @@ function sub(){
     socket.on(`${mirror_db.getId()}`, req => {
 
         console.log('소켓메시지 도착', req);
+        console.log(`req.type : ${req.type}`);
         var send_time = moment(req.send_time).format('YYYY-MM-DD HH:mm:ss');
         switch (req.type){
             case 'text':
@@ -87,24 +88,30 @@ function sub(){
                     var time = new Date().getTime();
                     var folder = './message_module/record/audio/client/';
                     var filename = time;
+                    console.log(`audio req.content : ${req.content}`);
+                    console.log(`audio req.content type : ${typeof(req.content)}`);
                     //var url = req.content.split(',')[1];;
-                    var bstr = atob(req.content);
-                    var n = bstr.length;
+                    // var bstr = atob(req.content);
+                    // var n = bstr.length;
+                    var n = req.content.length;
                     // base64 인코딩을 바이트 코드로 변환
                     var u8arr = new Uint8Array(n);
 
-                    fs.open(folder + filename+ '.wav', 'w+', (err, fd)=>{
-                    if(err)
-                        console.log('open() 실패!');
-                    else{
-                        fs.writeFile(folder + filename+ '.wav', u8arr, 'utf8', (err)=>{
-                            if(err)
-                                console.log('퍄일 쓰기 실패');
-                        });
-                    }      
-                    })    
+                    // fs.open(folder + filename+ '.wav', 'w+', (err, fd)=>{
+                    // if(err)
+                    //     console.log('open() 실패!');
+                    // else{
+                    //     fs.writeFile(folder + filename+ '.wav', u8arr, 'utf8', (err)=>{
+                    //         if(err)
+                    //             console.log('vk일 쓰기 실패');
+                    //     });
+                    // }      
+                    // })   
+                    fs.writeFile(folder + filename+ '.wav', u8arr, 'utf8', function (error) {
+                        console.log("u8arr : " + u8arr);
+                    });
                     while(n--) {
-                        u8arr[n] = bstr.charCodeAt(n);
+                        u8arr[n] = req.content.charCodeAt(n);
                     }
                     resolve(filename);
                     //mesaage DB에 저장

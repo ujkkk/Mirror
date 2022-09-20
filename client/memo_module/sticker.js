@@ -70,7 +70,7 @@ const addStoreIcon = function (memo) {
 // seq 번호를 변수로 받아 그 seq의 store 값을 알아내 값에 1을 더해 2로 나누어 store값을 변경
 const setStore = function (seq) {
     console.log('setStore call: ' + seq);
-    dbAccess.select('store', 'memo', `id=${dbAccess.userId} and seq=${seq}`)
+    dbAccess.select('store', 'memo', `id=${dbAccess.getId()} and seq=${seq}`)
         .then(value => {
             // store가 0일 경우 1로, 1일 경우 0으로
             const store = (value[0].store + 1) % 2;
@@ -80,20 +80,18 @@ const setStore = function (seq) {
             // delecte_time 형식 지정
             var time = moment(newDate).format('YYYY-MM-DD HH:mm:ss');
             // 변화에 따른 db 업데이트
-            dbAccess.update('memo', `store = ${store}`, `id=${dbAccess.userId} and seq=${seq}`);
-
+            dbAccess.update('memo', `store = ${store}`, `id=${dbAccess.getId()} and seq=${seq}`);
             // store가 1이 될 경우 고정 아이콘 띄우기
 
             console.log(value[0].store);
-
-            if (value[0].store == 1)
+            if (value[0].store == 1){
                 document.getElementById(seq).firstChild.style.visibility = 'visible';
+            }
             else {
                 document.getElementById(seq).firstChild.style.visibility = 'hidden';
-                dbAccess.update('memo', `delete_time = '${time}'`, `id=${dbAccess.userId} and seq=${seq}`);
+                dbAccess.update('memo', `delete_time = '${time}'`, `id=${dbAccess.getId()} and seq=${seq}`);
             }
         });
-
 }
 
 /* 메모테이블 한 행을 받아 memo ui 생성 함수 */

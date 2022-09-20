@@ -89,11 +89,9 @@ CMUsers.setCustromFriendList = (name) => new Promise((resolve, reject) => {
                 checkConnectedUser[k] = friendUsers[k].id; //서버로 보내서 connect 확인할 친구 목록
             }
             console.log(`friend value len: ${value.length}`)
-        }
-        )
+        })
         .then(() => {
             console.log("여기가 먼저 불려야함");
-
             axios({
                 method: 'post',
                 url: 'http://113.198.84.128:80/connect/user',
@@ -102,20 +100,19 @@ CMUsers.setCustromFriendList = (name) => new Promise((resolve, reject) => {
                 }
             })
                 .then(response => {
-                    if (response.data == null) {
-                        resolve(friendUsers)
-                    }
-                    else {
-                        let results = response.data.result;
 
+                    if (response.data != null) {
+                        let results = response.data.result;
                         for (let i = 0; i < results.length; i++) {
                             if (friendUsers[i].id == results[i].user) {
                                 friendUsers[i].connect = results[i].connect;
                             }
                         }
                     }
+
+                    resolve(friendUsers);
                 })
-            resolve(friendUsers);
+
         })
         .catch(
             () => {
@@ -146,15 +143,15 @@ CMUsers.setCustromFriendList = (name) => new Promise((resolve, reject) => {
                         resolve(friendUsers)
                         return;
                     }
-                    else{
+                    else {
                         let results = response.data.result;
 
-                    for (let i = 0; i < results.length; i++) {
-                        if (friendUsers[i].id == results[i].user) {
-                            friendUsers[i].connect = results[i].connect;
+                        for (let i = 0; i < results.length; i++) {
+                            if (friendUsers[i].id == results[i].user) {
+                                friendUsers[i].connect = results[i].connect;
+                            }
                         }
-                    }
-                    resolve(friendUsers);
+                        resolve(friendUsers);
                     }
                 })
 

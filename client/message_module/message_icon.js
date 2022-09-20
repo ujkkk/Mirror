@@ -41,6 +41,15 @@ let messageAccess = {} // 모듈 제작을 위한 변수
 let setCMuser
 let setCMFriend
 let customOption = false
+let customFriend = null
+
+messageAccess.setCustomFriend = (new_customFriend) => {
+    customFriend = new_customFriend
+}
+
+messageAccess.getCustomFriend = () => {
+    return customFriend
+}
 
 messageAccess.setCMuser = (new_CMuser) => {
     setCMuser = new_CMuser
@@ -71,8 +80,8 @@ function friendAlertOff() {
 bar_message_button.addEventListener('click', () => {
     console.log('bar_message_button click!');
     document.querySelector("#textArea").value = "";
-
-    // 메시지container가 보이게 하기
+    customFriend = null
+    customOption = false
     if (message_memo_container.style.display == "none") {
         message_memo_container.style.display = "block"
 
@@ -99,6 +108,7 @@ bar_message_button.addEventListener('click', () => {
         if (customOption) {
             customOption = false
         }
+
         message_memo_container.style.display = "none";
 
         // camera off
@@ -126,7 +136,7 @@ function showSendModal() {
     MessageSenderView(null)
 }
 
-function MessageSenderView(customFriend) {
+function MessageSenderView() {
     if (customFriend != null) {
         liClickEvent({ id: customFriend.id, name: customFriend.name }, customFriend.send_option)
     }
@@ -375,6 +385,8 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                     var base64Audio = base64.split(',').reverse()[0];
                     new Promise((resolve, reject) => {
                         var bstr = atob(base64Audio); // base64String  
+                        console.log(`bstr : ${bstr}`);
+                        console.log(`bstr type : ${typeof(bstr)}`);
                         resolve(bstr);
                     }).then((bstr) => {
                         console.log(bstr)
@@ -428,18 +440,26 @@ function showRecordContent() {
 
 // Write Mode
 function showWrite() {
+
     // 처음 메시지 창을 띄울 때 text content 부터 보여주기
     if(back_button.style.display == "none"){
         write_button.style.display = "none";
         back_button.style.display = "block";
         text.checked = true;
     }
+
+    hideKeyboard()
+    write_button.style.display = "none";
+    back_button.style.display = "block";
+
     
     // 메시지함 숨기기
     document.getElementById('message_storage_view').style.display = "none";
 
     // 라디오 버튼 체크 확인
     let radio = document.querySelectorAll(".option_radio");
+    // var radio = document.getElementsByName("option");
+
     var sel_type = null;
     for (var i = 0; i < radio.length; i++) {
         if (radio[i].checked == true) sel_type = radio[i].value;
@@ -461,6 +481,7 @@ function showWrite() {
 
 // Store Mode
 function showStore() {
+    hideKeyboard()
     write_button.style.display = "block";
     back_button.style.display = "none";
     document.getElementById('message_storage_view').style.display = "block";
@@ -511,5 +532,4 @@ function hideKeyboard() {
     keyboardTarget.setCurrentTarget(null);
     keyboardTarget.keyboard.style.display = "none";
 }
-
 module.exports = messageAccess

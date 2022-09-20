@@ -253,7 +253,7 @@ function insertMessageContent(messages, type) {
             if(msg_list.length%2==1)
                 totalSlides = (msg_list.length/2)+0.5;
             else totalSlides = msg_list.length/2;
-            document.getElementById('msg_index').innerHTML =`-${1}/${totalSlides}-`;
+            document.getElementById('msg_index').innerHTML =`- ${1}/${totalSlides} -`;
         })
        
 }
