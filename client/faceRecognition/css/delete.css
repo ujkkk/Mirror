@@ -1,0 +1,84 @@
+#container{
+    position: relative;
+    border: 3px solid red;
+    margin: 5vw;
+    top: 50%;
+    /* left: 50%; */
+    transform: translatey(-50%);
+}
+#tableContainer{
+    /* position: absolute; */
+    /* top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
+    margin-left: 1vw;
+    margin-right: 1vw;
+    text-align: center;
+}
+#buttonContainer{
+    /* position: absolute; */
+    text-align: center;
+}
+table {
+    /* width: 800px; */
+    /* margin: 0; */
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); */
+}
+th,
+td {
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+th {
+    text-align: center;
+}
+thead th {/*#82becf*/
+    /* border: solid 2px #25608c; */
+    background-color: #25608c;
+}
+tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+tbody td {
+    position: relative;
+    text-align: center;
+}
+tbody td:hover:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -9999px;
+    bottom: -9999px;
+    background-color: rgba(255, 255, 255, 0.2);
+    z-index: -1;
+}
+button {
+    margin-top: 5vw;
+    margin-left: 1vw;
+    /* margin-right: 1vw; */
+    padding-top: 1vw;
+    padding-bottom: 1vw;
+    /* width: 40vw; */
+    border: solid 2px white;
+    border-radius: 12px;
+    background-color:transparent;
+    color: white;
+    font-size: 1rem;
+}
+button:active{
+    border-color: gray;
+    color: gray;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+#deleteBtn{
+    width: 75vw;
+}
+#homeBtn{
+    width: 20vw;
+    margin-right: 1vw;
+}

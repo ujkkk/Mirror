@@ -1,13 +1,17 @@
 client = require('./mqtt')
 _db = require('../mirror_db')
-let id
-
+const loading = require('./loading')
+var id
+var ids =[];
+var names=[];   
 function getUserInfo(){
-               
+  ids =[];
+  names=[];   
   _db.select('*', 'user', 'id is not null')
   .then(users =>{
       users.forEach(user => {
           console.log('id : ' + user.id)
+
           ids.push(user.id)
           names.push(user.name)
           
@@ -30,16 +34,14 @@ function HighLightTR(target) {
 }
 function createTable(ids, names){
   const hTbody = document.getElementById('htmlTbody');
-  hTbody.innerHTML =''
+  hTbody.textContent =''
   names.forEach(name =>{
-
       let tr = document.createElement("tr")
       let td = document.createElement("td")
       td.innerHTML = name
       tr.setAttribute('onClick', "HighLightTR(this)")
       tr.appendChild(td)
       hTbody.appendChild(tr)
-
       console.log(hTbody)
       //hTbody.innerHTML += '<tr>' + newCell0 + '</tr>'
   }); 
@@ -47,9 +49,7 @@ function createTable(ids, names){
   
 }
 function deleteUser(){
-  console.log('deleteUser')
   if(deleteName != null){
-      console.log('deleteUser2')
       index = names.indexOf(deleteName, 0)
       id = ids[index]
       //삭제하기
@@ -101,29 +101,29 @@ client.on('message', (topic, message, packet) => {
     
     if(topic == 'delete/login/check'){
       getId = String(message)
-      console.log('delete/login/check | id : '+ getId)
+      console.log('delete/login/check | id : '+ id)
+      console.log('delete/login/check | getId : '+ getId)
       if(id  == getId){
-        console.log('삭제할 수 있습니다.')
+        loading.loading();
         //얼굴 인식 서버에게 해당 아이디의 폴더를 삭제하라고 보내기
         console.log('publish(delete/folder, id : ' + id)
         mirror_id = _db.getMirror_id()
         client.publish('delete/folder',String(mirror_id) + String(id))
-        textDiv = document.getElementById('text')
-        if(textDiv != null)
-         textDiv.innerHTML="<h3>삭제 중 입니다...</h3>";
+        textDiv = document.getElementById('delete_msg')
+        del_msg('삭제 중 입니다...')
         
       }
       else{
+        loading.stopLoading();
         console.log('삭제할 수 없습니다.')
-        textDiv = document.getElementById('text')
-        if(textDiv != null)
-            textDiv.innerHTML="<h3>삭제할 수 없습니다...</h3>";
-
+          del_msg('삭제할 수 없습니다...')
+            
       }
     }
 
     if(topic == 'delete/folder/check'){
         id = String(message)
+        loading.loading();
         console.log('delete/folder/check | check : '+ id)
 
         console.log('서버에서 폴더 삭제 성공')
@@ -131,12 +131,18 @@ client.on('message', (topic, message, packet) => {
         .then(user =>{
             console.log(user.length);
           if( user.length > 0) {
+            del_msg('삭제 됐습니다.')
+            loading.stopLoading();
             // delete
             console.log(user[0].user_id)
             _db.delete('user', `id =${user[0].id}` )
-            console.log('디비에서 삭제 되었습니다. id : ' + user[0].id)
+            //테이블 다시 생성
+            getUserInfo();
+          //  console.log('디비에서 삭제 되었습니다. id : ' + user[0].id)
              //모델 재학습
             client.publish('reTrain', String(_db.getMirror_id()))
+          }else{
+            //del_msg('삭제 할 수 없습니다.')
           }
      
         })
@@ -144,5 +150,10 @@ client.on('message', (topic, message, packet) => {
  }
 )
 
-
+function del_msg(msg){
+  let delete_msg = document.getElementById('delete_msg');
+  if(delete_msg != null){
+    delete_msg.innerHTML = `<h3>${msg}</h3>`
+  }
+}
 module.exports =  {deleteClick}

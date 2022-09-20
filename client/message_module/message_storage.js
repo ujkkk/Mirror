@@ -9,7 +9,7 @@ function showMessageStorage() {
             create_storage(messages);
         })
 }
-
+var freinds_obj={};
 var freinds_obj2 = {};
 function create_storage(messages) {
 
@@ -24,10 +24,12 @@ function create_storage(messages) {
             })
         }).then(() => {
 
+
             for (var i = 0; i < messages.length; i++) {
                 var message = messages[i];
                 var sender = freinds_obj[message.sender];
-                if (sender == 0) return;
+                console.log('freinds_obj: ',freinds_obj)
+                if (sender == 2) continue;
 
                 var message_div = document.createElement('div');
 
@@ -70,7 +72,7 @@ function create_storage(messages) {
 
                 message_content.addEventListener("click", (e) => { message_storage_detail(e.target) });
                 document.getElementById('message_storage_contents').prepend(message_div);
-                freinds_obj[message.sender] = 0;
+                freinds_obj[message.sender] = 2;
 
             }
         })

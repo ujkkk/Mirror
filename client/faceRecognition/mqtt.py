@@ -32,7 +32,8 @@ def on_connect(client, userdata, flag, rc):
 
 def on_message(client, userdata, msg):
     message = msg.payload.decode("utf-8")
-    print("payload : " + str(message))
+    print('받은 topic : ' + msg.topic)
+    print("받은 payload : " + str(message))
 
     if(msg.topic == 'closeCamera'):
         camera.closeCam()
@@ -69,7 +70,7 @@ def on_message(client, userdata, msg):
 
             
        
-broker_ip = "localhost" # 현재 이 컴퓨터를 브로커로 설정
+broker_ip = "192.168.0.8" # 현재 이 컴퓨터를 브로커로 설정
 print('broker_ip : ' + broker_ip)
 client = mqtt.Client()
 client.on_connect = on_connect
@@ -110,6 +111,7 @@ while True :
         imagelist = load_image(saved_dir_name)
         for i in range(10) :
             imageByte = imagelist.pop()    
+            print(" client.publish('login', bytearray(str(mirror_id), 'utf-8')+imageByte)")
             # 얼굴인식 서버에게 찍은 사진을 보냄
             client.publish('login', bytearray(str(mirror_id), 'utf-8')+imageByte)
             loginCamera_flag = False
@@ -130,6 +132,7 @@ while True :
             imagelist = load_image(dir_name2)
             for i in range(20) :
                 imageByte = imagelist.pop()
+                
                 # 서버에 보냄   
                 client.publish('createAccount/image', bytearray(str(mirror_id), 'utf-8') + imageByte)
             id = 0
@@ -163,6 +166,5 @@ while True :
     if (stopFlag):
         break
    
-print('끝내기')
 client.loop_stop()
 client.disconnect()

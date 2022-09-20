@@ -35,6 +35,10 @@ img{
     color: white;
     font-size: 1rem;
 }
+#modelBtn{
+    border: solid 2px rgb(0, 0, 0) !important;
+    color: rgb(49, 43, 43) !important;
+}
 .btn:active{
     border-color: gray;
     color: gray;

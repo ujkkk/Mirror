@@ -13,3 +13,5 @@ function stopLoading(){
         document.getElementById("message").innerHTML="";
     }
 }
+
+module.exports = {loading,stopLoading }

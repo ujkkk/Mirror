@@ -1,19 +1,18 @@
 <html>
     <head>
         <link href="../css/inputtype.css" rel="stylesheet">
-        <link rel="stylesheet" href="../css/delete.css" />
+        <link rel="stylesheet" href="./css/delete.css" />
+        <link rel="stylesheet" type="text/css" href="css/loading.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script src="./delete.js"></script>
          <script>
              function returnToLogin(){
-                 document.location.href="init.html";
+                 document.location.href="home.html";
              }
              //const getSeq = require('./getSeq')
              let _db = require('../mirror_db')
              let _delete = require('./delete')
              let deleteName = null
-             let ids = new Array()
-             let names = new Array()
              window.onload = getUserInfo();
              
          </script>
@@ -21,6 +20,10 @@
     <body>
         <title>Delete</title>
         <div id="container">
+            <div id="loadingDiv">
+                <div id="loading" style="display: none;"></div>
+            </div>
+            <div id="delete_msg" style="color:white"></div>
             <div id="tableContainer">
                 <table id="table-1">
                     <thead><tr><th>User</th></tr></thead>

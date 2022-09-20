@@ -173,6 +173,27 @@ function insertMessageContent(messages, type) {
             
                 
                 msg_list[i] = messageContent;
+                messageContent.addEventListener("click", function (e) {
+                    //console.log("이 이벤트 리스너가 불리긴 함")
+                  
+                    let msg_id = e.target.getAttribute('value');
+                    let currentTargetId = e.target.value; // 현재 클릭된 li
+                    console.log(msg_id);
+                    if (currentTargetId != lastClickedId) {  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 다를 때 -> message_detail함수 호출 + 마지막으로 클릭된 아이디 갱신
+                        // console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 다를 때")
+                        // console.log(`current:${currentTargetId}, last:${lastClickedId}`)
+                        lastClickedId = currentTargetId;
+                        message_detail(msg_id)
+                    }
+                    else {  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 같을 때 -> detail 창 닫기
+                        // console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 같을 때")
+                        // console.log(`current:${currentTargetId}, last:${lastClickedId}`)
+                        lastClickedId = "";
+                        e.target.style.backgroundColor = "black"
+                        document.getElementById('message-detail-container').style.visibility = 'hidden';
+                    }
+                })
+                
                 //홀수 일 때
                 if( messages.length %2==1){
                     if(i==0) continue;
@@ -204,26 +225,7 @@ function insertMessageContent(messages, type) {
                     }
                 }
 
-                messageContent.addEventListener("click", function (e) {
-                    //console.log("이 이벤트 리스너가 불리긴 함")
-                  
-                    let msg_id = e.target.getAttribute('value');
-                    let currentTargetId = e.target.value; // 현재 클릭된 li
-                    console.log(msg_id);
-                    if (currentTargetId != lastClickedId) {  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 다를 때 -> message_detail함수 호출 + 마지막으로 클릭된 아이디 갱신
-                        // console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 다를 때")
-                        // console.log(`current:${currentTargetId}, last:${lastClickedId}`)
-                        lastClickedId = currentTargetId;
-                        message_detail(msg_id)
-                    }
-                    else {  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 같을 때 -> detail 창 닫기
-                        // console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 같을 때")
-                        // console.log(`current:${currentTargetId}, last:${lastClickedId}`)
-                        lastClickedId = "";
-                        e.target.style.backgroundColor = "black"
-                        document.getElementById('message-detail-container').style.visibility = 'hidden';
-                    }
-                })
+
             }
             //홀수일 때 마지막 메시지만 li에 content 1개 삽입
             if(messages.length %2==1){
@@ -286,7 +288,7 @@ function reply_message() {
         axios({method:'post',url:'http://113.198.84.128:80/get/connect', data:{id:receiver_id}})
         .then((response) =>{
            // console.log(response);
-           if(response.connect == 'fail'){
+           if(response.data.connect == 'fail'){
                 console.log('reply_message : 서버에서 연결여부 불러오기 오류');
                 return;
            }
@@ -305,12 +307,12 @@ function reply_message() {
             // }
             //var content = document.getElementById('reply-text').textContent;
             console.log('content 객체',document.getElementById('reply-text'))
-            console.log('content',content)
+            console.log('response.connect',response.connect)
             // var content = document.getElementById('reply-text').getAttribute('value');
             // console.log('content',content)
             var time = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
             //상대가 접속 되어 있으면 소켓으로 전달
-            if(response.connect){
+            if(response.data.connect){
                 socket.emit('realTime/message', {
                     sender: mirror_db.getId(),
                     receiver: receiver_id,
