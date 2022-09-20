@@ -7,7 +7,6 @@ const memo_record_button = document.getElementById("memo_record_button");
 const memo_recordbars_div = document.getElementById("memo_recordbars_div");
 const save_record_button = document.getElementById("save_record_button");
 
-const { memo } = require("react");
 const mirror_db = require("../mirror_db")
 
 // 녹음 중 상태 변수

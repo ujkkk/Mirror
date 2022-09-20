@@ -29,5 +29,5 @@ function setSettingAlert() {
 setSettingAlert()
 
 function mirrorLogout() {
-    document.location.href=`init.html`
+    document.location.href=`./faceRecognition/home.html`
 }
