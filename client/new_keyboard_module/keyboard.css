@@ -13,7 +13,7 @@
 	bottom:35px;
 	margin: 0 auto;
 	width : 75%;
-	height: max-content;
+	height: max-content + 10px;
     background-color: #000;
     border-radius: 2%;
 	border: 1px solid #fff;
@@ -45,18 +45,32 @@
 }
 
 #line1{
+	margin-top:2%;
 	margin-left: 4%;
 	margin-bottom:1.5%;
 	width: 100%;
 }
+
 #line1 .key{
 	font-size: 25px;
-	width:3vw;
+	width:2.8vw;
 	height:2vw;
 }
+
+#line1 #close-keyboard{
+	border-radius: 50%; 
+	border-width:3px;
+	width:2vw;
+	height:2vw;
+	margin-top:0%;
+	margin-left:20px;
+	font-weight: 40%;
+}
+
 #line2 {
 	margin-left: 3%;
 }
+
 #line2 .key{
 	font-size: 25px;
 	width:3.5vw;
@@ -105,16 +119,6 @@
 #line5 #shift{
 	width:4vw;
 	height:2.5vw;
-}
-
-#line5 #close-keyboard{
-	border-radius: 50%; 
-	border-width:3px;
-	width:2vw;
-	height:2vw;
-	/* margin-right:20px; */
-	font-weight: 40%;
-
 }
 
 #eng-keys{

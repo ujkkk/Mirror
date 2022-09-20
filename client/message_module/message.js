@@ -3,6 +3,7 @@ const mirror_db = require('../mirror_db');
 const moment = require('moment');
 let fs = require('fs');
 const { showMessageStorage } = require('./message_storage');
+const { text } = require('express');
 //slide-wrap
 var slideWrapper = document.getElementById('msg-slider-wrap');
 //current slideIndexition
@@ -28,6 +29,19 @@ reply_btn.onclick= () =>{reply_message();}
 // var reply_text = document.getElementById('reply-text');
 // reply_text.addEventListener('change', ()=>)
 reply_btn.addEventListener('click', reply_message());
+
+// 간편답장 input 태그에 가상 키보드 달기
+document.getElementById("reply_text").addEventListener("click",function(e){showKeyboard(e)})
+function showKeyboard(e){
+    keyboardTarget.setCurrentTarget(e.target.id);
+    keyboardTarget.keyboard.style.display="block";
+}
+
+function hideKeyboard(){
+    keyboardTarget.setCurrentTarget(null);
+    keyboardTarget.keyboard.style.display="none";
+}
+
 //선택한 메시지 디테일 메시지 창에 띄우기
 function message_detail(msg_id) {
     var contents = document.getElementsByClassName('message-content')
@@ -271,8 +285,16 @@ function insertNewMessage() {
 
 // detail-message 창에서 바로 답장
 //소켓으로 통신
+
+var reply_btn = document.getElementById('reply_btn');
+reply_btn.onclick= () =>{reply_message();}
+
+// detail-message 창에서 바로 답장
+//소켓으로 통신
 function reply_message() {
     console.log('reply_message 들어옴')
+    console.log("replay text value: ",document.getElementById('reply_text').value)
+
     if(mirror_db.getId()==null) return;
     var receiver_id = document.getElementById('message-sender').getAttribute('value')
     if(receiver_id == 0) return;
@@ -306,8 +328,7 @@ function reply_message() {
             //     document.getElementById("reply-text").value; = document.getElementById("reply-text").value;
             // }
             //var content = document.getElementById('reply-text').textContent;
-            console.log('content 객체',document.getElementById('reply-text'))
-            console.log('response.connect',response.connect)
+
             // var content = document.getElementById('reply-text').getAttribute('value');
             // console.log('content',content)
             var time = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
@@ -335,12 +356,11 @@ function reply_message() {
                     }
                 }); // end of axios ...
             }
+
         }).then(()=>{document.getElementById('reply_text').value = '';})
     })
- 
-   
-
 }
+
 
 
 
