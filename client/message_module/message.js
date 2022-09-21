@@ -163,7 +163,7 @@ function insertMessageContent(messages, type) {
                         break;
                 }
                 //보낸이
-                console.log('sender_name.type',sender_name);
+             //   console.log('sender_name.type',sender_name);
                 if (sender_name == null) {
                     messageContent.innerHTML = `[${message.sender}] ${content}`
                 }
@@ -292,20 +292,8 @@ function reply_message() {
                 console.log('reply_message : 서버에서 연결여부 불러오기 오류');
                 return;
            }
-            //서버에 해당 유저가 없다면 오류
-            // if(values.length<=0){
-            //     console.log('reply_message : 서버에서 연결여부 불러오기 오류');
-            //     return;
-            // }
-            // console.log(values);
-
             //답장 전달     
             var content = document.getElementById("reply_text").value; 
-            // document.getElementById("reply-text").onkeyup = () =>{
-               
-            //     document.getElementById("reply-text").value; = document.getElementById("reply-text").value;
-            // }
-            //var content = document.getElementById('reply-text').textContent;
             console.log('content 객체',document.getElementById('reply-text'))
             console.log('response.connect',response.connect)
             // var content = document.getElementById('reply-text').getAttribute('value');

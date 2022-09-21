@@ -32,6 +32,7 @@ let record_obj = require('./memo_module/memo_record');
 const { setQuarter } = require('date-fns');
 const { Store } = require('mqtt');
 
+
 // const mqtt = require('mqtt');
 // const dbAccess = require("../mirror_db");
 
@@ -48,6 +49,82 @@ const options = { // 브로커 정보(ip, port)
     host: '127.0.0.1',
     port: 1883
 }
+
+// const mqttClient = mqtt.connect(options) // mqtt broker 연결
+// mqttClient.subscribe('message_request')
+// mqttClient.subscribe('audio_message_request')
+// mqttClient.subscribe('image_request')
+
+
+// mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 callback
+//     customFriend = null
+//     if (message == null) {
+//         customOption = false
+//     }
+//     else {
+//         friendName = message
+//         customOption = true
+//         setCMFriend = CMUsers.setCustromFriendList(friendName)
+//         setCMuser = CMUsers.setCustromUserList(friendName)
+
+//         setCMuser.then(user => {
+//             setCMFriend.then(friend => {
+//                 console.log(`user value len: ${user.length}, ${friend.length} = ${user.length + friend.length}`)
+//                 if (user.length + friend.length == 0) {
+//                     sttAlert.innerText = `${friendName}이를 찾을 수 없습니다`
+//                     sttRefusalContainer.style = 'display: block'
+//                     customOption = false
+//                     return;
+//                 }
+//                 else if (user.length + friend.length == 1) {
+//                     if (memo_container.style.display == "none") {
+//                         memo_container.style.display = "block"
+//                     }
+//                     if (user.length == 1) {
+//                         friendName = user[0].name
+//                         customFriend = { name: user[0].name, id: user[0].id, send_option: 0 }
+//                     }
+//                     else {
+//                         friendName = friend[0].name
+//                         customFriend = { name: friend[0].name, id: friend[0].id, send_option: 1 }
+//                     }
+//                     console.log(`이름은 ${friendName}`)
+//                     sttAlert.innerText = `${friendName}님에게 보낼 메시지를 입력바랍니다`
+//                     sttRefusalContainer.style = 'display: block'
+//                 }
+//                 else {
+//                     if (memo_container.style.display == "none") {
+//                         memo_container.style.display = "block"
+//                     }
+//                     sttAlert.innerText = `보낼 메시지를 입력바랍니다`
+//                     sttRefusalContainer.style = 'display: block'
+//                 }
+//             })
+//         })
+//     }
+
+//     if (topic.toString() == 'message_request') {
+//         if(value.includes("라고")) {
+//             let callValue = value.split('라고')
+//             let callName = callValue[0].split("에게")
+//             console.log(`메시지 내용: ${callName[callName.length - 1]}`)
+//             document.querySelector("#textArea").value = `${callName[callName.length - 1]}`
+//         }
+//         memo_write_button.click()
+//     }
+//     else if (topic.toString() == 'audio_message_request') {
+//         memo_write_button.click()
+//         record.click()
+
+//     }
+//     else if (topic.toString() == 'image_request') {
+//         memo_write_button.click()
+//         image.click()
+//     }
+// })
+
+
+// stt 실행 ======================================================================================
 
 // message display ON/OFF
 bar_memo_button.addEventListener('click', () => {
@@ -71,13 +148,13 @@ bar_memo_button.addEventListener('click', () => {
         client.publish('camera/on', "start");
     }
     else {
-
         if (customOption) {
             customFriend = null
             customOption = false
         }
-
         memo_container.style.display = "none";
+        document.getElementById('memo_img').src= ''
+
         // camera off
         client.publish('camera/close', 'ok')
     }
@@ -96,13 +173,9 @@ shutter_button.addEventListener('click', () => {
 
 
 function saveMemoContent(e){
-    if(e.target.id == "save_text_button"){
-        hideKeyboard()
-        mirror_db.addMemo(mirror_db.getId(), memo_textArea.value , 0, 'text')
-
-        memo_textArea.value = "";
-   }
-   else if (e.target.id == "save_image_button"){
+    
+    var newDate = new Date();
+    var time = moment(newDate).format('YYYY-MM-DD HH:mm:ss');
 
         if(e.target.id == "save_text_button"){
             hideKeyboard()
@@ -115,21 +188,33 @@ function saveMemoContent(e){
                 type:"text"
             }
     
-            mirror_db.createColumns('memo',data).
-            then(()=>{
+            mirror_db.createColumns('memo',data)
+            .then(()=>{
                 memo_storage.showMemoStorage();
                 memo_textArea.value = "";
-            })
-            
+            })    
          
        }
        else if (e.target.id == "save_image_button"){
-    
+            let img = document.getElementById('memo_img')
+            let file_name = img.getAttribute('value');
+            console.log('file_name:',file_name)
 
-
+            data= { // 인자로 보낼 데이터
+                id: mirror_db.getId(),
+                type: 'image',
+                store:1,
+                delete_time:"2026-04-04 4:44:44",
+                content: file_name,
+                time: time
+            }
+            mirror_db.createColumns('memo',data)
+            .then(()=>{
+                memo_storage.showMemoStorage();
+                memo_textArea.value = "";
+            })  
        }
     
-    }
 
 }
 
@@ -153,14 +238,6 @@ function showRecordContent() {
 
 // Write Mode
 function showWrite() {
-    hideKeyboard()
-
-    // 처음 메시지 창을 띄울 때 text content 부터 보여주기
-    if(memo_back_button.style.display == "none"){
-        memo_write_button.style.display = "none";
-        memo_back_button.style.display = "block";
-        memo_text.checked = true;
-    }
 
     memo_write_button.style.display = "none";
     memo_back_button.style.display = "block";
@@ -236,11 +313,8 @@ memo_record.addEventListener('change', () => {
 })
 
 function showKeyboard(e) {
-
-    if(keyboardTarget.keyboard.style.display == "none"){
-        keyboardTarget.setCurrentTarget(e.target.id);
-        keyboardTarget.keyboard.style.display = "block";
-    }
+    keyboardTarget.setCurrentTarget(e.target.id);
+    keyboardTarget.keyboard.style.display = "block";
 }
 
 function hideKeyboard() {

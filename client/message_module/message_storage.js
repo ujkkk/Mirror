@@ -28,7 +28,7 @@ function create_storage(messages) {
             for (var i = 0; i < messages.length; i++) {
                 var message = messages[i];
                 var sender = freinds_obj[message.sender];
-                console.log('freinds_obj: ',freinds_obj)
+             //   console.log('freinds_obj: ',freinds_obj)
                 if (sender == 2) continue;
 
                 var message_div = document.createElement('div');
