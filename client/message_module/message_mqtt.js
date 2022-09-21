@@ -5,7 +5,7 @@ const moment = require('moment');
 const fs = require('fs')
 const socket = require('./message_socket')
 const options = {
-    host: '127.0.0.1',
+    host: '192.168.0.8',
     port: 1883
   };
 
@@ -29,6 +29,7 @@ const getDataFromFilePromise = (filePath) => {
   });
 }
 
+client.publish('closeCamera','ok')
 client.subscribe("send/image");
 client.subscribe("capture/camera_done");
 client.subscribe("memo/capture/done");

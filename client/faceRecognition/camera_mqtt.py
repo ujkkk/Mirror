@@ -1,4 +1,4 @@
-from asyncio.windows_events import NULL
+
 from email.mime import image
 from re import T
 import paho.mqtt.client as mqtt
@@ -7,10 +7,7 @@ import camera
 import os
 from datetime import datetime
 global client
-capture_on = False
-createImageFalg = False
-capture_type = ''
-cam = NULL
+
 
 curDir = os.path.dirname(os.path.realpath(__file__))
     #curDir = '.' + os.path.sep + 'faceRecognition'
@@ -22,7 +19,8 @@ loginCamera_flag = False
 createAccountCamera_flag = False
 exist_flag = False
 delete_login_flag = False
-mirror_id = 400
+mirror_id = 200
+close_flag = False
 
 id = 0
 def on_connect(client, userdata, flag, rc):
@@ -35,9 +33,9 @@ def on_connect(client, userdata, flag, rc):
     client.subscribe('delete/camera')
 
     #미러 로그인 후 메시지, 메모에서 쓰는 카메라
-    client.subscribe('capture/camera')
-    client.subscribe('camera/on')
-    client.subscribe('camera/close')
+    # client.subscribe('capture/camera')
+    # client.subscribe('camera/on')
+    # client.subscribe('camera/close')
 
 
 
@@ -46,25 +44,10 @@ def on_message(client, userdata, msg):
     print('받은 topic : ' + msg.topic)
     print("받은 payload : " + str(message))
 
-    #미러앱 로그인 하고 메시지, 메모
-    if(msg.topic == 'capture/camera'):
-        global createImageFalg
-        createImageFalg = True
-        global capture_type
-        capture_type =  str(message)
-    if(msg.topic == 'camera/on'):
-        camera.onCam()
-    if(msg.topic == 'camera/close'):
-        camera.closeCam()
-        #cv2.destroyAllWindows()
-
-
-    if(msg.topic == 'capture/on'):
-        print('capture/on 받음')
-        global capture_on
-        capture_on = True
     if(msg.topic == 'closeCamera'):
-        camera.closeCam()
+        global close_flag
+        close_flag = True
+        
     elif (msg.topic == 'mirror_id'):
         global mirror_id
         mirror_id = str(message)
@@ -127,13 +110,9 @@ def load_image(directory):
 
 stopFlag = False
 while True :
-    if(createImageFalg):
-        camera.createImage()
-        #stopFlag = True
-        createImageFalg = False
-
-    if (stopFlag):
-        break
+    if(close_flag):
+        camera.closeCam()
+        close_flag = False
     #유저가 로그인버튼을 누르면 사진 10장을 찍고 
     #얼굴인식하는 서버에 사진을 보내서 유저를 식별함
     if (loginCamera_flag):

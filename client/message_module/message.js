@@ -192,7 +192,7 @@ function insertMessageContent(messages, type) {
                   
                     let msg_id = e.target.getAttribute('value');
                     let currentTargetId = e.target.value; // 현재 클릭된 li
-                    console.log(msg_id);
+                    console.log('msg_id: ',msg_id);
                     if (currentTargetId != lastClickedId) {  // 현재 클릭된 아이디가 마지막으로 클릭된 아이디와 다를 때 -> message_detail함수 호출 + 마지막으로 클릭된 아이디 갱신
                         // console.log("현재 클릭된 value가 마지막으로 클릭된 아이디와 다를 때")
                         // console.log(`current:${currentTargetId}, last:${lastClickedId}`)
@@ -277,8 +277,7 @@ function insertMessageContent(messages, type) {
 function insertNewMessage() {
     mirror_db.select('*', 'message', `receiver = ${mirror_db.getId()}`)
         .then(messages => {
-            //가장 마지막에 추가된 메시지 가져오기
-            //message = messages[messages.length - 1];
+           
             insertMessageContent(messages, 'new');
         })
 }
@@ -302,11 +301,11 @@ function reply_message() {
     mirror_db.select('*', 'friend',`id=${mirror_db.getId()} and friend_id=${receiver_id}`)
     .then((value) => {
         if(value.length <=0) {
-            console.log('reply_message : 오류');
+            console.log('reply_message : freind디비에 없는 유저');
             return;
         }
         //reciever의 접속 여부 알아내기
-        console.log('(value[0].name: ',(value[0].name));
+        console.log('답장 받을 유저의 이름 ',(value[0].name));
         axios({method:'post',url:'http://113.198.84.128:80/get/connect', data:{id:receiver_id}})
         .then((response) =>{
            // console.log(response);

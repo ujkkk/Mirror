@@ -31,6 +31,7 @@ function sub(){
                     type : 'text',
                     send_time : send_time
                 };
+                //DB에 저장
                 mirror_db.createColumns('message', data)
                 .then(() => {
                     //메시지함에 새로 추가
@@ -55,6 +56,7 @@ function sub(){
                     if(err)
                         console.log('open() 실패!');
                     else{
+                        //파일 저장
                         fs.writeFile(folder + filename+'.jpg', u8arr, 'utf8', (err)=>{
                             if(err)
                                 console.log('퍄일 쓰기 실패');
@@ -78,6 +80,7 @@ function sub(){
                         };
                         mirror_db.createColumns('message', data)
                         .then(()=> {
+                            
                             message.insertNewMessage();
                             message_storage.showMessageStorage();
                         })

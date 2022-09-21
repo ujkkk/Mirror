@@ -2,6 +2,7 @@ const mqtt = require('mqtt')
 const spawn = require('child_process').spawn;
 const createLoginMessage = require('./loginMessage')
 const _db = require('../mirror_db')
+const axios = require('axios')
 const loading = require('./loading');
 const options = {
     host: '192.168.0.8',
@@ -41,7 +42,8 @@ const options = {
             document.location.href='./sign_up.html'
             return;
           }
-          createLoginMessage.createMessage(String(values[0].name) +'님은 이미 가입된 유저입니다.')
+          document.getElementById("loginMessage").innerHTML = (String(values[0].name))+ "님은 이미 가입된 유저입니다."
+
           loading.stopLoading();
         })
       }
@@ -54,7 +56,7 @@ const options = {
       user_id = message
       console.log('loginCheck : 디비에서 이름 받아오기')
       if(user_id == 'NULL'){
-        createLoginMessage.createMessage('등록된 유저가 아닙니다.')
+        createLoginMessage.createLoginMessage(String('등록된 유저가 아닙니다.'))
         loading.stopLoading();
       }
       else{
@@ -77,14 +79,22 @@ const options = {
     //서버에서 계정을 추가하고 신호가 올 때
     if(topic == "createAccount/check"){
       console.log("topic == createAccount/check")
-      var createMessageDiv = document.createElement("div")
-      createMessageDiv.setAttribute("id", "createMessageDiv")
-      createMessageDiv.setAttribute("width","500px")
-      createMessageDiv.setAttribute("height","100px")
-      createMessageDiv.setAttribute("style", "text-align=center;")
-      client.publish('closeCamera','')
-     // console.log(S(message))
-      document.location.href='./home.html'
+      var id = String(message);
+      var name = document.getElementById('name').value;
+      axios({method:'post',url:'http://113.198.84.128:80/signUp',
+              data:{id:id, name : name}
+      }).then(() =>{
+        var createMessageDiv = document.createElement("div")
+        createMessageDiv.setAttribute("id", "createMessageDiv")
+        createMessageDiv.setAttribute("width","500px")
+        createMessageDiv.setAttribute("height","100px")
+        createMessageDiv.setAttribute("style", "text-align=center;")
+        //client.publish('closeCamera','ok')
+      // console.log(S(message))
+        document.location.href='./home.html'
+      })
+
+      
       
     }
   })
