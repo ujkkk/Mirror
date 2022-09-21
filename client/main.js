@@ -22,7 +22,7 @@ function createWindow() {
     const win = new BrowserWindow(options)
 
     //win.loadFile("init.html");
-   win.loadFile("home.html");
+    win.loadFile("home.html");
 
     let screenElectron = electron.screen;
     let mainScreen = screenElectron.getPrimaryDisplay();

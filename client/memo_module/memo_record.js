@@ -99,17 +99,6 @@ save_record_button.onclick = function (event){ // 여기서 메모 DB에 저장
         }
         console.log("The file was saved!");
        
-        var newDate = new Date();
-        var time = moment(newDate).format('YYYY-MM-DD HH:mm:ss');
-        
-        let data = {
-            id:mirror_db.getId(),
-            content:save_time,
-            store:1,
-            time:time,
-            delete_time:"2026-04-04 4:44:44",
-            type:"audio"
-        }
         console.log(`data  = === == ${data.content}`)
     
         mirror_db.addMemo(mirror_db.getId(), save_time , 0, "audio")

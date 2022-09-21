@@ -25,7 +25,7 @@ function create_storage(messages) {
         }).then(() => {
 
 
-            for (var i = 0; i < messages.length; i++) {
+            for (var i =  messages.length-1; i >=0; i--) {
                 var message = messages[i];
                 var sender = freinds_obj[message.sender];
              //   console.log('freinds_obj: ',freinds_obj)

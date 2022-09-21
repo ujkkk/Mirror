@@ -88,6 +88,9 @@ bar_message_button.addEventListener('click', () => {
         sttRefusalContainer.style.display = "none"
         sttSendButton.style = "display: none"
 
+        var contents = document.getElementById('message_storage_detail_contents');
+        contents.replaceChildren();
+
         // text.style.display = "none";
         // image.style.display = "none";
         // record.style.display = "none";
