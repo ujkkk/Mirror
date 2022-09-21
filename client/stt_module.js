@@ -109,6 +109,7 @@ mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 
                     call_option = 1
                 }
 
+                console.log(`messge: ${message}`)
                 if (message == null) {
                     phoneButton.click()
                 }
@@ -206,7 +207,7 @@ mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 
                         record.click()
                         //document.getElementById('record_button').click()
                         setGeumBi()
-                    }, 5000)
+                    }, 3000)
                 }
                 else if (topic.toString() == 'image_request') {
                     sttAlert.innerText = `이미지 전송창을 띄웁니다`
@@ -220,7 +221,7 @@ mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 
                         image.click()
                         //document.getElementById('shutter_button').click()
                         setGeumBi()
-                    }, 5000)
+                    }, 3000)
                 }
             }
 
@@ -239,7 +240,7 @@ mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 
                     sttAlertTime = setTimeout(function () { // 5초 후 실행
                         sttAlertOff()
                         setGeumBi()
-                    }, 5000)
+                    }, 3000)
                 }
                 else {
                     //
@@ -338,7 +339,7 @@ const getCallFriendName = function (name, call_option) {
                     callRecordComponent.style = 'display: none'
                     addressBookComponent.style = 'display: block'
                     recordSetComponent.style = 'display: none'
-                }, 5000)
+                }, 3000)
 
 
                 friend = []
@@ -360,7 +361,7 @@ const getCallFriendName = function (name, call_option) {
                 sttAlertTime = setTimeout(function () { // 5초 후 실행
                     sttAlertOff()
                     callAccess.startCall({ 'id': value[0].friend_id, 'name': value[0].name }, call_option)
-                }, 5000)
+                }, 3000)
             }
         })
 }

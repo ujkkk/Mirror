@@ -239,8 +239,8 @@ function hiddenVideoConference() {
 
 // 숨겨진 통화 UI 보이기
 function showVideoConference() {
-  if (phoneButton != null && roomInformation.myRoomId != roomInformation.newRoomId)
-    phoneButton.click()
+  // if (phoneButton != null && roomInformation.myRoomId != roomInformation.newRoomId)
+  //   phoneButton.click()
   if (callOption == 0)
     audioChatContainer.style = 'display: block'
   else
@@ -369,10 +369,11 @@ const setLocalStream = async function (audioValue, videoValue) {
         rtcPeerConnection.close() // 통화 종료
         console.log(`track: ${rtcPeerConnection.ontrack}`)
       }
+      localStream.getTracks().forEach(function (track) {
+        track.stop();
+      });
     }
-    localStream.getTracks().forEach(function (track) {
-      track.stop();
-    });
+    
 
   }
   remoteVideoComponent.pause();
