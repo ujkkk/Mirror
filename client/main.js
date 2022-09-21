@@ -21,11 +21,9 @@ function createWindow() {
     //options.autoHideMenuBar = true
     const win = new BrowserWindow(options)
 
-
-   //win.loadFile("init.html");
-   win.loadFile("faceRecognition/home.html");
-   // win.loadFile("record_module/record.html");
-
+    win.loadFile("init.html");
+   //win.loadFile("faceRecognition/home.html");
+   
     let screenElectron = electron.screen;
     let mainScreen = screenElectron.getPrimaryDisplay();
     console.log(mainScreen);

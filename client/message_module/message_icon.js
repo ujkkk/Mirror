@@ -295,7 +295,7 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
         }
         else if (type_check == "image") { // image 전송일 때
             //서버로 메시지를 보내는 이벤트 publish
-            client.publish('send/image', 'send');
+            // client.publish('send/image', 'send');
             console.log("image send success");
 
             dbAccess.createColumns('message', data)
