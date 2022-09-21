@@ -3,8 +3,8 @@
     <head>
         <title>Init</title>
         <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="css/home.css">
-        <link rel="stylesheet" type="text/css" href="css/loading.css">
+        <link rel="stylesheet" type="text/css" href="faceRecognition/css/home.css">
+        <link rel="stylesheet" type="text/css" href="faceRecognition/css/loading.css">
     </head>
     <body>
         <div id="loadingDiv">
@@ -29,13 +29,13 @@
     <!-- 누군가가 전화를 걸었을 때 수락창 -->
     <div id="caller-accept-container" style="display: none">
         <div id="caller-alert">경미님의 영상통화</div>
-        <button class="call_button" id="accept"><img class="call-accept-icon" id="accept-icon" src="../image/index/start_call_icon.png"></button><button class="call_button" id="dont-accept"><img class="call-accept-icon" id="dont-accept-icon" src="./image/index/end_call_icon.png"></button>
+        <button class="call_button" id="accept"><img class="call-accept-icon" id="accept-icon" src="./image/index/start_call_icon.png"></button><button class="call_button" id="dont-accept"><img class="call-accept-icon" id="dont-accept-icon" src="./image/index/end_call_icon.png"></button>
     </div>
 
     <!-- 음성 통화 창 -->
     <div id="audio-chat-container" style="display: none">
         <div class="caller">김경미</div>
-        <button class="disconnect-button"><img class="disconnect-icon" src="../image/index/end_call_icon.png"></button>
+        <button class="disconnect-button"><img class="disconnect-icon" src="./image/index/end_call_icon.png"></button>
     </div>
 
     <!-- 영상 통화 창 -->
@@ -45,16 +45,16 @@
             <video id="local-video" autoplay="autoplay"></video>
             <video id="remote-video" autoplay="autoplay"></video>
         </div>
-        <button class="disconnect-button"><img class="disconnect-icon" src="../image/index/end_call_icon.png"></button>
+        <button class="disconnect-button"><img class="disconnect-icon" src="./image/index/end_call_icon.png"></button>
     </div>
-        <script src="../node_modules/socket.io/client-dist/socket.io.js"></script>
-        <script type="module" src="../init_app.js"></script>
+        <script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
+        <script type="module" src="./init_app.js"></script>
 
-        <script src="loading.js"></script>
+        <script src="./faceRecognition/loading.js"></script>
         <!-- <script src="mqtt.js"></script> -->
         <script>   
-            const client = require("./mqtt");
-            const _db = require('../mirror_db')
+            const client = require("./faceRecognition/mqtt");
+            const _db = require('./mirror_db')
             client.publish('mirror_id', String(_db.getMirror_id()))
             let loginBtnFlag = false;
             let signUpBtnFlag = false;
@@ -107,7 +107,7 @@
 
             // Delete 버튼을 눌렀을 때
             function deleteUser(){
-                document.location.href = 'delete.html'
+                document.location.href = 'faceRecognition/delete.html'
             }
 
             //재학습 시키기

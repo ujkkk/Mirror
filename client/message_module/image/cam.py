@@ -1,5 +1,4 @@
-from asyncio.windows_events import NULL
-from formatter import NullWriter
+
 from venv import create
 import cv2
 import sys
@@ -7,8 +6,8 @@ import paho.mqtt.client as mqtt
 from datetime import datetime
 capture_on = False
 createImageFalg = False
-capture_type = ''
-cam = NULL
+capture_type = None
+cam = None
 def on_connect(client, userdata, flag, rc):
     print("Connect with result code:"+ str(rc))
     client.subscribe('capture/camera')
@@ -59,9 +58,9 @@ def onCam():
         
 def closeCam():
     global cam
-    if(cam != NULL):
+    if(cam != None):
         cam.release()
-        cam = NULL
+        cam = None
 
 #def on_mouse(event, x, y, flags, param):
     #if event == cv2.EVENT_LBUTTONDOWN:
@@ -74,7 +73,7 @@ def createImage():
     # 기본 카메라 객체 생성
     global cam
     # 열렸는지 확인
-    if(cam != NULL):
+    if(cam != None):
         if not cam.isOpened():
             return
     else:

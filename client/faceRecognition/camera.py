@@ -1,6 +1,4 @@
-
 from genericpath import exists
-from logging import NullHandler
 import cv2
 import os
 import os.path
@@ -8,7 +6,7 @@ from datetime import datetime
 
 face_classifier = cv2.CascadeClassifier(
     cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-cam = ''
+cam = None
 
 def onCam():
     global cam
@@ -21,9 +19,9 @@ def onCam():
 def closeCam():
     global cam
 
-    if (cam != ''):
+    if (cam != None):
         cam.release()
-        cam = ''
+        cam = None
         #cv2.destroyAllWindows()
 
 
@@ -50,7 +48,7 @@ def createImage():
     # 기본 카메라 객체 생성
     global cam
     # 열렸는지 확인
-    if (cam != NULL):
+    if (cam != None):
         if not cam.isOpened():
             return
     else:
