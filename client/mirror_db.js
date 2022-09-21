@@ -2,7 +2,7 @@
 let dbAccess = {};
 let id;
 
-let mirror_id = 200; 
+let mirror_id = 400; 
 let name;
 
 // mysql 모듈 불러오기
@@ -162,7 +162,7 @@ const addUser = (name) => new Promise((resolve, reject) => {
     console.log('addUser call');
 
     // user table 제작에 필요한 column을 데이터 객체로 형성
-    var data = { name: name  , mirror_id : mirror_id};
+    var data = { name: name};
 
     // user 행 제작
     createColumns('user', data)
@@ -224,7 +224,7 @@ dbAccess.setUser = (user_id) => new Promise((resolve, reject) => {
 
 
 dbAccess.setMirror = function (id) {
-    document.location.href=`new_index.html?${id}`
+    document.location.href=`../new_index.html?${id}`
 }
 dbAccess.getId = () => id;
 dbAccess.getMirror_id = () => mirror_id;

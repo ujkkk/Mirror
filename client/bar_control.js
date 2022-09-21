@@ -14,7 +14,7 @@ setBarEvent()
 
 function setCurrBar(curr){
     if(currBar != null) {
-        if(currBar == curr){
+        if(currBar == curr) {
             currBar = null
         }
         else {
@@ -23,6 +23,7 @@ function setCurrBar(curr){
         }
     }
     else {
+        //bar_button[curr].click()
         currBar = curr
     }
     

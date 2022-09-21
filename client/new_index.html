@@ -58,6 +58,17 @@
             <div id="date"></div>
         </div>
     </article>
+    <div id="setting-container">
+        <button id="set_button" ><img id="set-icon" src="./image/index/setting.png"></button>
+        <div id="setting-component">
+            <div>Mirror ID<br> <span id="set-mirror-id"></span> </div>
+            <div>User ID<br> <span id="set-user-id"></span> </div>
+            <div>User Name<br> <span id="set-user-name"></span> </div>
+            <button id="logout">logout</button>
+        </div>
+        
+    </div>
+
     <!-- end of weather & clock & time -->
     <div id="message-container">
         <div id="message-div">
@@ -181,7 +192,7 @@
                     <button id="send_record_button" class="send_button" style="display: none; position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 347px; font-size: 20px;">SEND</button>
                     <audio id="player" controls style="position: absolute; display: none; left: 50%; top: 240px; transform: translate(-50%, -50%);"></audio>
                 </div>
-                <!-- end of record_content -->
+                <!-- end of record_content -->  
                 <!-- start of image_content -->
                 <div id="image_content" style="position: absolute; display: none; width: 100%; height: 100%;">
                     <img id='msg-img'  style="position: absolute; left: 50%; top: 250px; transform: translate(-50%, -50%); width: 550px;" >
@@ -406,7 +417,10 @@
 
    <!-- KEYBOARD UI-->
     <div id = 'keyboard-container'> 
-        <div class = 'line' id="line1">
+        <!-- <div class="line" id="line0" style="display:block;">
+            
+        </div> -->
+        <div class = 'line' id="line1" style="display:block;">
             <input type ='button' class="key" value="1">
             <input type ='button' class="key" value="2">
             <input type ='button' class="key" value="3">
@@ -418,6 +432,7 @@
             <input type ='button' class="key" value="9">
             <input type ='button' class="key" value="0">
             <input type ='button' class="key" value="←">
+            <input type="button" class="key" value="✕" id="close-keyboard">
         </div>
         <div id="keyboard-keys">
             <div id="ko-keys">

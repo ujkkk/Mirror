@@ -69,7 +69,7 @@ const options = {
           // 'oo님 환영합니다' 문구 
           createLoginMessage.createLoginMessage(String(values[0].name))
           // user 디비에 회원 추가
-          _db.setUser(user_id)
+          _db.setMirror(user_id)
         })
       } 
     }

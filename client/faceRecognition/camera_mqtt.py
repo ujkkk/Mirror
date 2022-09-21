@@ -22,7 +22,7 @@ loginCamera_flag = False
 createAccountCamera_flag = False
 exist_flag = False
 delete_login_flag = False
-mirror_id = 100
+mirror_id = 400
 
 id = 0
 def on_connect(client, userdata, flag, rc):
