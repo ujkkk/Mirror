@@ -79,7 +79,7 @@ def createImage():
         if not cam.isOpened():
            onCam()
     else:
-        print("Camera open !")
+        print("createImage")
 
     # 웹캠의 속성 값을 받아오기
     # 정수 형태로 변환하기 위해 round
@@ -102,7 +102,6 @@ def createImage():
     if(capture_type == 'memo'):
         now = datetime.now()
         file_name_path = (str)(now.timestamp())
-        
         cv2.imwrite('../../memo_module/image' + '/'+file_name_path +'.jpg', frame)
         client.publish('memo/capture/done', (str)(file_name_path))
         capture_on = False
@@ -115,10 +114,6 @@ def createImage():
                 # 저장한 파일이름을 보냄
         client.publish('capture/camera_done','media/' +file_name_path)
         capture_on = False
-
-
-
-
 
 
 stopFlag = False

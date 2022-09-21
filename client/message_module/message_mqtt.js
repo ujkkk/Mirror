@@ -5,14 +5,14 @@ const moment = require('moment');
 const fs = require('fs')
 const socket = require('./message_socket')
 const options = {
-    host: '192.168.0.8',
+    host: '127.0.0.1',
     port: 1883
   };
 
   console.log('message call')
 
 const client = mqtt.connect(options);
-
+client.publish('camera/close', 'ok')
 let options2 ={
   encoding: 'utf-8',  // utf-8 인코딩 방식으로
   flag: 'r' // 읽기
@@ -29,7 +29,7 @@ const getDataFromFilePromise = (filePath) => {
   });
 }
 
-client.publish('closeCamera','ok')
+client.publish('closeCamera',mirror_db.getMirror_id())
 client.subscribe("send/image");
 client.subscribe("capture/camera_done");
 client.subscribe("memo/capture/done");
@@ -52,10 +52,6 @@ client.on('message', async (topic, message, packet) => {
         img.setAttribute('value', saved_filePath);
         img.src ="memo_module/image/"+saved_filePath+'.jpg?time='+ time;
       }
-      // img.setAttribute("style", "position: absolute; left: 50%; top: 250px; transform: translate(-50%, -50%); width:550px;");
-
-     // var time = new Date().getTime();
-      // img.src = saved_filePath +'?time='+ time;
       const wdr = __dirname;
       console.log(`work directory: ${wdr}`)    
       console.log(img);
@@ -79,7 +75,7 @@ client.on('message', async (topic, message, packet) => {
 
       img.src ="message_module/image/"+saved_filePath+'?time='+ time;
       console.log(img);
-      console.log(' img.src : ' + img.src)
+      console.log('img.src : ' + img.src)
       //c.height = img.naturalHeight;
       //c.width = img.naturalWidth;
       var ctx = c.getContext('2d');
@@ -119,9 +115,7 @@ client.on('message', async (topic, message, packet) => {
             content : base64String,
             type : 'image',
             time : time
-        });
-
-        
+        });   
       }
       else{
         var newDate = new Date();
