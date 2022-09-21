@@ -31,7 +31,7 @@ def on_message(client, userdata, msg):
         onCam()
     if(msg.topic == 'camera/close'):
         closeCam()
-        cv2.destroyAllWindows()
+        #cv2.destroyAllWindows()
     if(msg.topic == 'capture/on'):
         print('capture/on 받음')
         global capture_on
@@ -39,7 +39,7 @@ def on_message(client, userdata, msg):
 
        
 
-broker_ip = "localhost" # 현재 이 컴퓨터를 브로커로 설정
+broker_ip = "192.168.0.8" # 현재 이 컴퓨터를 브로커로 설정
 print('broker_ip : ' + broker_ip)
 client = mqtt.Client()
 client.on_connect = on_connect
@@ -51,7 +51,7 @@ client.loop_start()
 
 def onCam():
     global cam
-    if not (cam):
+    if(cam == NULL):
         cam=cv2.VideoCapture(0)
         cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
         cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
@@ -73,9 +73,11 @@ def createImage():
     # 기본 카메라 객체 생성
     global cam
     # 열렸는지 확인
+
     if(cam != None):
+
         if not cam.isOpened():
-            return
+           onCam()
     else:
         print("Camera open !")
 

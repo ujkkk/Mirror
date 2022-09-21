@@ -1,4 +1,7 @@
 from genericpath import exists
+from logging import NullHandler
+from subprocess import CREATE_NEW_CONSOLE
+
 import cv2
 import os
 import os.path
@@ -38,7 +41,6 @@ def face_extractor(img):
         cropped_face = img[y:y+h, x:x+w]
 
     return cropped_face
-
 
 def createImage():
     client = client
@@ -88,7 +90,6 @@ def createImage():
                        'message_module/image/media/' + file_name_path)
         capture_on = False
 
-
 def createCropImage(userName, dir_path, countN):
     onCam()
     #print("현재 위치" + str(os.getcwdb()))
@@ -115,5 +116,5 @@ def createCropImage(userName, dir_path, countN):
         if cv2.waitKey(1) == 13 or count == countN:
             break
 
-    #cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
     return dir_path
