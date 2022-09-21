@@ -40,16 +40,19 @@ def on_connect(client, userdata, flag, rc):
 
 
 def on_message(client, userdata, msg):
+    global mirror_id
     message = msg.payload.decode("utf-8")
     print('받은 topic : ' + msg.topic)
     print("받은 payload : " + str(message))
 
     if(msg.topic == 'closeCamera'):
-        global close_flag
-        close_flag = True
+        print(mirror_id)
+        print(message)
+        if(str(mirror_id )== str(message)):
+            global close_flag
+            close_flag = True
         
     elif (msg.topic == 'mirror_id'):
-        global mirror_id
         mirror_id = str(message)
         print('mirror_id:' +mirror_id)
     #삭제 버튼 누른 유저가 삭제할 수 있는지 얼굴인식 서버에게
@@ -116,7 +119,6 @@ while True :
     #얼굴인식하는 서버에 사진을 보내서 유저를 식별함
     if (loginCamera_flag):
         #카메라 키기
-
         print('while - loginCamera')
         # 카메라로 사진 찍어서 얼굴부분만 크롭해서 저장
         dir_name = os.path.join('face','login')
