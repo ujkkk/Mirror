@@ -155,7 +155,7 @@ function create_memo_div(memos){
                 memo_content.innerHTML = memo.content;
                 break;
             case 'image':
-                image_forlder = './image/memo/'
+                image_forlder = './memo_module/image/'
                 memo_content.innerHTML = '';
                 let img = document.createElement('img')
                 

@@ -110,7 +110,7 @@ bar_message_button.addEventListener('click', () => {
         }
 
         message_memo_container.style.display = "none";
-
+        document.getElementById('msg-img').src= ''
         // camera off
         client.publish('camera/close', 'ok')
     }

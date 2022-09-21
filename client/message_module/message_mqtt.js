@@ -31,13 +31,35 @@ const getDataFromFilePromise = (filePath) => {
 
 client.subscribe("send/image");
 client.subscribe("capture/camera_done");
+client.subscribe("memo/capture/done");
 
 client.on('message', async (topic, message, packet) => {
     console.log("message is "+ message);
     console.log("topic is "+ topic);
     let data1
 
-  
+    //찍은 이미지로 캔버스 갱신
+    if(topic == 'memo/capture/done'){
+      var time = new Date().getTime();
+      console.log("memo/capture/done'토픽 받음")
+      var saved_filePath = message
+      var c = document.createElement('canvas');
+      // var c = document.getElementById("canvas");
+      var img = document.getElementById('memo_img');
+      console.log('img', img);
+      if(img != null){
+        img.setAttribute('value', saved_filePath);
+        img.src ="memo_module/image/"+saved_filePath+'.jpg?time='+ time;
+      }
+      // img.setAttribute("style", "position: absolute; left: 50%; top: 250px; transform: translate(-50%, -50%); width:550px;");
+
+     // var time = new Date().getTime();
+      // img.src = saved_filePath +'?time='+ time;
+      const wdr = __dirname;
+      console.log(`work directory: ${wdr}`)    
+      console.log(img);
+      console.log(' img.src : ' + img.src)
+    }
     if(topic == 'capture/camera_done'){
 
       console.log("capture/camera_done 토픽 받음")

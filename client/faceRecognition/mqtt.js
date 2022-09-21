@@ -82,18 +82,10 @@ const options = {
       createMessageDiv.setAttribute("width","500px")
       createMessageDiv.setAttribute("height","100px")
       createMessageDiv.setAttribute("style", "text-align=center;")
-      //이미지 생성
-      createMessageDiv.innerHTML= '등록되었습니다.'
-        // remote.getCurrentWindow().loadFile('index.html');
-
-      var div = document.getElementById("createAccountMessage")
-      div.appendChild(createMessageDiv)
-      console.log('등록되었습니다.')
+      client.publish('closeCamera','')
      // console.log(S(message))
       document.location.href='./home.html'
-      // if(message == true)
-      //   console.log('2222등록되었습니다.')
-        //createLoginMessage('등록되었습니다.')
+      
     }
   })
 

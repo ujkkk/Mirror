@@ -45,7 +45,7 @@ function create_storage(memos) {
         }
         memo_div.appendChild(memo_date);
         memo_div.appendChild(memo_content);
-        console.log('memm',memos[i])
+   //     console.log('memm',memos[i])
         memo_content.addEventListener("click", () => { memo_storage_detail(memo.seq) });
         document.getElementById('memo_storage_contents').prepend(memo_div);
     }

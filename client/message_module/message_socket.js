@@ -126,6 +126,7 @@ function sub(){
                         };
                         mirror_db.createColumns('message', data)
                         .then(()=> {
+                            
                             message.insertNewMessage();
                             message_storage.showMessageStorage();
                         })
