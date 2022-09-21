@@ -83,11 +83,11 @@ function memo_storage_detail(seq) {
                 case 'image':
                     let img = document.createElement('img');
                     //폴더 수정 여부 체크
-                    img.src = './image/memo/' + memo.content + '.jpg';
+                    img.src = './memo_module/image/' + memo.content + '.jpg';
                     context.appendChild(img);
                     break;
                 case 'audio':
-                    var audio_folder = './memo_module/record/audio/client/';
+                    var audio_folder = './memo_module/record/';
                     var audio = document.createElement('audio');
                     audio.setAttribute('id', 'storage-audio');
                     audio.controls = 'controls';

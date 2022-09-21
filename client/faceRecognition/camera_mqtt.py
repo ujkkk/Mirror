@@ -49,6 +49,7 @@ def on_message(client, userdata, msg):
         
     elif (msg.topic == 'mirror_id'):
         mirror_id = str(message)
+        client.unsubscribe('mirror_id')
         print('mirror_id:' +mirror_id)
     #삭제 버튼 누른 유저가 삭제할 수 있는지 얼굴인식 서버에게
     #로그인 해서 id 가져오기

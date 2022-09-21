@@ -100,6 +100,10 @@ save_record_button.onclick = function (event){ // 여기서 메모 DB에 저장
         console.log("The file was saved!");
     
         mirror_db.addMemo(mirror_db.getId(), save_time , 0, "audio")
+        .then(()=>{
+            memo_storage.showMemoStorage();
+            memo_textArea.value = "";
+        })
 
         memo_player.style.display = "none";
         save_record_button.style.display = "none";

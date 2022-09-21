@@ -196,8 +196,9 @@ function saveMemoContent(e){
             mirror_db.createColumns('memo',data)
             */
 
-            new Promise (()=>{
-                mirror_db.addMemo(mirror_db.getId(), memo_textArea.value , 0, "text")
+        
+            mirror_db.addMemo(mirror_db.getId(), memo_textArea.value , 0, "text")
+            .then(()=>{
                 memo_storage.showMemoStorage();
                 memo_textArea.value = "";
             })
