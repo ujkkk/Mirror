@@ -68,6 +68,8 @@ const iceServers = {
   ],
 }
 
+const client = require('../message_module/message_mqtt');
+
 // BUTTON LISTENER ============================================================
 
 new Promise(() => {
@@ -355,6 +357,7 @@ const setLocalStream = async function (audioValue, videoValue) {
         localStream.getTracks().forEach((track) => {
           rtcPeerConnection.addTrack(track, localStream)
         })
+        client.publish('camera/close', 'ok')
       }
     } catch (error) {
       console.error('Could not get user media', error)

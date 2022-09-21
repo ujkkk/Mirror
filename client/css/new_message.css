@@ -85,6 +85,10 @@
 
 }
 
+#message-div .slider-btns {
+    z-index: 100;
+}
+
 #msg-slider {
     height: 5.5vw;
     width: 36vh !important;

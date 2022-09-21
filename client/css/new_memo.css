@@ -39,7 +39,7 @@
     position: relative;
     overflow: hidden;
 }
-#memo-slider-wrap ul#memo-slider {
+#memo-slider-wrap ul #memo-slider {
     height: 100%;
     width: 100%;
     position: absolute;
@@ -132,8 +132,11 @@
     /* background: red */
 }
 
+
+
 .memo-slider-wrap .slider-btns {
     width: 10vw;
+    
 }
 
 .slider-btns:hover {
