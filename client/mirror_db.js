@@ -2,12 +2,13 @@
 let dbAccess = {};
 let id;
 
-let mirror_id = 100; 
+let mirror_id = 200; 
 let name;
 
 // mysql 모듈 불러오기
 var mysql = require('mysql');
 const moment = require('moment');
+const { resolve } = require('path');
 
 
 /* 연결 설정 */
@@ -183,7 +184,7 @@ const addUser = (name) => new Promise((resolve, reject) => {
 dbAccess.addUser = addUser;
 
 /* 메모 생성하는 함수 (memo table에 새로운 columns insert) */
-dbAccess.addMemo = function (id, content, store, type) {
+dbAccess.addMemo =  (id, content, store, type) => new Promise((resolve, reject) => {
     // db 연결 설정이 제대로 안됐을 경우 
     if (!pool) {
         console.log('error');
@@ -191,7 +192,6 @@ dbAccess.addMemo = function (id, content, store, type) {
     }
 
     console.log('addMemo call');
-
     /* delete time 설정 */
     // 현재 시간 가져오기
     var newDate = new Date();
@@ -201,8 +201,11 @@ dbAccess.addMemo = function (id, content, store, type) {
     // memo table 제작에 필요한 column을 데이터 객체로 형성
     var data = { id: id, content: content, store: store, delete_time: time, type: type, time: time };
     // memo 행 제작
-    createColumns('memo', data);
-}
+    createColumns('memo', data)
+    .then((value)=>{
+        resolve(value)
+    })
+})
 
 // 모듈로 id도 사용 하기 위해 dbAccess에 추가
 dbAccess.id = id;
