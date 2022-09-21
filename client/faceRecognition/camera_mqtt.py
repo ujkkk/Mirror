@@ -32,10 +32,6 @@ def on_connect(client, userdata, flag, rc):
     client.subscribe('closeCamera')
     client.subscribe('delete/camera')
 
-    #미러 로그인 후 메시지, 메모에서 쓰는 카메라
-    # client.subscribe('capture/camera')
-    # client.subscribe('camera/on')
-    # client.subscribe('camera/close')
 
 
 
@@ -46,11 +42,10 @@ def on_message(client, userdata, msg):
     print("받은 payload : " + str(message))
 
     if(msg.topic == 'closeCamera'):
-        print(mirror_id)
+        print('closeCamera:' +mirror_id)
         print(message)
-        if(str(mirror_id )== str(message)):
-            global close_flag
-            close_flag = True
+        if(str(mirror_id)== str(message)):
+            camera.closeCam()
         
     elif (msg.topic == 'mirror_id'):
         mirror_id = str(message)
@@ -58,28 +53,34 @@ def on_message(client, userdata, msg):
     #삭제 버튼 누른 유저가 삭제할 수 있는지 얼굴인식 서버에게
     #로그인 해서 id 가져오기
     elif(msg.topic =='delete/camera'):
-        client.publish('delete/login', mirror_id)
-        global delete_login_flag
-        delete_login_flag = True
+        if(str(mirror_id )== str(message)):
+            client.publish('delete/login', mirror_id)
+            global delete_login_flag
+            delete_login_flag = True
 
     elif(msg.topic == 'login/camera'):
-        print("topic : " + msg.topic)
-        if(str(message) == 'login'):
+        if(str(message) == str(mirror_id)):
+            print("로그인 시작 : " + msg.topic)
             global loginCamera_flag
             loginCamera_flag = True
             
     elif(msg.topic == 'createAccount/camera'):
         print("topic : " + msg.topic)
-        global id
-        id = str(message)
-        global createAccountCamera_flag
-        createAccountCamera_flag = True
+        m_id = (str)(message)[0:3]
+        print('m_id:' +m_id)
+        if(str(m_id) == str(mirror_id)):
+            global id
+            id = str(message)
+            global createAccountCamera_flag
+            createAccountCamera_flag = True
 
     elif(msg.topic == 'exist/camera'):
+        if(str(message) == str(mirror_id)):
+
         #얼굴인식 서버에게 해당 토픽 이벤트 보냄
-        client.publish('exist', mirror_id)
-        global exist_flag
-        exist_flag = True
+            client.publish('exist', mirror_id)
+            global exist_flag
+            exist_flag = True
         
 
             
@@ -112,9 +113,9 @@ def load_image(directory):
 camera.onCam()
 stopFlag = False
 while True :
-    if(close_flag):
-        camera.closeCam()
-        close_flag = False
+    # if(close_flag):
+    #     camera.closeCam()
+    #     close_flag = False
     #유저가 로그인버튼을 누르면 사진 10장을 찍고 
     #얼굴인식하는 서버에 사진을 보내서 유저를 식별함
     if (loginCamera_flag):

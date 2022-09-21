@@ -41,7 +41,10 @@
                     loading();
                     signUpBtnFlag = true;
                     id = value;
+                    console.log(id)
+                    document.getElementById('name_id').setAttribute('value', id);
                     client.publish('createAccount/camera', String(id));
+                   
                 });
             }
             // init로 돌아가기
@@ -57,6 +60,7 @@
         </div>
         <div id="container">
             <div class="form__group field">
+                <div id="name_id" style="display: none;"></div>
                 <input type="input" class="form__field" placeholder="Name" name="name" id='name' required />
                 <label for="name" class="form__label">Name</label>
             </div>

@@ -224,6 +224,8 @@ dbAccess.setUser = (user_id) => new Promise((resolve, reject) => {
 
 
 dbAccess.setMirror = function (id) {
+    console.log(typeof(id))
+    console.log((id))
     document.location.href=`./new_index.html?${id}`
 }
 dbAccess.getId = () => id;

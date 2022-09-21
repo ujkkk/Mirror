@@ -89,7 +89,7 @@ function deleteClick(user_id){
     //user_id = 5
     id = String(user_id)
     console.log('delete.js | id : ' + id)
-    client.publish('delete/camera', 'delete')
+    client.publish('delete/camera', String(_db.getMirror_id()))
 }
 client.subscribe("delete/login/check") 
 

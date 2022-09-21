@@ -31,7 +31,7 @@ def on_message(client, userdata, msg):
         onCam()
     if(msg.topic == 'camera/close'):
         closeCam()
-        #cv2.destroyAllWindows()
+        cv2.destroyAllWindows()
     if(msg.topic == 'capture/on'):
         print('capture/on 받음')
         global capture_on
@@ -94,7 +94,7 @@ def createImage():
    
     # 프레임을 받아와서 저장하기
     #while True:                 # 무한 루프
-    ret, frame = cam.read() # 카메라의 ret, frame 값 받아오기
+    ret,frame=cam.read() # 카메라의 ret, frame 값 받아오기
 
     if not ret:             #ret이 False면 중지
         print('breake')
@@ -107,12 +107,12 @@ def createImage():
         capture_on = False
     #메시지 
     else:
-        file_name_path =  'test' + '.jpg'
+        file_name_path = 'test.jpg'
                 #크롭된 이미지 저장
         cv2.imwrite('media' + '/'+file_name_path, frame)
         capture_on = False
                 # 저장한 파일이름을 보냄
-        client.publish('capture/camera_done','media/' +file_name_path)
+        client.publish('capture/camera_done','media/test.jpg')
         capture_on = False
 
 

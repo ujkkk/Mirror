@@ -57,6 +57,7 @@ client.on('message', async (topic, message, packet) => {
       console.log(img);
       console.log(' img.src : ' + img.src)
     }
+    //메시지 사진
     if(topic == 'capture/camera_done'){
 
       console.log("capture/camera_done 토픽 받음")
@@ -71,9 +72,9 @@ client.on('message', async (topic, message, packet) => {
       var time = new Date().getTime();
       // img.src = saved_filePath +'?time='+ time;
       const wdr = __dirname;
-      console.log(`work directory: ${wdr}`);
+      console.log(`saved_filePathy: ${saved_filePath}`);
 
-      img.src ="message_module/image/"+saved_filePath+'?time='+ time;
+      img.src ="message_module/image/media/test/jpg?time="+ time;
       console.log(img);
       console.log('img.src : ' + img.src)
       //c.height = img.naturalHeight;
