@@ -8,7 +8,6 @@ let startOtherIndex;
 let checkConnectedUser = [];
 const { resolve } = require('path');
 let dbAccess = require('./mirror_db');
-const axios = require('axios')
 CMUsers.setCMUserList = () => new Promise((resolve, reject) => {
     console.log("거울 내 사용자 목록 불러오기");
     users = [];

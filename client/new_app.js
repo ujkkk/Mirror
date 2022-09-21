@@ -146,7 +146,6 @@ axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
             method: 'post', // 통신할 방식
             data: { id: mirrorDB.getId() }
         }).then(()=>{
-            const message = require('./message_module/message')
             message.initMessages()
             const message_storage = require('./message_module/message_storage')
             message_storage.showMessageStorage();
@@ -156,10 +155,3 @@ axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
     })
 
    
-// const message = require('./message_module/message')
-// message.initMessages();
-    // .catch(
-    //     ()=>{
-    //         console.log("app.js axios test | server connect failed")
-    //     }
-    // );

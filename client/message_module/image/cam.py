@@ -1,5 +1,4 @@
 
-from formatter import NullWriter
 from venv import create
 import cv2
 import sys
@@ -7,7 +6,7 @@ import paho.mqtt.client as mqtt
 from datetime import datetime
 capture_on = False
 createImageFalg = False
-capture_type = ''
+capture_type = None
 cam = None
 def on_connect(client, userdata, flag, rc):
     print("Connect with result code:"+ str(rc))
@@ -74,7 +73,8 @@ def createImage():
     # 기본 카메라 객체 생성
     global cam
     # 열렸는지 확인
-    
+
+
     if(cam != None):
         if not cam.isOpened():
            onCam()

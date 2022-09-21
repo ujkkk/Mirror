@@ -170,7 +170,7 @@ socket.on('start_call', async (other) => {
         showcallerContainer()
 
         callerConponent[callOption].innerText = `Calling [ ${senderName} ]`
-        if(callOption==0)
+        if (callOption == 0)
           callerAlert.innerText = senderName + '님의 음성통화'
         else
           callerAlert.innerText = senderName + '님의 영상통화'
@@ -231,7 +231,7 @@ socket.on('exit', () => {
 
 // 나타난 통화 UI 숨기기
 function hiddenVideoConference() {
-  if(callOption==0)
+  if (callOption == 0)
     audioChatContainer.style = 'display: none'
   else
     videoChatContainer.style = 'display: none'
@@ -239,9 +239,9 @@ function hiddenVideoConference() {
 
 // 숨겨진 통화 UI 보이기
 function showVideoConference() {
-  if(phoneButton != null && roomInformation.myRoomId != roomInformation.newRoomId)
+  if (phoneButton != null && roomInformation.myRoomId != roomInformation.newRoomId)
     phoneButton.click()
-  if(callOption==0)
+  if (callOption == 0)
     audioChatContainer.style = 'display: block'
   else
     videoChatContainer.style = 'display: block'
@@ -287,18 +287,13 @@ const joinRoom = function (room) {
 const exitRoom = async function () {
   console.log("exitRoom")
 
-  if (rtcPeerConnection != null) {
-    console.log('exitroom close')
-    rtcPeerConnection.close() // 통화 종료
-  }
-
   await setLocalStream(false, false)
   hiddenVideoConference()
   hiddencallerContainer()
   connectingSoundPause()
 
   if (roomInformation.newRoomId != roomInformation.myRoomId) { // 방의 주인이 아닐 경우
-    if(!isRoomJoin && !isRoomCloser){
+    if (!isRoomJoin && !isRoomCloser) {
       callRefusalContainerShow()
     }
     callState = 1 // (발신 전화)
@@ -312,7 +307,7 @@ const exitRoom = async function () {
       callState = 2
     callRecord(callMyId, otherId, callState)
   }
-  
+
   isRoomJoin = false
 }
 
@@ -368,12 +363,24 @@ const setLocalStream = async function (audioValue, videoValue) {
   else {
     localVideoComponent.pause();
     localVideoComponent.src = "";
-    if(localStream != undefined){
-      localStream.getTracks().forEach(function(track) {
-        track.stop();
-      });
+    if (localStream != undefined) {
+      if (rtcPeerConnection != undefined || rtcPeerConnection != null) {
+        rtcPeerConnection.ontrack = null
+        rtcPeerConnection.close() // 통화 종료
+        console.log(`track: ${rtcPeerConnection.ontrack}`)
+      }
     }
-    
+    localStream.getTracks().forEach(function (track) {
+      track.stop();
+    });
+
+  }
+  remoteVideoComponent.pause();
+  remoteVideoComponent.src = "";
+  if (remoteStream != undefined) {
+    remoteStream.getTracks().forEach(function (track) {
+      track.stop();
+    });
   }
 }
 
@@ -430,7 +437,7 @@ function sendIceCandidate(event) {
   setTimeout(function () { // 10초 후 일시정지
 
     if (event.candidate) {
-    
+
       roomId = roomInformation.newRoomId
       socket.emit('webrtc_ice_candidate', {
         roomId,
@@ -439,12 +446,12 @@ function sendIceCandidate(event) {
         myId,
       })
     }
-    if(!isConnect){
+    if (!isConnect) {
       setLocalStream(false, true)
       isConnect = true
     }
   }, 2000)
-  
+
 }
 
 /* 전화 기록 남기기 */
