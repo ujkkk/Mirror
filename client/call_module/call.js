@@ -1,7 +1,6 @@
 // 필요한 모듈 require =========================================================
 const dbAccess = require('../mirror_db')
 const callFunction = require('./client')
-const mqtt = require('mqtt')
 const e = require('express')
 const moment = require('moment')
 
@@ -19,16 +18,12 @@ const recordSetComponent = document.getElementById('record-set-component')
 const allRecordButton = document.getElementById('all-record-button')
 const absensceButton = document.getElementById('absensce-button')
 
-const sttRefusalContainer = document.getElementById('stt-refusal-container')
-const sttAlert = document.getElementById('stt-alert')
-
 const input = document.getElementById('room-input')
 const connectButton = document.getElementById('connect-button')
 const callerConponent = document.getElementsByClassName('caller')
 
 // 변수 설정 ====================================================================
 
-let phoneIconTouch = 0
 let callAccess = {} // 모듈 제작을 위한 변수
 let friend = [] // 다른 사용자 DB (friend Table) 정보([{id, name}])
 let recordArray = []

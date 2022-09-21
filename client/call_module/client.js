@@ -68,6 +68,8 @@ const iceServers = {
   ],
 }
 
+const client = require('../message_module/message_mqtt');
+
 // BUTTON LISTENER ============================================================
 
 new Promise(() => {
@@ -239,8 +241,8 @@ function hiddenVideoConference() {
 
 // 숨겨진 통화 UI 보이기
 function showVideoConference() {
-  if (phoneButton != null && roomInformation.myRoomId != roomInformation.newRoomId)
-    phoneButton.click()
+  // if (phoneButton != null && roomInformation.myRoomId != roomInformation.newRoomId)
+  //   phoneButton.click()
   if (callOption == 0)
     audioChatContainer.style = 'display: block'
   else
@@ -355,6 +357,7 @@ const setLocalStream = async function (audioValue, videoValue) {
         localStream.getTracks().forEach((track) => {
           rtcPeerConnection.addTrack(track, localStream)
         })
+        client.publish('camera/close', 'ok')
       }
     } catch (error) {
       console.error('Could not get user media', error)
@@ -369,10 +372,11 @@ const setLocalStream = async function (audioValue, videoValue) {
         rtcPeerConnection.close() // 통화 종료
         console.log(`track: ${rtcPeerConnection.ontrack}`)
       }
+      localStream.getTracks().forEach(function (track) {
+        track.stop();
+      });
     }
-    localStream.getTracks().forEach(function (track) {
-      track.stop();
-    });
+    
 
   }
   remoteVideoComponent.pause();

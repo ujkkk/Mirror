@@ -4,10 +4,12 @@ let closeCurr = null;
 
 const bar_button = document.getElementsByClassName('bar_button')
 
-const call = document.getElementById('bar_phone_container')
-const callbook = document.getElementById('bar_phone_container')
-const message = document.getElementById('bar_phone_container')
-const memo = document.getElementById('bar_phone_container')
+let container = []
+
+container[0] =  document.getElementById('bar_phone_container')
+container[1] =  document.getElementById('callbook-modal')
+container[2] = document.getElementById('message_memo_container')
+container[3] =  document.getElementById('memo_container')
 
 function setBarEvent() {
     for(let i=0;i<bar_button.length;i++){
@@ -19,7 +21,6 @@ function setBarEvent() {
 setBarEvent()
 
 function setCurrBar(curr){
-    console.log('curr@@')
     if(closeCurr == null && closeCurr != curr){
         if(currBar != null) {
             if(currBar == curr) {
