@@ -101,6 +101,8 @@
             function signUp(){
                 loading(); // 로딩 시작
                 signUpBtnFlag = true;
+                document.getElementById("loginMessage").innerHTML = "등록된 사용자인지 확인하는 중입니다..."
+
                 //카메라에게 사진을 찍으라고 토픽보냄
                 client.publish('exist/camera', 'ok') // 이미 가입한 회원인지 확인
             }

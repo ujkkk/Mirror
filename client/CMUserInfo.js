@@ -109,10 +109,8 @@ CMUsers.setCustromFriendList = (name) => new Promise((resolve, reject) => {
                             }
                         }
                     }
-
                     resolve(friendUsers);
                 })
-
         })
         .catch(
             () => {

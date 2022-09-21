@@ -32,14 +32,14 @@ const options = {
       user_id = String(message)
       if(user_id == 'NULL'){
         //회원가입 하게 만들기
-        document.location.href='./sign_up.html'
+        document.location.href='./faceRecognition/sign_up.html'
       }
       else{
         _db.select('name', 'user', `id =${user_id}`)
         .then(values =>{
           if(values.length<= 0){
             //회원가입 하게 만들기
-            document.location.href='./sign_up.html'
+            document.location.href='./faceRecognition/sign_up.html'
             return;
           }
           document.getElementById("loginMessage").innerHTML = (String(values[0].name))+ "님은 이미 가입된 유저입니다."

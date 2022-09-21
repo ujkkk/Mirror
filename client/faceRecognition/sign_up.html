@@ -8,7 +8,6 @@
             const _db = require('../mirror_db');
 
             let signUpBtnFlag = false;
-
             let btn; // 눌린 버튼 정보 저장
             let btnText="";
 
@@ -34,7 +33,6 @@
                     }
                 }
             });
-
             // Sign Up 버튼 눌렀을 때 사진 찍고 학습하기
             function singUp(){
                 const userName = document.getElementById('name').value;
@@ -46,12 +44,10 @@
                     client.publish('createAccount/camera', String(id));
                 });
             }
-
             // init로 돌아가기
             function returnToHome(){
                 window.history.back();
             }
-
         </script>
     </head>
     <body>
