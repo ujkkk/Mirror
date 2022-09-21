@@ -4,11 +4,11 @@ const createLoginMessage = require('./loginMessage')
 const _db = require('../mirror_db')
 const axios = require('axios')
 const loading = require('./loading');
+let user_id=''
 const options = {
     host: '192.168.0.8',
     port: 1883
   };
-  
   const client = mqtt.connect(options);
 
   client.subscribe("loginCheck")
@@ -69,8 +69,13 @@ const options = {
           loading.stopLoading();
           // 'oo님 환영합니다' 문구 
           createLoginMessage.createLoginMessage(String(values[0].name))
+          console.log('111111111111111')
+          var mirror_id_ = _db.getMirror_id()
+          //console.log(mirror_id_)
+          client.publish('closeCamera',(String)(mirror_id_))
           // user 디비에 회원 추가
-          _db.setMirror(user_id)
+          _db.setMirror(String(user_id))
+
         })
       } 
     }
@@ -78,23 +83,33 @@ const options = {
     //서버에서 계정을 추가하고 신호가 올 때
     if(topic == "createAccount/check"){
       console.log("topic == createAccount/check")
-      var id = String(message);
+  
       var name = document.getElementById('name').value;
-      axios({method:'post',url:'http://113.198.84.128:80/signUp',
-              data:{id:id, name : name}
-      }).then(() =>{
-        var createMessageDiv = document.createElement("div")
-        createMessageDiv.setAttribute("id", "createMessageDiv")
-        createMessageDiv.setAttribute("width","500px")
-        createMessageDiv.setAttribute("height","100px")
-        createMessageDiv.setAttribute("style", "text-align=center;")
-        //client.publish('closeCamera','ok')
-      // console.log(S(message))
-        document.location.href='../home.html'
-      })
+      var id = document.getElementById('name_id').getAttribute('value')
+      console.log('서버에 보낼 id :' + id);
 
-      
-      
+      var createMessageDiv = document.createElement("div")
+      createMessageDiv.setAttribute("id", "createMessageDiv")
+      createMessageDiv.setAttribute("width","500px")
+      createMessageDiv.setAttribute("height","100px")
+      createMessageDiv.setAttribute("style", "text-align=center;")
+      client.publish('closeCamera',_db.getMirror_id())
+      // console.log(S(message))
+      document.location.href='../home.html'
+    //   if(id ==null){
+    //     console.log('서버에 보낼 id가 null')
+    //     return
+    //   }
+    //   axios({
+    //     url : 'http://113.198.84.128:80/signUp',
+    //     method : 'post',
+    //     data : {
+    //       id: id, 
+    //       name : name
+    //     }
+    // }).then(() =>{
+       
+    //   })
     }
   })
 
