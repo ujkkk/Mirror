@@ -106,8 +106,7 @@ def load_image(directory):
         byteArr.append(bytearray(filecontent))
     return byteArr
         
-
-
+camera.onCam()
 stopFlag = False
 while True :
     if(close_flag):
@@ -117,7 +116,7 @@ while True :
     #얼굴인식하는 서버에 사진을 보내서 유저를 식별함
     if (loginCamera_flag):
         #카메라 키기
-        camera.onCam()
+
         print('while - loginCamera')
         # 카메라로 사진 찍어서 얼굴부분만 크롭해서 저장
         dir_name = os.path.join('face','login')
@@ -127,7 +126,6 @@ while True :
         imagelist = load_image(saved_dir_name)
         for i in range(10) :
             imageByte = imagelist.pop()    
-            print(" client.publish('login', bytearray(str(mirror_id), 'utf-8')+imageByte)")
             # 얼굴인식 서버에게 찍은 사진을 보냄
             client.publish('login', bytearray(str(mirror_id), 'utf-8')+imageByte)
             loginCamera_flag = False

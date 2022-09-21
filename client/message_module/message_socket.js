@@ -100,16 +100,7 @@ function sub(){
                     // base64 인코딩을 바이트 코드로 변환
                     var u8arr = new Uint8Array(n);
 
-                    // fs.open(folder + filename+ '.wav', 'w+', (err, fd)=>{
-                    // if(err)
-                    //     console.log('open() 실패!');
-                    // else{
-                    //     fs.writeFile(folder + filename+ '.wav', u8arr, 'utf8', (err)=>{
-                    //         if(err)
-                    //             console.log('vk일 쓰기 실패');
-                    //     });
-                    // }      
-                    // })   
+                 
                     fs.writeFile(folder + filename+ '.wav', u8arr, 'utf8', function (error) {
                         console.log("u8arr : " + u8arr);
                     });

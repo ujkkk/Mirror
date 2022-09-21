@@ -64,7 +64,6 @@ const options = {
         _db.select('name', 'user', `id =${user_id}`)
         .then(values =>{
           if(values.length <=0){
-            print('등록된 유저가 아닙니다.')
             createLoginMessage.createLoginMessage(String('등록된 유저가 아닙니다.'))
           }
           loading.stopLoading();
@@ -91,7 +90,7 @@ const options = {
         createMessageDiv.setAttribute("style", "text-align=center;")
         //client.publish('closeCamera','ok')
       // console.log(S(message))
-        document.location.href='./home.html'
+        document.location.href='../home.html'
       })
 
       

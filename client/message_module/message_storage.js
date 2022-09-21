@@ -25,7 +25,7 @@ function create_storage(messages) {
         }).then(() => {
 
 
-            for (var i = 0; i < messages.length; i++) {
+            for (var i =  messages.length-1; i >=0; i--) {
                 var message = messages[i];
                 var sender = freinds_obj[message.sender];
              //   console.log('freinds_obj: ',freinds_obj)
@@ -71,7 +71,7 @@ function create_storage(messages) {
                 message_div.appendChild(message_content);
 
                 message_content.addEventListener("click", (e) => { message_storage_detail(e.target) });
-                document.getElementById('message_storage_contents').prepend(message_div);
+                document.getElementById('message_storage_contents').appendChild(message_div);
                 freinds_obj[message.sender] = 2;
 
             }
@@ -129,7 +129,7 @@ function message_storage_detail(e) {
                 }
                 content.appendChild(context);
                 content.appendChild(date);
-                contents.appendChild(content);
+                contents.prepend(content);
 
 
             })

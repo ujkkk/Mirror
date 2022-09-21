@@ -1,4 +1,4 @@
-from asyncio.windows_events import NULL
+
 from formatter import NullWriter
 from venv import create
 import cv2
@@ -8,7 +8,7 @@ from datetime import datetime
 capture_on = False
 createImageFalg = False
 capture_type = ''
-cam = NULL
+cam = None
 def on_connect(client, userdata, flag, rc):
     print("Connect with result code:"+ str(rc))
     client.subscribe('capture/camera')
@@ -52,16 +52,16 @@ client.loop_start()
 
 def onCam():
     global cam
-    if(cam == NULL):
+    if(cam == None):
         cam=cv2.VideoCapture(0)
         cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
         cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         
 def closeCam():
     global cam
-    if(cam != NULL):
+    if(cam != None):
         cam.release()
-        cam = NULL
+        cam = None
 
 #def on_mouse(event, x, y, flags, param):
     #if event == cv2.EVENT_LBUTTONDOWN:
@@ -75,7 +75,7 @@ def createImage():
     global cam
     # 열렸는지 확인
     
-    if(cam != NULL):
+    if(cam != None):
         if not cam.isOpened():
            onCam()
     else:

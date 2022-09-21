@@ -9,7 +9,7 @@ from datetime import datetime
 
 face_classifier = cv2.CascadeClassifier(
     cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-cam = ''
+cam = None
 
 def onCam():
     global cam
@@ -21,9 +21,9 @@ def onCam():
 
 def closeCam():
     global cam
-    if(cam != NULL):
+    if(cam != None):
         cam.release()
-        cam = NULL
+        cam = None
     # print('cloase cam')
     # if (cam != NULL):
     #     cam.release()

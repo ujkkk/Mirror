@@ -1,13 +1,23 @@
+html {
+    transform: rotate(-90deg);
+    transform-origin: top left;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100vh;
+    height: 100vw; 
+}
+
 #container{
     position: relative;
-    border: 3px solid red;
+    width: 50%;
     margin: 5vw;
-    top: 50%;
+    top: 30%;
     /* left: 50%; */
     transform: translatey(-50%);
 }
 #tableContainer{
-    /* position: absolute; */
+    position: relative;
     /* top: 50%;
     left: 50%;
     transform: translate(-50%, -50%); */
@@ -30,7 +40,8 @@ table {
 th,
 td {
     padding: 15px;
-    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid white;
+    background-color: rgba(0, 0, 0, 0.2);
     color: #fff;
 }
 th {
@@ -38,10 +49,10 @@ th {
 }
 thead th {/*#82becf*/
     /* border: solid 2px #25608c; */
-    background-color: #25608c;
+    background-color: #000000;
 }
 tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 tbody td {
     position: relative;
@@ -76,7 +87,17 @@ button:active{
     background-color: rgba(255, 255, 255, 0.8);
 }
 #deleteBtn{
-    width: 75vw;
+    margin-top: 5vw;
+    margin-left: 1vw;
+    /* margin-right: 1vw; */
+    padding-top: 1vw;
+    padding-bottom: 1vw;
+    /* width: 40vw; */
+    border: solid 2px white;
+    border-radius: 12px;
+    background-color:transparent;
+    color: white;
+    font-size: 1rem;
 }
 #homeBtn{
     width: 20vw;
