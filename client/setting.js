@@ -29,6 +29,6 @@ function setSettingAlert() {
 setSettingAlert()
 
 function mirrorLogout() {
-    document.location.href=`./home.html`
+    document.location.href=`./init.html`
 
 }

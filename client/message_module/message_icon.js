@@ -446,6 +446,7 @@ function showWrite() {
 
     // 처음 메시지 창을 띄울 때 text content 부터 보여주기
     if(back_button.style.display == "none"){
+        text
         write_button.style.display = "none";
         back_button.style.display = "block";
         text.checked = true;

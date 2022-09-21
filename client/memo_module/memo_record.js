@@ -98,8 +98,6 @@ save_record_button.onclick = function (event){ // 여기서 메모 DB에 저장
             u8arr[n] = bstr.charCodeAt(n);
         }
         console.log("The file was saved!");
-       
-        console.log(`data  = === == ${data.content}`)
     
         mirror_db.addMemo(mirror_db.getId(), save_time , 0, "audio")
 
