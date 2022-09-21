@@ -365,6 +365,16 @@ const setLocalStream = async function (audioValue, videoValue) {
       console.error('Could not get user media', error)
     }
   }
+  else {
+    localVideoComponent.pause();
+    localVideoComponent.src = "";
+    if(localStream != undefined){
+      localStream.getTracks().forEach(function(track) {
+        track.stop();
+      });
+    }
+    
+  }
 }
 
 /* 상대에게 연결하자고 SDP 만들어 보내기 (내가 전화를 받음)  */

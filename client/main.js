@@ -22,7 +22,7 @@ function createWindow() {
 
 
   // win.loadFile("init.html");
-    win.loadFile("faceRecognition/home.html");
+    win.loadFile("init.html");
    // win.loadFile("record_module/record.html");
 
     let screenElectron = electron.screen;

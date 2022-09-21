@@ -1,4 +1,4 @@
-from asyncio.windows_events import NULL
+
 from genericpath import exists
 from logging import NullHandler
 import cv2
@@ -6,7 +6,7 @@ import os
 import os.path
 
 face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades +'haarcascade_frontalface_default.xml')
-cam = NULL
+cam = ''
 
 def onCam():
     global cam
@@ -18,7 +18,7 @@ def onCam():
 def closeCam():
     global cam
     cam.release()
-    cam = NULL
+    cam = ''
     cv2.destroyAllWindows()
 
 def face_extractor(img):
