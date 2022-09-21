@@ -3257,7 +3257,7 @@
 .record_button_container .record_time>* {
     display: inline-block;
     width: 50%;
-    /* margin: -2px; */
+    margin: -2px;
     color: #a2a2a2;
     /* font-family: "Fjalla One", sans-serif; */
     font-size: 1.3em;

@@ -17,7 +17,7 @@ mirrorDB.setUser(receivedData)
         // const message_storage = require('./message_module/message_storage')
         callAccess.setCall(user.id, user.name)
         require("./message_module/record/new_m_record")
-
+        require("./message_module/message_mqtt")
         require('./message_module/message')
         require('./message_module/message_storage')
         require('./memo_module/memo')

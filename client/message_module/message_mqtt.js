@@ -29,7 +29,7 @@ const getDataFromFilePromise = (filePath) => {
   });
 }
 
-client.publish('closeCamera',mirror_db.getMirror_id())
+client.publish('closeCamera', String(mirror_db.getMirror_id()))
 client.subscribe("send/image");
 client.subscribe("capture/camera_done");
 client.subscribe("memo/capture/done");
@@ -74,7 +74,7 @@ client.on('message', async (topic, message, packet) => {
       const wdr = __dirname;
       console.log(`saved_filePathy: ${saved_filePath}`);
 
-      img.src ="message_module/image/media/test/jpg?time="+ time;
+      img.src ="message_module/image/media/test.jpg?time="+ time;
       console.log(img);
       console.log('img.src : ' + img.src)
       //c.height = img.naturalHeight;

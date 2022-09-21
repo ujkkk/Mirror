@@ -18,6 +18,9 @@ const client = require('./message_module/message_mqtt');
 const memo_text = document.querySelector("#memo_text");
 const memo_image = document.querySelector("#memo_image");
 const memo_record = document.querySelector("#memo_record");
+const memo_text_label = document.querySelector("#memo_text_label");
+const memo_image_label = document.querySelector("#memo_image_label");
+const memo_record_label = document.querySelector("#memo_record_label");
 const shutter_button = document.querySelector("#memo_shutter_button");
 const save_button = document.querySelectorAll('.save_button');
 
@@ -245,6 +248,9 @@ function showWrite() {
 
     // 처음 메모 창을 띄울 때 text content 부터 보여주기
     if(memo_back_button.style.display == "none"){
+        memo_text_label.style.display = "block";
+        memo_image_label.style.display = "block";
+        memo_record_label.style.display = "block";
         memo_write_button.style.display = "none";
         memo_back_button.style.display = "block";
         memo_text.checked = true;
@@ -280,6 +286,9 @@ function showWrite() {
 // Store Mode
 function showStore() {
     hideKeyboard();
+    memo_text_label.style.display = "none";
+    memo_image_label.style.display = "none";
+    memo_record_label.style.display = "none";
     memo_textArea.value = "";
     memo_player.style.display = "none";
     memo_write_button.style.display = "block";

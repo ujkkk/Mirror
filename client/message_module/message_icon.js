@@ -11,6 +11,9 @@ textArea.addEventListener('click', function (e) { showKeyboard(e) });
 const text = document.querySelector("#text");
 const image = document.querySelector("#image");
 const record = document.querySelector("#record");
+const text_label = document.querySelector("#text_label");
+const image_label = document.querySelector("#image_label");
+const record_label = document.querySelector("#record_label");
 const shutter_button = document.querySelector("#shutter_button");
 const send_button = document.querySelectorAll('.send_button');
 
@@ -446,7 +449,9 @@ function showWrite() {
 
     // 처음 메시지 창을 띄울 때 text content 부터 보여주기
     if(back_button.style.display == "none"){
-        text
+        text_label.style.display = "block";
+        image_label.style.display = "block";
+        record_label.style.display = "block";
         write_button.style.display = "none";
         back_button.style.display = "block";
         text.checked = true;
@@ -486,6 +491,9 @@ function showWrite() {
 // Store Mode
 function showStore() {
     hideKeyboard()
+    text_label.style.display = "none";
+    image_label.style.display = "none";
+    record_label.style.display = "none";
     write_button.style.display = "block";
     back_button.style.display = "none";
     document.getElementById('message_storage_view').style.display = "block";
