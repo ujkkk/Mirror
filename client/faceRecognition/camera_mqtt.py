@@ -105,7 +105,7 @@ def load_image(directory):
     count = 0
     for filename in os.listdir(directory):
         count = count + 1
-        path = directory +os.sep + filename 
+        path = str(directory) +os.sep + str(filename)
         f = open(path,"rb")
         filecontent = f.read()
         byteArr.append(bytearray(filecontent))
