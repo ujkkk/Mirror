@@ -41,7 +41,7 @@ def face_extractor(img):
     faces = face_classifier.detectMultiScale(gray, 1.3, 5)
 
     #찾는 얼굴이 없으면 None Return
-    if faces is ():
+    if faces == ():
         return None
 
     for (x, y, w, h) in faces:
@@ -74,6 +74,8 @@ def createCropImage(userName, dir_path, countN):
             ret, frame = cam.read()
             if face_extractor(frame) is not None:
                 count += 1
+
+                
                 face = cv2.resize(face_extractor(frame), (160, 160))
                 face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
                 file_name_path = str(count) + '.jpg'

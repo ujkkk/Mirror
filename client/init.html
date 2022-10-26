@@ -37,8 +37,9 @@
 
         <script>
             function f() {
-                // mirrorDB.setMirror(4004)
-                document.location.href=`./home.html`
+                mirrorDB = require('./mirror_db')
+                mirrorDB.setMirror(1001)
+                //document.location.href=`./home.html`
 
             }
             // function f2() {

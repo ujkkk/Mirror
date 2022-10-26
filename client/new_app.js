@@ -30,8 +30,7 @@ mirrorDB.setUser(receivedData)
         require('./memo_module/memo')
         require('./new_callbook')
         require('./message_module/message_icon')
-
-        require('./bar_control')
+        
         require('./setting')
     })
 require('./weather_module/new_weather');

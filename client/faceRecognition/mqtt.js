@@ -6,7 +6,7 @@ const axios = require('axios')
 const loading = require('./loading');
 var user_id = ''
 const options = {
-  host: '192.168.0.8',
+  host: '192.168.0.2',
   port: 1883
 };
 

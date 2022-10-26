@@ -241,8 +241,8 @@ function hiddenVideoConference() {
 
 // 숨겨진 통화 UI 보이기
 function showVideoConference() {
-  // if (phoneButton != null && roomInformation.myRoomId != roomInformation.newRoomId)
-  //   phoneButton.click()
+  if (phoneButton != null && roomInformation.myRoomId != roomInformation.newRoomId)
+    phoneButton.click()
   if (callOption == 0)
     audioChatContainer.style = 'display: block'
   else
@@ -339,8 +339,22 @@ async function callAgree(callAccept) {
 const setLocalStream = async function (audioValue, videoValue) {
   mediaConstraints.audio = audioValue
 
-  if (videoValue == true)
+  if (videoValue == true){
+    // ****************************************
+    if (localStream != undefined) {
+      if (rtcPeerConnection != undefined || rtcPeerConnection != null) {
+        rtcPeerConnection.ontrack = null
+        rtcPeerConnection.close() // 통화 종료
+        console.log(`track: ${rtcPeerConnection.ontrack}`)
+      }
+      localStream.getTracks().forEach(function (track) {
+        track.stop();
+      });
+    }
+    // ****************************************
     mediaConstraints.video = { width: 1800, height: 1200 }
+  }
+  
   else
     mediaConstraints.video = false
 
@@ -379,13 +393,13 @@ const setLocalStream = async function (audioValue, videoValue) {
     
 
   }
-  remoteVideoComponent.pause();
-  remoteVideoComponent.src = "";
-  if (remoteStream != undefined) {
-    remoteStream.getTracks().forEach(function (track) {
-      track.stop();
-    });
-  }
+  // remoteVideoComponent.pause();
+  // remoteVideoComponent.src = "";
+  // if (remoteStream != undefined) {
+  //   remoteStream.getTracks().forEach(function (track) {
+  //     track.stop();
+  //   });
+  // }
 }
 
 /* 상대에게 연결하자고 SDP 만들어 보내기 (내가 전화를 받음)  */

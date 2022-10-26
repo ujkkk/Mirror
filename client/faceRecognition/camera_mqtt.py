@@ -86,7 +86,7 @@ def on_message(client, userdata, msg):
 
             
        
-broker_ip = "192.168.0.8" # 현재 이 컴퓨터를 브로커로 설정
+broker_ip = "192.168.0.2" # 현재 이 컴퓨터를 브로커로 설정
 print('broker_ip : ' + broker_ip)
 client = mqtt.Client()
 client.on_connect = on_connect
