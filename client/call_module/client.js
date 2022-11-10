@@ -339,14 +339,9 @@ async function callAgree(callAccept) {
 const setLocalStream = async function (audioValue, videoValue) {
   mediaConstraints.audio = audioValue
 
-  if (videoValue == true){
+  if (videoValue == true) {
     // ****************************************
     if (localStream != undefined) {
-      if (rtcPeerConnection != undefined || rtcPeerConnection != null) {
-        rtcPeerConnection.ontrack = null
-        rtcPeerConnection.close() // 통화 종료
-        console.log(`track: ${rtcPeerConnection.ontrack}`)
-      }
       localStream.getTracks().forEach(function (track) {
         track.stop();
       });
@@ -354,7 +349,7 @@ const setLocalStream = async function (audioValue, videoValue) {
     // ****************************************
     mediaConstraints.video = { width: 1800, height: 1200 }
   }
-  
+
   else
     mediaConstraints.video = false
 
@@ -371,7 +366,6 @@ const setLocalStream = async function (audioValue, videoValue) {
         localStream.getTracks().forEach((track) => {
           rtcPeerConnection.addTrack(track, localStream)
         })
-        client.publish('camera/close', 'ok')
       }
     } catch (error) {
       console.error('Could not get user media', error)
@@ -390,16 +384,7 @@ const setLocalStream = async function (audioValue, videoValue) {
         track.stop();
       });
     }
-    
-
   }
-  // remoteVideoComponent.pause();
-  // remoteVideoComponent.src = "";
-  // if (remoteStream != undefined) {
-  //   remoteStream.getTracks().forEach(function (track) {
-  //     track.stop();
-  //   });
-  // }
 }
 
 /* 상대에게 연결하자고 SDP 만들어 보내기 (내가 전화를 받음)  */
