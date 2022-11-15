@@ -1,3 +1,20 @@
+// const axios = require('axios');
+const { write } = require("fs");
+const CMUsers = require("../CMUserInfo");
+const fs = require('fs')
+const innerClient = require("./message_mqtt");
+const outerClient = require('../mqtt')
+const socket = require('../message_module/message_socket');
+let record_obj = require('../message_module/record/new_m_record');
+const dbAccess = require("../mirror_db");
+
+let messageAccess = {} // 모듈 제작을 위한 변수
+
+let setCMuser
+let setCMFriend
+let customOption = false
+let customFriend = null
+
 const bar_message_button = document.querySelector("#bar_message_button");
 const message_memo_container = document.querySelector("#message_memo_container");
 const write_button = document.querySelector("#write_button");
@@ -30,21 +47,7 @@ const sttRefusalContainer = document.getElementById('stt-refusal-container')
 const sttAlert = document.getElementById('stt-alert')
 const sttSendButton = document.getElementById('stt-sned-button')
 
-// const axios = require('axios');
-const { write } = require("fs");
-const CMUsers = require("../CMUserInfo");
 
-const client = require("../message_module/message_mqtt");
-const socket = require('../message_module/message_socket');
-let record_obj = require('../message_module/record/new_m_record');
-const dbAccess = require("../mirror_db");
-
-let messageAccess = {} // 모듈 제작을 위한 변수
-
-let setCMuser
-let setCMFriend
-let customOption = false
-let customFriend = null
 
 messageAccess.setCustomFriend = (new_customFriend) => {
     customFriend = new_customFriend
@@ -72,7 +75,6 @@ messageAccess.getcustomOption = () => {
 document.querySelector('#send-modal-close').addEventListener('click', () => {
     friendAlertOff()
 })
-
 function friendAlertOff() {
     send_modal.style.visibility = "hidden";
     inside_selected.style.visibility = 'hidden';
@@ -107,7 +109,7 @@ bar_message_button.addEventListener('click', () => {
         record_content.style.display = "none";
 
         // camera on
-        client.publish('camera/on', "start");
+        innerClient.publish('camera/on', "start");
     }
     // 메시지container가 안보이게 하기
     else {
@@ -118,7 +120,7 @@ bar_message_button.addEventListener('click', () => {
         message_memo_container.style.display = "none";
         document.getElementById('msg-img').src= ''
         // camera off
-        client.publish('camera/close', 'ok')
+        innerClient.publish('camera/close', 'ok')
     }
 })
 
@@ -132,7 +134,7 @@ inside.addEventListener('change', showUserBook);
 outside.addEventListener('change', showUserBook);
 
 shutter_button.addEventListener('click', () => {
-    client.publish('capture/camera', "start");
+    innerClient.publish('capture/camera', "start");
 });
 
 function showSendModal() {
@@ -301,7 +303,7 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
         }
         else if (type_check == "image") { // image 전송일 때
             //서버로 메시지를 보내는 이벤트 publish
-            // client.publish('send/image', 'send');
+            // innerClient.publish('send/image', 'send');
             console.log("image send success");
 
             dbAccess.createColumns('message', data)
@@ -360,13 +362,25 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                 ctx.drawImage(img, 0, 0, c.width, c.height);
                 let base64String = c.toDataURL();
                 if (connect) {
-                    socket.emit('realTime/message', {
-                        sender: sender,
-                        receiver: receiver,
-                        content: base64String,
-                        type: 'image',
-                        send_time: send_time
-                    });
+                    var file = './message_module/image/media/test.jpg'
+                    var file_data = fs.readFileSync(file, {encoding:'utf8'})
+                        var buf ={
+                            file: file_data,
+                            sender: sender,
+                            // "type": "image",                      
+                        }
+                        outerClient.publish("3002/connect_msg", JSON.stringify(buf));
+                    
+                    
+
+                    // socket.emit('realTime/message', {
+                    //     sender: sender,
+                    //     receiver: receiver,
+                    //     content: base64String,
+                    //     type: 'image',
+                    //     send_time: send_time
+                    // });
+                    
                 } else {
                     axios({
                         url: 'http://113.198.84.128:80/send/image', // 통신할 웹문서
@@ -544,4 +558,7 @@ function hideKeyboard() {
     keyboardTarget.setCurrentTarget(null);
     keyboardTarget.keyboard.style.display = "none";
 }
+
+
+
 module.exports = messageAccess

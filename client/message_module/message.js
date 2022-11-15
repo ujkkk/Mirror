@@ -59,7 +59,6 @@ function message_detail(msg_id) {
                 }
             }       
         }
-    console.log('3333');
     document.getElementById('message-detail-container').style.visibility = 'visible';
     //선택된 메시지를 message DB에서 찾음
     mirror_db.select('*', 'message', `msg_id=${msg_id}`)

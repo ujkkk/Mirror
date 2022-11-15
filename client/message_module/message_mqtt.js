@@ -1,21 +1,22 @@
-const mqtt = require('mqtt');
+
 const axios= require('axios');
 const mirror_db = require('../mirror_db');
 const moment = require('moment');
 const socket = require('./message_socket')
+const mqtt = require('mqtt');
 const options = {
     host: '127.0.0.1',
     port: 1883
   };
-const client = mqtt.connect(options);
+const innerClient = mqtt.connect(options);
 
-client.publish('camera/close', 'ok')
-client.publish('closeCamera', String(mirror_db.getMirror_id()))
-client.subscribe("send/image");
-client.subscribe("message/capture/done");
-client.subscribe("memo/capture/done");
+innerClient.publish('camera/close', 'ok')
+innerClient.publish('closeCamera', String(mirror_db.getMirror_id()))
+innerClient.subscribe("send/image");
+innerClient.subscribe("message/capture/done");
+innerClient.subscribe("memo/capture/done");
 
-client.on('message', async (topic, message, packet) => {
+innerClient.on('message', async (topic, message, packet) => {
     console.log("message is "+ message);
     console.log("topic is "+ topic);
 
@@ -92,4 +93,4 @@ client.on('message', async (topic, message, packet) => {
     } // end of (topic == 'send/image') ...
 })
 
-module.exports = client
+module.exports = innerClient

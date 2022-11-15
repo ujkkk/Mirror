@@ -3,6 +3,7 @@ const moment = require('moment')
 const callAccess = require('./call_module/call')
 // 날씨 모듈 불러오기
 require('./weather_module/new_weather')
+
 const fs = require('fs');
 const receivedData = location.href.split('?')[1]
 let mirrorDB = require('./mirror_db')
@@ -23,6 +24,7 @@ mirrorDB.setUser(receivedData)
         require('./memo_module/memo')
         require('./new_callbook')
         require('./stt_module')
+        require('./mqtt')
 
         const message = require('./message_module/message')
         message.initMessages()
