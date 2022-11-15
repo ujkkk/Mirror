@@ -19,7 +19,7 @@ const callerConponent = document.getElementsByClassName('caller')
 const callRefusalContainer = document.getElementById('call-refusal-container')
 
 // Variables.
-const socket = io.connect('ws://113.198.84.128:80/') // socket 서버 연결
+const socket = io.connect('ws://localhost:9000/') // socket 서버 연결
 let mediaConstraints = { // 미디어 설정
   audio: false,
   video: false,
@@ -185,7 +185,7 @@ socket.on('start_call', async (other) => {
 // 먼저 연결하고자 하는 Peer(상대)의 SDP 받기 (내가 전화를 걺 -> 그쪽에서 수락 후 SDP 제공) 
 socket.on('webrtc_offer', async (event) => {
   console.log('Socket event callback: webrtc_offer')
-
+  isConnected = true
   //otherId = event.myId
 
   if (roomInformation.newRoomId != roomInformation.myRoomId) { // 내가 방을 참가함(전화를 걺)
@@ -206,6 +206,7 @@ socket.on('webrtc_offer', async (event) => {
 socket.on('webrtc_answer', (event) => {
   console.log('Socket event callback: webrtc_answer')
   isRoomJoin = true
+  isConnected = true
   rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(event))
 })
 
@@ -435,27 +436,56 @@ function setRemoteStream(event) {
   remoteStream = event.stream
 }
 
+
+var isConnected = false;
+
+
 /* 원격 스트림을 위한 설정, 다른이에게 내 비디오 condidate 주기 */
 function sendIceCandidate(event) {
-  setTimeout(function () { // 10초 후 일시정지
-
-    if (event.candidate) {
-
-      roomId = roomInformation.newRoomId
-      socket.emit('webrtc_ice_candidate', {
-        roomId,
-        label: event.candidate.sdpMLineIndex,
-        candidate: event.candidate.candidate,
-        myId,
-      })
+  const ice = setInterval(function () { // 10초 후 일시정지
+    if (isConnect) {
+      clearTimeout(ice);
+      if (event.candidate) {
+        roomId = roomInformation.newRoomId
+        socket.emit('webrtc_ice_candidate', {
+          roomId,
+          label: event.candidate.sdpMLineIndex,
+          candidate: event.candidate.candidate,
+          myId,
+        })
+      }
+      if (!isConnect) {
+        setLocalStream(false, true)
+        isConnect = true
+      }
     }
-    if (!isConnect) {
-      setLocalStream(false, true)
-      isConnect = true
-    }
-  }, 2000)
+  }, 500)
 
 }
+
+
+/*
+
+// 브로커로의 접속이 성공할 때 호출되는 함수
+function onConnect() {
+    isConnected = true;
+}
+
+var topicSave;
+function subscribe(topic) {
+    if(client == null) return;
+    if(isConnected != true) {
+        topicSave = topic;
+        window.setTimeout("subscribe(topicSave)", 500);
+        return
+    }
+
+    // 토픽으로 subscribe 하고 있음을 id가 message인 DIV에 출력
+    document.getElementById("messages").innerHTML += '<span>Subscribing to: ' + topic + '</span><br/>';
+
+    client.subscribe(topic); // 브로커에 subscribe
+
+ */
 
 /* 전화 기록 남기기 */
 const callRecord = function (id, friendId, state) {
