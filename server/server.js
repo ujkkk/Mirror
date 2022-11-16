@@ -18,18 +18,34 @@ const client = mqtt.connect(option)
 
 client.on('connect', function () {
     console.log("mqtt 연결됨")
+
+    /* 테스트 */
     client.subscribe('3002/connect_msg');
 });
 
 client.on('message', function (topic, message) {
-    console.log("mqtt data 도착");
-
-    data = JSON.parse(message);
-    console.log(data.sender);
-    // fs.writeFile(file, url, 'utf8', function (error) {
-    // });
-    fs.writeFile('test.jpg',(data.file),'utf8', function (error) {
-         });
+    
+    /* mqtt로 메시지 전달 테스트 */
+    if(topic == '3002/connect_msg'){
+        data = JSON.parse(message);
+        console.log(data);
+        
+        //base64(텍스트) 데이터
+        var base64Url = data.file;
+        //base64 => bytes
+        var byteData = atob(base64Url);
+        var n =byteData.length;
+        //byte배열 생성, Uint8Array 1개는 1바이트(8bit)
+        //바이트 단위로 접근 가능
+        var byteArray = new Uint8Array(n); //데이트 크기 만큼 
+        
+        while(n--){
+            //byte => unicode로 바꿔서 저장
+            byteArray[n]=byteData.charCodeAt(n);
+        }
+        fs.writeFile('./message/test2.png', byteArray, 'utf-8', (error)=>{});
+    }
+    /* end of test */
 
 });
 
@@ -372,7 +388,7 @@ app.post('/get/image', (req, res) => {
 
             data = {
                 send_time: send_time,
-                file: fileName
+                file: file
             }
             res.json(data);
         })
@@ -424,7 +440,7 @@ function msgInserDBImage(req, res, next){
     //서버에 저장되는 시간
     var time = new Date().getTime();
     var file_name = time;
-    var file = './message/' + file_name + '.txt';
+    var file = './message/' + file_name + '.png';
     sender = req.body.sender;
     receiver = req.body.receiver;
     send_time = req.body.send_time;
