@@ -3,6 +3,7 @@ let dbAccess = {};
 let id;
 
 let mirror_id = 400; 
+
 let name;
 
 // mysql 모듈 불러오기
