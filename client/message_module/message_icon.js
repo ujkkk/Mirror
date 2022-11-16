@@ -361,7 +361,7 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                 c.width = 600;
                 c.height = 400;
                 ctx.drawImage(img, 0, 0, c.width, c.height);
-                let base64String = c.toDataURL().split(',')[1];
+                let base64SData = c.toDataURL().split(',')[1];
                 if (connect) {
                    // let buf = new ArrayBuffer(512);
                     //let view = new Uint16Array(buf);
@@ -370,8 +370,9 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                     var file = './message_module/image/media/test.jpg'
                    // var file_data = fs.readFileSync(file, {encoding:'utf8'})
                         var buf ={
-                            file: base64String,
-                            sender: sender,
+                            'file': base64SData,
+                            'sender': sender,
+                            'type': 'image',
                             // "type": "image",                      
                         }
                         outerClient.publish("3002/connect_msg", JSON.stringify(buf));
