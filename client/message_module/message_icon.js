@@ -8,6 +8,7 @@ const socket = require('../message_module/message_socket');
 let record_obj = require('../message_module/record/new_m_record');
 const dbAccess = require("../mirror_db");
 
+
 let messageAccess = {} // 모듈 제작을 위한 변수
 
 let setCMuser
@@ -360,12 +361,16 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                 c.width = 600;
                 c.height = 400;
                 ctx.drawImage(img, 0, 0, c.width, c.height);
-                let base64String = c.toDataURL();
+                let base64String = c.toDataURL().split(',')[1];
                 if (connect) {
+                   // let buf = new ArrayBuffer(512);
+                    //let view = new Uint16Array(buf);
+                    //view[0] = sender;
+
                     var file = './message_module/image/media/test.jpg'
-                    var file_data = fs.readFileSync(file, {encoding:'utf8'})
+                   // var file_data = fs.readFileSync(file, {encoding:'utf8'})
                         var buf ={
-                            file: file_data,
+                            file: base64String,
                             sender: sender,
                             // "type": "image",                      
                         }
