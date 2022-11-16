@@ -5,7 +5,33 @@ const path = require('path');
 const fs = require('fs');
 const File = require('File')
 const server_db = require('./server_db');
-// const { format } = require('date-fns');
+
+const { format } = require('date-fns');
+const { id } = require('date-fns/locale');
+const mqtt = require('mqtt')
+
+const option = {
+    host : '127.0.0.1',
+    port :1883
+}
+const client = mqtt.connect(option)
+
+client.on('connect', function () {
+    console.log("mqtt 연결됨")
+    client.subscribe('3002/connect_msg');
+});
+
+client.on('message', function (topic, message) {
+    console.log("mqtt data 도착");
+
+    data = JSON.parse(message);
+    console.log(data.sender);
+    // fs.writeFile(file, url, 'utf8', function (error) {
+    // });
+    fs.writeFile('test.jpg',(data.file),'utf8', function (error) {
+         });
+
+});
 
 var app = express() // express 는 함수이므로, 반환값을 변수에 저장한다.
 var server = require('http').createServer(app);
@@ -22,7 +48,8 @@ app.use(express.json({
 app.use(express.urlencoded({
     limit: '5mb',
     extended: false
-}))
+})) 
+ 
 
 
 // 3000 포트로 서버 오픈
@@ -38,9 +65,11 @@ io.on('connection', function (socket) {
     //송신자 클라이언트에서 받아온 message를 바로 수신자 클라이언트로 보냄
     console.log('서버 소켓 연결 완료');
     socket.on('realTime/message', function (data) {
+        console.log('socket :');    
         console.log(data);
         reciever = data.receiver;
         // 특정 소켓 클라이언트에게 전달 
+        socket.emit(`${reciever}`, data);
         io.emit(`${reciever}`, data);
 
     });
@@ -191,10 +220,11 @@ const sendClientToMsg = (req, res, next) => {
 }
 
 const setStateTable = (req, res) => {
+    console.log(req.body);
     //해당 user에대한 msg 테이블 record 삭제
-    server_db.delete('message', `receiver = ${req.params.id}`)
+    server_db.delete('message', `receiver = ${req.body.id}`)
     //State Table 상태 변경 -> msg_update: 0, msg_confirm: 1
-    server_db.update("state", "msg_update=0,msg_confirm=1", `receiver=${req.params.id}`)
+    server_db.update("state", "msg_update=0,msg_confirm=1", `receiver=${req.body.id}`)
 }
 
 
@@ -256,7 +286,7 @@ const updateCheckTable = (req, res) => {
 
 /* client가 현재 접속해있는 친구 목록 알고 싶을 때 */
 const getConnectedUserList = (req, res) => {
-
+    console.log('getConnectedUserList', req.body)
     let userState = [];
     let checkList = req.body.userData;
     let resData = {};
@@ -306,9 +336,9 @@ function setConnectUserList(checkList, index, userState, resData, res) {
 }
 
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'imageSend.html'))
-});
+// app.get('/', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'imageSend.html'))
+// });
 
 app.post('/get/name', (req, res) => {
     var id = req.body.id;
@@ -329,17 +359,20 @@ app.post('/get/name', (req, res) => {
 
 app.post('/get/image', (req, res) => {
     console.log(req.body);
-    fileName = req.body.fileName;
+    let fileName = req.body.fileName;
     server_db.select('*', 'message', `content=${fileName}`)
         .then(datas => {
-
+            if(datas<=0) {
+                res.json('imgae load fail');
+                return;
+            }
             send_time = datas[0].send_time;
             console.log(send_time);
             file = fs.readFileSync('./message/' + req.body.fileName + '.txt', { encoding: 'utf-8', flag: 'r' });
 
             data = {
                 send_time: send_time,
-                file: file
+                file: fileName
             }
             res.json(data);
         })
@@ -348,24 +381,42 @@ app.post('/get/image', (req, res) => {
 //오디오를 요청했을 때
 app.post('/get/audio', (req, res) => {
     // 전달할 파일
-    file_name = req.body.fileName;
+    let file_name = req.body.fileName;
 
     // server DB 에서 전달할 파일들 select
     server_db.select('*', 'message', `content=${file_name}`)
         .then(datas => {
+            if(datas<=0) {
+                res.json('imgae load fail');
+                return;
+            }
             // 파일을 전송했던 시간
             var send_time = datas[0].send_time;
             // 파일 base64String
-            var file_bstr = fs.readFileSync('./message/' + fileName + '.wav', { encoding: 'utf-8' });
+            var file_bstr = fs.readFileSync('./message/' + file_name + '.wav', { encoding: 'utf-8' });
 
             data = {
                 send_time: send_time,
                 file_bstr: file_bstr
             }
+            console.log(data);
             res.json(data);
         })
 })
-
+function getConnect(req, res){
+    user_id = req.body.id;
+    server_db.select('*', 'user', `id=${user_id}`)
+    .then(value =>{
+        if(value.length<=0){
+            let data={connect :'fail' }
+            res.json(data);
+            return;
+        }
+        let data={connect :value[0].connect }
+        res.json(data);
+        
+    })
+}
 
 
 function msgInserDBImage(req, res, next){
@@ -386,7 +437,7 @@ function msgInserDBImage(req, res, next){
     }
     server_db.createColumns('message', data);
     //base64
-    url = req.body.content.split(',')[1];
+    url = req.body.content;
 
     fs.writeFile(file, url, 'utf8', function (error) {
     });
@@ -395,11 +446,21 @@ function msgInserDBImage(req, res, next){
     // }
     next();
 }
+function inserSignUp(req, res){
+    console.log(req.body);
+    id_ = req.body.id;
+    name_ = req.body.name;
+    
+
+    data ={id:id_, name:name_, connect:1}
+    server_db.createColumns('user', data);
+    res.send('ok')
+}
 
 function msgInserDBAudio(req, res, next){
 // 서버에 저장되는 시간
     var save_time = new Date().getTime(); 
-    //서버에 저장되는 파일명
+    //서버에 저장되는 파일명m
     var file_name = './message/' + save_time + '.wav';
     //서버의 message DB에 남길 순수 파일명(확장자 제외)
     var pure_file_name = String(save_time);
@@ -473,9 +534,14 @@ function msgInserDBAudio(req, res, next){
 //     console.log("The file was saved!");
 // })
 
-app.get('/check/:id',userConnectUpdate,checkUpdate,sendClientToMsg,setStateTable);
+
+app.get('/check/:id',userConnectUpdate,checkUpdate,sendClientToMsg);
+//app.get('/check/:id',userConnectUpdate,checkUpdate,sendClientToMsg,setStateTable);
 app.post('/send/text', msgInsertDB, updateCheckTable);
 app.post('/send/image', msgInserDBImage, updateCheckTable);
 app.post('/send/audio', msgInserDBAudio, updateCheckTable);
 app.post('/connect/user',getConnectedUserList);
 
+app.post('/set/userState', setStateTable)
+app.post('/get/connect', getConnect)
+app.post('/signUp', inserSignUp)
