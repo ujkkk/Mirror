@@ -19,7 +19,7 @@ const callerConponent = document.getElementsByClassName('caller')
 const callRefusalContainer = document.getElementById('call-refusal-container')
 
 // Variables.
-const socket = io.connect('ws://localhost:9000/') // socket 서버 연결
+const socket = io.connect('ws://192.168.0.6:9000/') // socket 서버 연결
 let mediaConstraints = { // 미디어 설정
   audio: false,
   video: false,
@@ -47,6 +47,8 @@ let roomInformation = { // 나의 room 정보
   newRoomId: null,
   myRoomId: null,
 }
+var isConnected = false;
+
 
 // module로 다른 js에서 사용할 수 있는 변수
 let callFunction = {}
@@ -123,6 +125,7 @@ socket.on('room_created', async () => {
 
 // room에 join 했을 때 돌아오는 callback (친구한테 전화 걸기)
 socket.on('room_joined', async () => {
+  isConnected = false
   isRoomCloser = false
   console.log('Socket event callback: room_joined')
 
@@ -148,6 +151,7 @@ socket.on('full_room', (roomId) => {
 socket.on('start_call', async (other) => {
   isRoomCloser = false
   isConnect = false
+  isConnected = false
   console.log('Socket event callback: start_call')
   if (roomInformation.newRoomId == roomInformation.myRoomId) { // 내가 방을 만든 주인(전화를 받음)
     let senderName
@@ -185,7 +189,7 @@ socket.on('start_call', async (other) => {
 // 먼저 연결하고자 하는 Peer(상대)의 SDP 받기 (내가 전화를 걺 -> 그쪽에서 수락 후 SDP 제공) 
 socket.on('webrtc_offer', async (event) => {
   console.log('Socket event callback: webrtc_offer')
-  isConnected = true
+  
   //otherId = event.myId
 
   if (roomInformation.newRoomId != roomInformation.myRoomId) { // 내가 방을 참가함(전화를 걺)
@@ -437,13 +441,12 @@ function setRemoteStream(event) {
 }
 
 
-var isConnected = false;
 
 
 /* 원격 스트림을 위한 설정, 다른이에게 내 비디오 condidate 주기 */
 function sendIceCandidate(event) {
   const ice = setInterval(function () { // 10초 후 일시정지
-    if (isConnect) {
+    if (isConnected) {
       clearTimeout(ice);
       if (event.candidate) {
         roomId = roomInformation.newRoomId
@@ -464,28 +467,6 @@ function sendIceCandidate(event) {
 }
 
 
-/*
-
-// 브로커로의 접속이 성공할 때 호출되는 함수
-function onConnect() {
-    isConnected = true;
-}
-
-var topicSave;
-function subscribe(topic) {
-    if(client == null) return;
-    if(isConnected != true) {
-        topicSave = topic;
-        window.setTimeout("subscribe(topicSave)", 500);
-        return
-    }
-
-    // 토픽으로 subscribe 하고 있음을 id가 message인 DIV에 출력
-    document.getElementById("messages").innerHTML += '<span>Subscribing to: ' + topic + '</span><br/>';
-
-    client.subscribe(topic); // 브로커에 subscribe
-
- */
 
 /* 전화 기록 남기기 */
 const callRecord = function (id, friendId, state) {
