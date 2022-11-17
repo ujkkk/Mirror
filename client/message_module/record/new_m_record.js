@@ -8,7 +8,6 @@ const recordbars_div = document.getElementById("recordbars_div");
 const send_record_button = document.getElementById("send_record_button");
 
 
-
 // 녹음 중 상태 변수
 let isRecording = false;
 
@@ -20,9 +19,7 @@ const audioArray = [];
 
 record_button.onclick = async function(event){
     console.log("record_btn onclick");
-    console.log(`blob : ${blob}`)
     if(!isRecording){
-        console.log("mediaStream 가보자고");
         // 마이크 mediaStream 생성: Promise를 반환하므로 async/await 사용
         const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
@@ -32,7 +29,6 @@ record_button.onclick = async function(event){
         // 이벤트 핸들러: 녹음 데이터 취득 처리
         mediaRecorder.ondataavailable = (event) => {
             audioArray.push(event.data); // 오디오 데이터가 취득될 때마다 배열에 담아둔다.
-            console.log("event.data : " + event.data); // object Blob
         }
 
         // 이벤트 핸들러: 녹음 종료 처리 & 재생하기
@@ -49,7 +45,6 @@ record_button.onclick = async function(event){
         }
 
         //녹음 시작
-        console.log("record start");
         mediaRecorder.start();
         isRecording = true;
 
@@ -58,7 +53,6 @@ record_button.onclick = async function(event){
         player.style.display = "none";
     }
     else{
-        console.log("record stop()");
         mediaRecorder.stop();
         isRecording = false;
 
