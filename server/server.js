@@ -8,13 +8,15 @@ const server_db = require('./server_db');
 
 const { format } = require('date-fns');
 const { id } = require('date-fns/locale');
-const mqtt = require('mqtt')
+const mqtt = require('mqtt');
+const { rejects } = require('assert');
 
 const option = {
     host : '127.0.0.1',
     port :1883
 }
 const client = mqtt.connect(option)
+
 
 client.on('connect', function () {
     console.log("mqtt 연결됨")
@@ -29,22 +31,49 @@ client.on('message', function (topic, message) {
     if(topic == '3002/connect_msg'){
         data = JSON.parse(message);
         console.log(data);
-        
-        //base64(텍스트) 데이터
-        var base64Url = data.file;
-        //base64 => bytes
-        var byteData = atob(base64Url);
-        var n =byteData.length;
-        //byte배열 생성, Uint8Array 1개는 1바이트(8bit)
-        //바이트 단위로 접근 가능
-        var byteArray = new Uint8Array(n); //데이트 크기 만큼 
-        
-        while(n--){
-            //byte => unicode로 바꿔서 저장
-            byteArray[n]=byteData.charCodeAt(n);
+        switch(data.type){
+            case "audio":
+            break;
+            
+            case "image":
+            new Promise((reslove, reject) => {
+                var time = new Date().getTime();
+                var folder = './message/'
+                var filename = time;
+                    //base64(텍스트) 데이터
+                    var base64Url = data.content;
+                    //base64 => bytes
+                    var byteData = atob(base64Url);
+                    var n =byteData.length;
+                    //byte배열 생성, Uint8Array 1개는 1바이트(8bit)
+                    //바이트 단위로 접근 가능
+                    var byteArray = new Uint8Array(n); //데이트 크기 만큼 
+                    
+                    while(n--){
+                        //byte => unicode로 바꿔서 저장
+                        byteArray[n]=byteData.charCodeAt(n);
+                    }
+                    fs.writeFile(folder + filename +'.png', byteArray, 'utf-8', (error)=>{});
+                }).then(()=>{
+                    let data = {
+                        sender : data.sender,
+                        receiver : "1001",
+                        // mirror_db.get
+                        content : fileName,
+                        type :'image',
+                        send_time : send_time
+                    };
+                    server_db.createColumns('message', data)
+                    .then(() => {
+                        message.insertNewMessage();
+                        message_storage.showMessageStorage();
+                    })
+                })
+           
+            }
         }
-        fs.writeFile('./message/test2.png', byteArray, 'utf-8', (error)=>{});
-    }
+
+        
     /* end of test */
 
 });
