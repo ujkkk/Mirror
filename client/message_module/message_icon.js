@@ -274,7 +274,7 @@ messageAccess.showUserBook = showUserBook
 const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
     friendAlertOff()
     //bar_message_button.click();
-
+    var buf;
     let sender = dbAccess.getId(); // 내 id
     let receiver = value.id; // 받는 사람 id
     let connect = value.connect;
@@ -331,83 +331,47 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
         switch (type_check) {
             case 'text':
                 let content = document.querySelector("#textArea").value;
+                buf ={
+                    sender: sender,
+                    receiver: receiver,
+                    content: content,
+                    type: 'text',   
+                    send_time: send_time                 
+                }
                 //online user
-                if (connect) {
-                    var buf ={
-                        'file': content,
-                        'sender': sender,
-                        'type': 'text',                    
-                    }
+                if (connect) {                    
                     outerClient.publish("3002/connect_msg", JSON.stringify(buf));
-                    //소켓으로 메시지 전송
-                    // socket.emit('realTime/message', {
-                    //     sender: sender,
-                    //     receiver: receiver,
-                    //     content: content,
-                    //     type: 'text',
-                    //     send_time: send_time
-                    // });
-                    //offline user 
                 } else {
                     //서버에 메시지를 저장하는 방법으로 메시지를 보냄
-                    axios({
-                        url: 'http://113.198.84.128:80/send/text', // 통신할 웹문서
-                        method: 'post', // 통신할 방식
-                        data: { // 인자로 보낼 데이터
-                            sender: sender,
-                            receiver: receiver,
-                            content: content,
-                            type: 'text',
-                            send_time: send_time
-                        }
-                    }); // end of axios ...
+                    outerClient.publish("server/send/msg" , JSON.stringify(buf))
                 }
                 break;
             case 'image':
                 let img = document.getElementById('msg-img')
                 let c = document.createElement('canvas');
                 let ctx = c.getContext('2d');
-                c.width = 600;
-                c.height = 400;
+                c.width = 900;
+                c.height = 600;
                 ctx.drawImage(img, 0, 0, c.width, c.height);
                 let base64SData = c.toDataURL().split(',')[1];
+                buf ={                            
+                    receiver: receiver,
+                    sender: sender,
+                    content: base64SData,
+                    type: 'image',                           
+                    send_time: send_time
+                    // "type": "image",                      
+                }
                 if (connect) {
-                   // let buf = new ArrayBuffer(512);
-                    //let view = new Uint16Array(buf);
-                    //view[0] = sender;
-
-                    var file = './message_module/image/media/test.jpg'
-                   // var file_data = fs.readFileSync(file, {encoding:'utf8'})
-                        var buf ={
-                            'file': base64SData,
-                            'sender': sender,
-                            'type': 'image',
-                            // "type": "image",                      
-                        }
-                        outerClient.publish("3002/connect_msg", JSON.stringify(buf));
-                    
-                    
-
-                    // socket.emit('realTime/message', {
-                    //     sender: sender,
-                    //     receiver: receiver,
-                    //     content: base64String,
-                    //     type: 'image',
-                    //     send_time: send_time
-                    // });
+                    console.log("실시간 메시지 전달");
+                     outerClient.publish("3002/connect_msg", JSON.stringify(buf));
                     
                 } else {
-                    axios({
-                        url: 'http://113.198.84.128:80/send/image', // 통신할 웹문서
-                        method: 'post', // 통신할 방식
-                        data: { // 인자로 보낼 데이터
-                            receiver: receiver,
-                            sender: sender,
-                            content: base64String,
-                            type: 'image',
-                            send_time: send_time
-                        }
-                    });
+                    console.log("논실시간 메시지 전달");
+
+                    //서버에서 메시지를 저장
+                    outerClient.publish("server/send/msg" , JSON.stringify(buf))
+
                 }
                 break;
             case 'audio':
