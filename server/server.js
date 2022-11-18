@@ -5,30 +5,36 @@ const path = require('path');
 const fs = require('fs');
 const File = require('File')
 const server_db = require('./server_db');
-
 const { format } = require('date-fns');
 const { id } = require('date-fns/locale');
-const mqtt = require('mqtt');
 const { rejects } = require('assert');
 
+/* Section2. mqtt 설정 및 연결 */ 
+const mqtt = require('mqtt');
 const option = {
     host : '127.0.0.1',
     port :1883
 }
 const client = mqtt.connect(option)
 
-
+/* Section3. mqtt topic subscribe */ 
 client.on('connect', function () {
     console.log("mqtt 연결됨")
 
     /* 테스트 */
-    client.subscribe('3002/connect_msg');
+    client.subscribe('server/3002/connect/msg');
+
+    // TODO: CoMirror 사용자 로그인 시 - 초기 작업 처리하는 토픽
+    client.subscribe('server/user/connect');
+    
 });
 
+
+/* Section4. mqtt subscribe 메시지 도착 시 callback */ 
 client.on('message', function (topic, message) {
     
-    /* mqtt로 메시지 전달 테스트 */
-    if(topic == '3002/connect_msg'){
+    // TODO: mqtt로 실시간 메시지 전달 테스트 //
+    if(topic == 'server/3002/connect/msg'){
         data = JSON.parse(message);
         console.log(data);
         switch(data.type){
@@ -72,11 +78,116 @@ client.on('message', function (topic, message) {
            
             }
         }
+       // end of test.. (실시간 메시지 처리) 
 
+    // TODO: CoMirror 사용자 로그인 시 초기 작업 
+    if (topic == 'server/user/connect'){ 
         
-    /* end of test */
+        userId = String(message) // 사용자 mirrorID
+        console.log('server/user/connect | getId : '+ userId)
 
+        // NOTE :  Section1. 사용자 본인 접속 정보 업데이트 (offline(0) to online(1))
+        server_db.update("user", "connect=1", `id=${userId}`) //Promise return
+        .then(()=>{
+
+            // NOTE : Section2. 메시지함 업데이트 확인 여부 갱신 및 확인
+            server_db.select("msg_update, msg_confirm", "state", `receiver = ${userId}`) //Promise return
+            .then(value => {
+                        if (value[0].msg_update == 1 && value[0].msg_confirm == 0) { // 새로운 메시지 있음
+                            console.log(`user ${id} 확인하지 않은 새로운 변경사항이 있음`);
+
+                            server_db.select("*", "message", `receiver = ${userId}`) // 새로운 메시지 전부 select
+                            .then(value => {
+                                let msgData = [];
+                                for (let i = 0; i < value.length; i++) {
+
+                                    // TODO: value[i].type에 따라 분기 처리
+                                    if (value[i].type == "text"){
+                                        msgData[i] = { "sender": value[i].sender, "content": value[i].content, "type": value[i].type, "send_time":value[i].send_time}
+                                        console.log(msgData[i]);
+                                        let resData = {
+                                            "status": 1,
+                                            "contents": msgData
+                                        }
+                                        data = JSON.stringify(resData);
+                                        client.publish(`${userId}/get/message`,data)
+                                    }
+                                    else if (value[i].type == "audio"){ 
+                                        // TODO: 오디오 가져와서 사용자에게 전송
+
+
+
+                                    }
+                                    else { // TODO: 사진 가져와서 사용자에게 전송
+
+
+
+                                    }
+                                }
+                                server_db.deleteColumns("message",`receiver = ${userId}`) // 사용자에게 보낸 메시지는 삭제
+                                server_db.update("state", "msg_update=0,msg_confirm=1", `receiver=${userId}`) // 새로온 메시지 없고, 확인했음 표시
+                            });
+                        
+                        } // end of if 새로운 메시지 있음,,
+
+                        else { // 새로 온 메시지 없음
+                            // nothing to do
+                            console.log("새로 온 메시지 없음")
+                        }
+            }) // end of then..
+            .catch( // select 문에 아무것도 찾아지지 않을 때
+                () => {
+                        console.log("한번도 메시지를 받은 적이 없는 사람..")
+                    // let resData = {
+                    //     "status": 0,
+                    //     "contents": [{}]
+                    // }
+                    // data = JSON.parse(resData);
+                    // client.publish(`${userId}`,data)
+                }
+            )
+        })
+    }
+   
+    // TODO: 접속하지 않은 사용자에게 메시지 전송
+    // NOTE: 메시지 전송
+    if(topic == 'server/send/msg'){
+    
+        console.log("func msgInserDB: Request Post Success");
+
+        // json 파싱 과정
+        let reqBody = req.body;
+        const sender = reqBody.sender;
+        var data = { "sender": reqBody.sender, 
+                    "receiver": reqBody.receiver, 
+                    "content": reqBody.content, 
+                    "type":"text",
+                    "send_time":reqBody.send_time }
+        
+    
+        //db insert
+        server_db.createColumns('message', data).then(() => { 
+            server_db.select("*", "state", `receiver = ${req.body.receiver}`)
+            .then(value => {
+                if (value[0]) {
+                    let receiver = value[0].receiver;
+                    server_db.update("state", "msg_update=1,msg_confirm=0", `receiver=${receiver}`)
+                    // .then( () =>{
+                    //     mqttClient.publish(`${receiver}`, req.body.content);
+                    // })
+                }
+                else {
+                    let data = { "receiver": req.body.receiver, "msg_update": 1, "msg_confirm": 0 }
+                    server_db.createColumns('state', data);
+                }
+            })
+         })  
+    }
 });
+
+ 
+
+
 
 var app = express() // express 는 함수이므로, 반환값을 변수에 저장한다.
 var server = require('http').createServer(app);
@@ -207,7 +318,7 @@ io.on('connection', function (socket) {
 /* ----------------- client가 로그인 후, 본인의 메시지 업데이트와 확인 상태 요청 ----------------- */
 const userConnectUpdate = (req,res,next) => { // 유저 접속시, 접속중으로 상태 변경
     server_db.update("user", "connect=1", `id=${req.params.id}`)
-    .then(()=>{next()})
+    // .then(()=>{next()})
 }
 const checkUpdate = (req, res, next) => {
     console.log("func checkUpdate: Request Get Success");
@@ -580,7 +691,7 @@ function msgInserDBAudio(req, res, next){
 // })
 
 
-app.get('/check/:id',userConnectUpdate,checkUpdate,sendClientToMsg);
+
 //app.get('/check/:id',userConnectUpdate,checkUpdate,sendClientToMsg,setStateTable);
 app.post('/send/text', msgInsertDB, updateCheckTable);
 app.post('/send/image', msgInserDBImage, updateCheckTable);
