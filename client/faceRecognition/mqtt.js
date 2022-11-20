@@ -23,10 +23,8 @@ client.subscribe('createAccount/check')
 client.subscribe('exist/check')
 client.subscribe('reTrain/check')
 
+//여기 mqtt는 모두 얼굴인식 서버로부터 온 결과를 미러에 보여주는 역할
 client.on('message', (topic, message, packet) => {
-  console.log("js 받은 topic is " + topic);
-  console.log("js 받은message is " + message);
-
 
   if (topic == 'reTrain/check') {
     msg = String(message)

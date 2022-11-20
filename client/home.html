@@ -54,6 +54,7 @@
         <script src="./faceRecognition/loading.js"></script>
         <!-- <script src="mqtt.js"></script> -->
         <script>   
+        // 자신의 미러 id 셋팅
             const client = require("./faceRecognition/mqtt");
             const _db = require('./mirror_db')
             client.publish('mirror_id', String(_db.getMirror_id()))
