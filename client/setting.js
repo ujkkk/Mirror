@@ -11,6 +11,7 @@ console.log('setting')
 
 function viewSettingAlert()  {
     if(setting_component.style.display == "block"){
+        console.log("설정 클릭")
         setting_component.style.display = "none"
         set_button.style.backgroundColor = "transparent"
     }
