@@ -41,6 +41,11 @@ def closeCam():
 
 
 def face_extractor(img):
+
+    if(img is None):
+        print("img is None")
+        return None
+    
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_classifier.detectMultiScale(gray, 1.3, 5)
 
@@ -93,3 +98,16 @@ def createCropImage(userName, dir_path, countN):
 
         cv2.destroyAllWindows()
         return dir_path
+
+
+def load_image(directory):
+    byteArr = list()
+    count = 0
+    for filename in os.listdir(directory):
+        count = count + 1
+        path = str(directory) +os.sep + str(filename)
+        f = open(path,"rb")
+        filecontent = f.read()
+        byteArr.append(bytearray(filecontent))
+    return byteArr
+        

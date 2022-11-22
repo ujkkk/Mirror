@@ -36,10 +36,14 @@
         <script type="module" src="init_app.js"></script>
 
         <script>
+            const client = require("./faceRecognition/mqtt")
+            const _db = require('./mirror_db')
+
+            client.publish('re_login', String(_db.getMirror_id()))
+            client.publish('mirror_id', String(_db.getMirror_id()))
             function f() {
-                mirrorDB = require('./mirror_db')
-                mirrorDB.setMirror(1001)
-                //document.location.href=`./home.html`
+                
+                document.location.href=`./home.html`
 
             }
             // function f2() {

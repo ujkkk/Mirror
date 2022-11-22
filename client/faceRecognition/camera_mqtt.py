@@ -15,8 +15,10 @@ exist_flag = False
 delete_login_flag = False
 mirror_id = 200
 close_flag = False
+stopFlag = False
 id = 0
 
+camera.closeCam()
 curDir = os.path.dirname(os.path.realpath(__file__))
     #curDir = '.' + os.path.sep + 'faceRecognition'
 os.chdir(curDir)
@@ -32,6 +34,7 @@ def on_connect(client, userdata, flag, rc):
     client.subscribe('closeCamera')
     client.subscribe('delete/camera')
     client.subscribe('re_login')
+    
 
 
 
@@ -97,7 +100,8 @@ def on_message(client, userdata, msg):
 
             
        
-broker_ip = "192.168.0.2" # 현재 이 컴퓨터를 브로커로 설정
+#broker_ip = "192.168.0.2" # 현재 이 컴퓨터를 브로커로 설정
+broker_ip = "127.0.0.1"
 print('broker_ip : ' + broker_ip)
 client = mqtt.Client()
 client.on_connect = on_connect
