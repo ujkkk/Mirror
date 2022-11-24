@@ -4,7 +4,8 @@ const createLoginMessage = require('./loginMessage')
 const _db = require('../mirror_db')
 const axios = require('axios')
 const loading = require('./loading');
-var user_id = ''
+var user_id = '';
+var name;
 const options = {
   host: '192.168.0.2',
   port: 1883

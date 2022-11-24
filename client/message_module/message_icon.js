@@ -363,12 +363,11 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                     // "type": "image",                      
                 }
                 if (connect) {
-                    console.log("실시간 메시지 전달");
-                     outerClient.publish("3002/connect_msg", JSON.stringify(buf));
+                    console.log("실시간 메시지 전달 : image");
+                    outerClient.publish(`${receiver}/connect_msg`, JSON.stringify(buf));
                     
                 } else {
                     console.log("논실시간 메시지 전달");
-
                     //서버에서 메시지를 저장
                     outerClient.publish("server/send/msg" , JSON.stringify(buf))
 
