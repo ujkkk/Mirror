@@ -341,10 +341,10 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                 }
                 //online user
                 if (connect) {                    
-                    outerClient.publish("3002/connect_msg", JSON.stringify(buf));
+                    outerClient.publish(`${receiver}/connect_msg`, JSON.stringify(buf));
                 } else {
                     //서버에 메시지를 저장하는 방법으로 메시지를 보냄
-                    outerClient.publish("server/send/msg" , JSON.stringify(buf))
+                    outerClient.publish(`${receiver}/send/msg`, JSON.stringify(buf));
                 }
                 break;
             case 'image':
@@ -358,8 +358,8 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                 buf ={                            
                     receiver: receiver,
                     sender: sender,
-                    content: base64SData,
-                    type: 'image',                           
+                    type: 'image',   
+                    content: base64SData,                    
                     send_time: send_time
                     // "type": "image",                      
                 }

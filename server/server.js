@@ -23,6 +23,7 @@ client.on('connect', function () {
 
     // TODO: CoMirror 사용자 로그인 시 - 초기 작업 처리하는 토픽
     client.subscribe('server/user/connect');
+    client.subscribe('server/send/msg');
     client.subscribe('server/signUp');
 
 });
@@ -88,7 +89,7 @@ client.on('message', function (topic, message) {
 
                                         }
                                     }
-                                    server_db.deleteColumns("message", `receiver = ${userId}`) // 사용자에게 보낸 메시지는 삭제
+                                    server_db.delete("message", `receiver = ${userId}`) // 사용자에게 보낸 메시지는 삭제
                                     server_db.update("state", "msg_update=0,msg_confirm=1", `receiver=${userId}`) // 새로온 메시지 없고, 확인했음 표시
                                 });
 
@@ -97,6 +98,7 @@ client.on('message', function (topic, message) {
                         else { // 새로 온 메시지 없음
                             // nothing to do
                             console.log("새로 온 메시지 없음")
+
                         }
                     }) // end of then..
                     .catch( // select 문에 아무것도 찾아지지 않을 때
@@ -118,16 +120,30 @@ client.on('message', function (topic, message) {
     if (topic == 'server/send/msg') {
         contents = JSON.parse(message);
         
+        console.log("func msgInserDB: Request Post Success");
+
+        data = JSON.parse(message);
+
+        // json 파싱 과정
+        // let reqBody = req.body;
+        // const sender = reqBody.sender;
+        var dataJson = { "sender": data.sender, 
+                    "receiver": data.receiver, 
+                    "content": data.content, 
+                    "type":data.type,
+                    "send_time":data.send_time }
+      //  console.log(dataJson);
         switch (contents.type){
             case "image":
                  //서버에 저장되는 시간
                 var url= contents.content;
                 var file_name =  new Date().getTime();
-                var file = './message/' + file_name + '.png';
+                var file = './message/' + file_name + '.txt';
                 contents.content = file_name
                 fs.writeFile(file, url, 'utf8', function (error) {});
                 break;
             case "audio":
+                msgInserDBAudio(dataJson);
                 break;
         }
        
@@ -143,11 +159,12 @@ client.on('message', function (topic, message) {
                         // })
                     }
                     else {
-                        let data = { "receiver": req.body.receiver, "msg_update": 1, "msg_confirm": 0 }
+                        let data = { "receiver": contents.receiver, "msg_update": 1, "msg_confirm": 0 }
                         server_db.createColumns('state', data);
                     }
                 })
         })
+
     }
 });
 
@@ -389,9 +406,9 @@ const msgInsertDB = (req, res, next) => {
     server_db.createColumns('message', data).then(() => { next() })
 }
 
-const updateCheckTable = (req, res) => {
+const updateCheckTable = (data) => {
 
-    server_db.select("*", "state", `receiver = ${req.body.receiver}`)
+    server_db.select("*", "state", `receiver = ${data.receiver}`)
         .then(value => {
             if (value[0]) {
                 let receiver = value[0].receiver;
@@ -401,11 +418,10 @@ const updateCheckTable = (req, res) => {
                 // })
             }
             else {
-                let data = { "receiver": req.body.receiver, "msg_update": 1, "msg_confirm": 0 }
+                let data = { "receiver": data.receiver, "msg_update": 1, "msg_confirm": 0 }
                 server_db.createColumns('state', data);
             }
         })
-    res.json(req.body); //response 보냄(echo)
 }
 
 /* client가 현재 접속해있는 친구 목록 알고 싶을 때 */
@@ -543,15 +559,16 @@ function getConnect(req, res) {
 }
 
 
-function msgInserDBImage(req, res, next) {
-    console.log(req.body)
+function msgInserDBImage(data){
+    console.log(data)
+
     //서버에 저장되는 시간
     var time = new Date().getTime();
     var file_name = time;
     var file = './message/' + file_name + '.png';
-    sender = req.body.sender;
-    receiver = req.body.receiver;
-    send_time = req.body.send_time;
+    sender = data.sender;
+    receiver = data.receiver;
+    send_time = data.send_time;
     var data = {
         sender: sender,
         receiver: receiver,
@@ -561,14 +578,14 @@ function msgInserDBImage(req, res, next) {
     }
     server_db.createColumns('message', data);
     //base64
-    url = req.body.content;
+    url = data.content;
 
     fs.writeFile(file, url, 'utf8', function (error) {
     });
     // while(n--) {
     //     u8arr[n] = bstr.charCodeAt(n);
     // }
-    next();
+    updateCheckTable(data);
 }
 function inserSignUp(req, res) {
     console.log(req.body);
@@ -581,15 +598,16 @@ function inserSignUp(req, res) {
     res.send('ok')
 }
 
-function msgInserDBAudio(req, res, next) {
-    // 서버에 저장되는 시간
-    var save_time = new Date().getTime();
+function msgInserDBAudio(data){
+// 서버에 저장되는 시간
+    var save_time = new Date().getTime(); 
+
     //서버에 저장되는 파일명m
     var file_name = './message/' + save_time + '.wav';
     //서버의 message DB에 남길 순수 파일명(확장자 제외)
     var pure_file_name = String(save_time);
 
-    var bstr = req.body.content; // base64String
+    var bstr = data.content; // base64String
     var n = bstr.length;
     var u8arr = new Uint8Array(n);
 
@@ -601,9 +619,9 @@ function msgInserDBAudio(req, res, next) {
         u8arr[n] = bstr.charCodeAt(n);
     }
 
-    sender = req.body.sender;
-    receiver = req.body.receiver;
-    send_time = req.body.send_time;
+    sender = data.sender;
+    receiver = data.receiver;
+    send_time = data.send_time;
 
     var data = {
         sender: sender,
@@ -615,9 +633,11 @@ function msgInserDBAudio(req, res, next) {
 
     // server DB에 저장
     server_db.createColumns('message', data);
-    console.log("The file was saved!");
-    next();
+    console.log("The file was saved!"); 
+    updateCheckTable(data);
+
 }
+
 
 
 // app.post('/send/audio', (req, res, next) => {
