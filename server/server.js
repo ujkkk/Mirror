@@ -131,7 +131,6 @@ client.on('message', function (topic, message) {
                 break;
         }
        
-
         //db insert
         server_db.createColumns('message', contents).then(() => {
             server_db.select("*", "state", `receiver = ${contents.receiver}`)

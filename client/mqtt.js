@@ -1,6 +1,7 @@
 //서버와 연결하는 MQTT
 const mqtt = require('mqtt');
-const message = require('./message_module/message')
+const { resolve } = require('path');
+const message_obj = require('./message_module/message')
 const message_storage = require('./message_module/message_storage')
 var mirrorDB = require('./mirror_db')
 const options = {
@@ -35,19 +36,21 @@ client.on('message', async (topic, message, packet) => {
 
   //real time message 저장
   if (topic == `${mirrorDB.getId()}/connect_msg`) {
+    console.log(`${mirrorDB.getId()}/connect_msg 처리`)
     contents = JSON.parse(message);
     connectMsg(contents)
   }
 
 })
 
+//client-client간 실시간 메시지
 function connectMsg(contents) {
 
   switch (contents.type) {
     case "text":
       mirrorDB.createColumns('message', contents)
         .then(() => {
-          message.insertNewMessage();
+          message_obj.insertNewMessage();
           message_storage.showMessageStorage();
         })
       break;
@@ -57,7 +60,7 @@ function connectMsg(contents) {
     case "image":
       new Promise((reslove, reject) => {
         var time = new Date().getTime();
-        var folder = './message/'
+        var folder = './message_module/image/images/'
         var filename = time;
         //base64(텍스트) 데이터
         var base64Url = contents.content;
@@ -72,11 +75,12 @@ function connectMsg(contents) {
           byteArray[n] = byteData.charCodeAt(n);
         }
         fs.writeFile(folder + filename + '.png', byteArray, 'utf-8', (error) => { });
-      }).then(() => {
-        contents.content = fileName
+        reslove(filename)
+      }).then((filename) => {
+        contents.content = filename
         mirrorDB.createColumns('message', contents)
           .then(() => {
-            message.insertNewMessage();
+            message_obj.insertNewMessage();
             message_storage.showMessageStorage();
           })
       })
@@ -85,34 +89,40 @@ function connectMsg(contents) {
 }
 /*로그인시 서버로부터 받은 메시지 저장 */
 function nonConnectMsg(contents) {
-  switch (contents.type) {
-    //text는 바로 DB에 저장
-    case 'text':
-      mirrorDB.createColumns('message', contents);
-      break;
-    //미디어는 base64데이터를 파일로 저장한 후 DB에 저장
-    case 'image':
-      //data.content에는 base64이므로 저장한 파일 이름을 다시 저장
-      var file_name = new Date().getTime();
-      //서버에서 받아온 base64 형식의 이미지 데이터
-      var url = contents.content;
-      // base64 인코딩을 바이트 코드로 변환
-      var bstr = atob(url);
-      var n = bstr.length;
-      var u8arr = new Uint8Array(n);
-      //var send_time = response.data.send_time;
-      // mirrorDB.update("message",`send_time=${send_time}`,`receiver=${receiver}`)
-      fs.writeFile('./image/message/' + file_name + ".png", u8arr, 'utf8', (error) => { });
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-      }
-      contents.content = file_name
-      mirrorDB.createColumns('message', contents);
-      break;
-    case 'audio':
-      mirrorDB.createColumns('message', contents);
-      break;
-  }
+  new Promise ((resolve, reject) => {
+    switch (contents.type) {
+      //text는 바로 DB에 저장
+      case 'text':
+        mirrorDB.createColumns('message', contents);
+        break;
+      //미디어는 base64데이터를 파일로 저장한 후 DB에 저장
+      case 'image':
+        //data.content에는 base64이므로 저장한 파일 이름을 다시 저장
+        var file_name = new Date().getTime();
+        //서버에서 받아온 base64 형식의 이미지 데이터
+        var url = contents.content;
+        // base64 인코딩을 바이트 코드로 변환
+        var bstr = atob(url);
+        var n = bstr.length;
+        var u8arr = new Uint8Array(n);
+        //var send_time = response.data.send_time;
+        // mirrorDB.update("message",`send_time=${send_time}`,`receiver=${receiver}`)
+        fs.writeFile('./image/message/' + file_name + ".png", u8arr, 'utf8', (error) => { });
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+        contents.content = file_name
+        mirrorDB.createColumns('message', contents);
+        break;
+      case 'audio':
+        mirrorDB.createColumns('message', contents);
+        break;
+    }
+  }).then(()=> {
+    message_obj.initMessages()
+    message_storage.showMessageStorage();
+  })
+  
 }
 
 module.exports = client
