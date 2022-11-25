@@ -2,6 +2,7 @@
 const { write } = require("fs");
 const CMUsers = require("../CMUserInfo");
 const fs = require('fs')
+const moment = require('moment');
 const innerClient = require("./message_mqtt");
 const outerClient = require('../mqtt')
 const socket = require('../message_module/message_socket');
@@ -340,10 +341,10 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                 }
                 //online user
                 if (connect) {                    
-                    outerClient.publish("3002/connect_msg", JSON.stringify(buf));
+                    outerClient.publish(`${receiver}/connect_msg`, JSON.stringify(buf));
                 } else {
                     //서버에 메시지를 저장하는 방법으로 메시지를 보냄
-                    outerClient.publish("server/send/msg" , JSON.stringify(buf))
+                    outerClient.publish(`${receiver}/send/msg`, JSON.stringify(buf));
                 }
                 break;
             case 'image':
@@ -357,18 +358,17 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                 buf ={                            
                     receiver: receiver,
                     sender: sender,
-                    content: base64SData,
-                    type: 'image',                           
+                    type: 'image',   
+                    content: base64SData,                    
                     send_time: send_time
                     // "type": "image",                      
                 }
                 if (connect) {
-                    console.log("실시간 메시지 전달");
-                     outerClient.publish("3002/connect_msg", JSON.stringify(buf));
+                    console.log("실시간 메시지 전달 : image");
+                    outerClient.publish(`${receiver}/connect_msg`, JSON.stringify(buf));
                     
                 } else {
                     console.log("논실시간 메시지 전달");
-
                     //서버에서 메시지를 저장
                     outerClient.publish("server/send/msg" , JSON.stringify(buf))
 

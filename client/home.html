@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="faceRecognition/css/home.css">
         <link rel="stylesheet" type="text/css" href="faceRecognition/css/loading.css">
-        <link rel="stylesheet" type="text/css" href="/css/call.css">
+        <!-- <link rel="stylesheet" type="text/css" href="/css/call.css"> -->
     </head>
     <body>
         <div id="loadingDiv">
@@ -19,28 +19,32 @@
             <div class="btnDiv" id="modelDiv"><button class="btn" id="modelBtn" onclick="model()">Train</button></div>
         </div>
         <div id="message"></div>
-
+    
+           <script src="faceRecognition/home.js"></script> 
         
-    <!-- 전화 걸기위한 input과 button -> 눈에 보이진 않음 따로 대처방법 생각중 -->
+        </body>
+    </html>
+<!--         
+    전화 걸기위한 input과 button -> 눈에 보이진 않음 따로 대처방법 생각중
     <div id="room-selection-container" style="display: none">
         <input id="room-input" type="text" />
         <button id="connect-button">CONNECT</button>
     </div>
 
-    <!-- 누군가가 전화를 걸었을 때 수락창 -->
-    <div id="caller-accept-container" style="display: none">
+    누군가가 전화를 걸었을 때 수락창 -->
+    <!-- <div id="caller-accept-container" style="display: none">
         <div id="caller-alert">경미님의 영상통화</div>
         <button class="call_button" id="accept"><img class="call-accept-icon" id="accept-icon" src="./image/index/start_call_icon.png"></button><button class="call_button" id="dont-accept"><img class="call-accept-icon" id="dont-accept-icon" src="./image/index/end_call_icon.png"></button>
-    </div>
+    </div> -->
 
     <!-- 음성 통화 창 -->
-    <div id="audio-chat-container" style="display: none">
+    <!-- <div id="audio-chat-container" style="display: none">
         <div class="caller">김경미</div>
         <button class="disconnect-button"><img class="disconnect-icon" src="./image/index/end_call_icon.png"></button>
-    </div>
+    </div> -->
 
     <!-- 영상 통화 창 -->
-    <div id="video-chat-container" style="display: none">
+    <!-- <div id="video-chat-container" style="display: none">
         <div class="caller">김경미</div>
         <div id="video-container">
             <video id="local-video" autoplay="autoplay"></video>
@@ -49,74 +53,8 @@
         <button class="disconnect-button"><img class="disconnect-icon" src="./image/index/end_call_icon.png"></button>
     </div>
         <script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
-        <script type="module" src="./init_app.js"></script>
+        <script type="module" src="./init_app.js"></script> -->
 
-        <script src="./faceRecognition/loading.js"></script>
+        <!-- <script src="./faceRecognition/loading.js"></script> -->
         <!-- <script src="mqtt.js"></script> -->
-        <script>   
-            const client = require("./faceRecognition/mqtt");
-            const _db = require('./mirror_db')
-            client.publish('mirror_id', String(_db.getMirror_id()))
-            let loginBtnFlag = false;
-            let signUpBtnFlag = false;
-
-            let btn; // 눌린 버튼 정보 저장
-            let btnText="";
-
-            client.subscribe('error'); // face not found를 위한 토픽 : "error"
-            client.on('message', (topic, message, packet) =>{
-                if(topic == "error"){
-                    var msg = String(message);
-                    const warningText = "Face Not Found";
-
-                    if(loginBtnFlag){ // Login 버튼을 눌렀는데 얼굴이 안 보일 경우
-                        btn = document.getElementById("loginBtn");
-                        btnText = "Login";
-                        loginBtnFlag = false;
-                    }
-                    else if(signUpBtnFlag){ // Sign Up 버튼을 눌렀는데 얼굴이 안 보일 경우
-                        btn = document.getElementById("signUpBtn");
-                        btnText = "Sign Up";
-                        signUpBtnFlag = false;
-                    }
-
-                    if(msg == "notFound"){ // 그 버튼에 Error 문구 띄우기
-                        btn.textContent  = warningText;
-                        btn.setAttribute("style", "color: red; border: solid 3px red; box-shadow: 0 0 25px red;");
-                    }
-                    else { // 얼굴을 찾았을 경우 버튼 복구
-                        btn.textContent = btnText;
-                        btn.setAttribute("style", "color: white; border: solid 2px white;");
-                    }
-                }
-            })
-
-            // Login 버튼을 눌렀을 때
-            function login(){
-                loading(); // 로딩 시작
-                loginBtnFlag = true;
-                client.publish('login/camera',String(_db.getMirror_id())); // 로그인 시작
-            }
-
-            // Sign Up 버튼을 눌렀을 때
-            function signUp(){
-                loading(); // 로딩 시작
-                signUpBtnFlag = true;
-                document.getElementById("loginMessage").innerHTML = "등록된 사용자인지 확인하는 중입니다..."
-
-                //카메라에게 사진을 찍으라고 토픽보냄
-                client.publish('exist/camera', String(_db.getMirror_id())) // 이미 가입한 회원인지 확인
-            }
-
-            // Delete 버튼을 눌렀을 때
-            function deleteUser(){
-                document.location.href = 'faceRecognition/delete.html'
-            }
-
-            //재학습 시키기
-            function model(){
-                client.publish('reTrain', String(_db.getMirror_id()))
-            }
-        </script>
-    </body>
-</html>
+   

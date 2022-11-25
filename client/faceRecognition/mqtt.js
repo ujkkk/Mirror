@@ -4,11 +4,17 @@ const createLoginMessage = require('./loginMessage')
 const _db = require('../mirror_db')
 const axios = require('axios')
 const loading = require('./loading');
-var user_id = ''
+var user_id = '';
+var name;
 const options = {
   host: '192.168.0.2',
   port: 1883
 };
+// const options = {
+//   host: '127.0.0.1',
+//   port: 1883
+// };
+
 
 function setUserId(id) {
   this.user_id = id;
@@ -23,10 +29,8 @@ client.subscribe('createAccount/check')
 client.subscribe('exist/check')
 client.subscribe('reTrain/check')
 
+//여기 mqtt는 모두 얼굴인식 서버로부터 온 결과를 미러에 보여주는 역할
 client.on('message', (topic, message, packet) => {
-  console.log("js 받은 topic is " + topic);
-  console.log("js 받은message is " + message);
-
 
   if (topic == 'reTrain/check') {
     msg = String(message)

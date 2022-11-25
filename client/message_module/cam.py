@@ -51,7 +51,14 @@ client.loop_start()
 def onCam():
     global cam
     if(cam is None):
-        cam=cv2.VideoCapture(0)
+        #리눅스
+        #cam = cv2.VideoCapture(cv2.CAP_V4L2)
+        #윈도우
+        cam = cv2.VideoCapture(0)
+        print(cam)
+        #cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
+        #cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+        print('onCam 메시지 : 카메라 켜짐')
         cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
         cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         
