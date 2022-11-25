@@ -19,7 +19,7 @@ const callerConponent = document.getElementsByClassName('caller')
 const callRefusalContainer = document.getElementById('call-refusal-container')
 
 // Variables.
-const socket = io.connect('ws://192.168.0.6:9000/') // socket 서버 연결
+const socket = io.connect('ws://113.198.84.128:80/') // socket 서버 연결
 let mediaConstraints = { // 미디어 설정
   audio: false,
   video: false,
@@ -31,6 +31,8 @@ connectingSound.autoplay = true// audio가 load 될 때 자동재생 됨
 connectingSound.pause()
 
 let localStream // 내 스트리밍
+let sendStream
+let audioOffStream
 let remoteStream // 상대 스트리밍
 let isRoomJoin // 내가 방 들어갔는지  확인
 let isRoomCloser = false // 내가 전화 끊었는지 확인
@@ -47,7 +49,7 @@ let roomInformation = { // 나의 room 정보
   newRoomId: null,
   myRoomId: null,
 }
-var isConnected = false;
+let isConnected = false
 
 
 // module로 다른 js에서 사용할 수 있는 변수
@@ -71,6 +73,7 @@ const iceServers = {
 }
 
 const client = require('../message_module/message_mqtt');
+const { resolve } = require('path')
 
 // BUTTON LISTENER ============================================================
 
@@ -130,7 +133,7 @@ socket.on('room_joined', async () => {
   console.log('Socket event callback: room_joined')
 
   showVideoConference()
-  await setLocalStream(false, true)
+  await setLocalStream(false, true, false)
 
   const roomId = roomInformation.newRoomId
 
@@ -170,6 +173,7 @@ socket.on('start_call', async (other) => {
 
         callWaiting = setTimeout(function () { // 10초 후 일시정지
           socket.emit('exit', roomInformation.newRoomId)
+          console.log("callWaiting................")
           exitRoom()
         }, 10000)
         connectingSoundPlay()
@@ -186,10 +190,15 @@ socket.on('start_call', async (other) => {
 })
 /* 통화 연결 */
 
+const setConnected = () => new Promise((resolve, reject) => {
+  console.log("!!!!!!!! setConnected")
+  isConnected = true
+  resolve(isConnect)
+})
 // 먼저 연결하고자 하는 Peer(상대)의 SDP 받기 (내가 전화를 걺 -> 그쪽에서 수락 후 SDP 제공) 
 socket.on('webrtc_offer', async (event) => {
   console.log('Socket event callback: webrtc_offer')
-  
+
   //otherId = event.myId
 
   if (roomInformation.newRoomId != roomInformation.myRoomId) { // 내가 방을 참가함(전화를 걺)
@@ -197,22 +206,28 @@ socket.on('webrtc_offer', async (event) => {
     connectingSoundPause()
 
     rtcPeerConnection = new RTCPeerConnection(iceServers)
-    await setLocalStream(true, true)
+    await setLocalStream(true, true, true)
 
     rtcPeerConnection.ontrack = setRemoteStream
     rtcPeerConnection.onicecandidate = sendIceCandidate
-    rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(event.sdp))
+    console.log("!!!!!!!! webrtc_offer")
+    await rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(event.sdp))
+
     await createAnswer(rtcPeerConnection)
+    await setConnected()
   }
 })
 
 // 응답하는 Peer(상대)의 SDP 받기 (내가 전화를 받고 수락 후 SDP 제공 -> 상대도 응답으로 SDP 제공) 
-socket.on('webrtc_answer', (event) => {
+socket.on('webrtc_answer', async (event) => {
   console.log('Socket event callback: webrtc_answer')
   isRoomJoin = true
-  isConnected = true
-  rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(event))
+  console.log("!!!!!!!! webrtc_answer")
+  await rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(event))
+  await setConnected()
 })
+
+
 
 // 웹 브라우저 간에 직접적인 P2P를 할 수 있도록 해주는 프레임워크 ICE 제공 -> Signaling
 socket.on('webrtc_ice_candidate', (event) => {
@@ -224,6 +239,7 @@ socket.on('webrtc_ice_candidate', (event) => {
     candidate: event.candidate,
   })
   rtcPeerConnection.addIceCandidate(candidate)
+  //
 })
 
 /* 통화 종료 */
@@ -294,7 +310,7 @@ const joinRoom = function (room) {
 const exitRoom = async function () {
   console.log("exitRoom")
 
-  await setLocalStream(false, false)
+  await setLocalStream(false, false, false)
   hiddenVideoConference()
   hiddencallerContainer()
   connectingSoundPause()
@@ -326,7 +342,7 @@ async function callAgree(callAccept) {
   if (callAccept) { // 전화를 받았을 때
     showVideoConference()
     rtcPeerConnection = new RTCPeerConnection(iceServers)
-    await setLocalStream(true, true)
+    await setLocalStream(true, true, true)
 
     rtcPeerConnection.ontrack = setRemoteStream
     rtcPeerConnection.onicecandidate = sendIceCandidate
@@ -341,16 +357,18 @@ async function callAgree(callAccept) {
 
 
 /* 내 비디오 실행 및 오디오 실행(스트리밍) */
-const setLocalStream = async function (audioValue, videoValue) {
+const setLocalStream = async function (audioValue, videoValue, setStream) {
   mediaConstraints.audio = audioValue
+
 
   if (videoValue == true) {
     // ****************************************
+    /*
     if (localStream != undefined) {
-      localStream.getTracks().forEach(function (track) {
+      await localStream.getTracks().forEach(function (track) {
         track.stop();
       });
-    }
+    }*/
     // ****************************************
     mediaConstraints.video = { width: 1800, height: 1200 }
   }
@@ -361,16 +379,30 @@ const setLocalStream = async function (audioValue, videoValue) {
   let stream = null
   if (mediaConstraints.audio != false || mediaConstraints.video != false) {
     try {
-      // 해당 기기에 연결된 장치(카메라, 마이크)를 불러온다
-      stream = await navigator.mediaDevices.getUserMedia(mediaConstraints)
-      localStream = stream
-      localVideoComponent.srcObject = stream
 
-      if (mediaConstraints.audio != false && mediaConstraints.video != false) {
-        // MidiaStreamTrack을 받아와 rtcPeerConnection에 트랙 추가 
-        localStream.getTracks().forEach((track) => {
-          rtcPeerConnection.addTrack(track, localStream)
-        })
+      if (setStream == false) {
+        console.log("$$$$$$$$$$$$$$$$$$$$$ false")
+        if (audioOffStream != undefined) {
+          audioOffStream.getTracks().forEach(function (track) {
+            track.stop();
+          });
+        }
+        stream = await navigator.mediaDevices.getUserMedia(mediaConstraints)
+        audioOffStream = stream
+        localVideoComponent.srcObject = stream
+      }
+      else {
+        // 해당 기기에 연결된 장치(카메라, 마이크)를 불러온다
+        stream = await navigator.mediaDevices.getUserMedia(mediaConstraints)
+        localStream = stream
+        localVideoComponent.srcObject = stream
+
+        if (mediaConstraints.audio != false && mediaConstraints.video != false) {
+          // MidiaStreamTrack을 받아와 rtcPeerConnection에 트랙 추가 
+          localStream.getTracks().forEach((track) => {
+            rtcPeerConnection.addTrack(track, localStream)
+          })
+        }
       }
     } catch (error) {
       console.error('Could not get user media', error)
@@ -386,6 +418,11 @@ const setLocalStream = async function (audioValue, videoValue) {
         console.log(`track: ${rtcPeerConnection.ontrack}`)
       }
       localStream.getTracks().forEach(function (track) {
+        track.stop();
+      });
+    }
+    if (audioOffStream != undefined) {
+      audioOffStream.getTracks().forEach(function (track) {
         track.stop();
       });
     }
@@ -442,7 +479,6 @@ function setRemoteStream(event) {
 
 
 
-
 /* 원격 스트림을 위한 설정, 다른이에게 내 비디오 condidate 주기 */
 function sendIceCandidate(event) {
   const ice = setInterval(function () { // 10초 후 일시정지
@@ -458,14 +494,12 @@ function sendIceCandidate(event) {
         })
       }
       if (!isConnect) {
-        setLocalStream(false, true)
+        setLocalStream(false, true, false)
         isConnect = true
       }
     }
   }, 500)
-
 }
-
 
 
 /* 전화 기록 남기기 */
@@ -479,3 +513,18 @@ const callRecord = function (id, friendId, state) {
   var data = { id: parseInt(id), friend_id: parseInt(friendId), state: state, call_option: callOption, call_time: time }
   dbAccess.createColumns('call_record', data)
 }
+
+
+/*
+CREATE TABLE `mirror_db`.`call_record` (
+  `record_no` INT NOT NULL AUTO_INCREMENT,
+  `state` INT NOT NULL,
+  `call_option` INT NOT NULL,
+  `id` INT NOT NULL,
+  `friend_id` INT NOT NULL,
+  `call_time` DATETIME NOT NULL,
+  PRIMARY KEY (`record_no`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
+ */
