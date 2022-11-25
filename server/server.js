@@ -24,6 +24,7 @@ client.on('connect', function () {
     // TODO: CoMirror 사용자 로그인 시 - 초기 작업 처리하는 토픽
     client.subscribe('server/user/connect');
     client.subscribe('server/signUp');
+    client.subscribe('server/check/user/exist');
 
 });
 
@@ -150,6 +151,37 @@ client.on('message', function (topic, message) {
                 })
         })
     }
+
+    if(topic == 'server/check/user/exist'){
+        data = JSON.parse(message);
+        
+        let userId = data.sender
+        let searchUser = data.id
+    
+        server_db.select('*', 'user', `id=${searchUser}`)
+            .then(data => {
+                let resData = {}
+                if (data.length <= 0){ //찾는 사용자 DB에 존재하지 않을 때
+                    resData = {
+                        "status": 0, // 유저가 없음
+                        "result": ""
+                    }
+                }
+                else {
+                    console.log(data[0].name);
+                    resData = {
+                        "status": 1, // 유저가 있음
+                        "result": {
+                            "id":searchUser,
+                            "name":data[0].name
+                        }
+                    }
+                }
+                data = JSON.stringify(resData);
+                client.publish(`${userId}/check/user/exist`, data)
+            })
+    }
+
 });
 
 

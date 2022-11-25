@@ -1,4 +1,5 @@
 const mqtt = require('mqtt')
+const serverMqttClient = require('./mqtt')
 const keyboardTarget = require('./new_keyboard_module/keyboard')
 
 /* Section1. 변수 및 모달 관련 */
@@ -72,6 +73,46 @@ mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 
 })
 
 /* Section3. 연락처 관련 동작 */
+
+serverMqttClient.on('message', async (topic, message, packet) => {
+    var contents = null;
+    console.log(`message is ${message}`);
+    console.log(`topic is ${topic}`);
+  
+    //서버로 요청한 값 subscribe - 검색한 사용자 정보
+    if (topic == `${mirrorDB.getId()}/check/user/exist`) {
+     
+        // FIXME - 데이터 파싱 : 
+        data = JSON.parse(message); 
+        
+        // TODO : 있는 사용자일 때 -> 사용자 정보 연결해줘야함
+        console.log("사용자 검색 결과( 1:있음, 2:없음 ) : "+data.status)
+
+        if(data.status == 1){
+            userImg.style.visibility="visible";
+            addFriendBtn.style.visibility = "visible";
+            document.getElementById('user-img').style.display = "block";
+            document.getElementById('add-friend-btn').style.display = "inline-block";
+            document.getElementById('find-result').innerHTML = `${data.result.name}`
+            document.getElementById('find-result').style.marginTop = "10px";
+            add_id =  data.result.id;
+            add_name = data.result.name;
+            console.log("여기 들어옴!!!!"+add_name);
+        }
+        else{ // TODO : 없는 사용자일 때
+            document.getElementById('find-result').style.marginTop = "50px";
+            document.getElementById('find-result').innerHTML = "존재하지 않는 사용자입니다."
+            add_id = null;
+            add_name = null;
+            console.log("친구가 존재하지 않음!!");
+        }
+     
+    }
+  
+  })
+  
+
+
 function showUserMirrorBook(e){
     console.log("연락처 클릭됨 :"+ e.target)
     if (e.type == "click"){
@@ -171,38 +212,15 @@ function userCheck(){
             return;
         }
 
-        //친구목록에 없는 유저를 추가할 때
-        axios({
-            url : 'http://113.198.84.128:80/get/name',
-            method : 'post',
-            data : {
-                id : friend_id,
-            }
-        })
-        .then(res =>{
-            console.log("찾은 사용자 : "+res.data)
-            if(res.data != ""){
-                userImg.style.visibility="visible";
-                addFriendBtn.style.visibility = "visible";
-                document.getElementById('user-img').style.display = "block";
-                document.getElementById('add-friend-btn').style.display = "inline-block";
-                document.getElementById('find-result').innerHTML = `${res.data}`
-                document.getElementById('find-result').style.marginTop = "10px";
-                add_id = friend_id;
-                add_name = res.data;
-                console.log("여기 들어옴!!!!"+add_name);
-            }
-            else{
-                document.getElementById('find-result').style.marginTop = "50px";
-                document.getElementById('find-result').innerHTML = "존재하지 않는 사용자입니다."
-                add_id = null;
-                add_name = null;
-                console.log("친구가 존재하지 않음!!");
-            }
-        })
+        data = {
+            sender:mirrorDB.getId(),
+            id : friend_id               
+        }
+        
+        // TODO: 친구목록에 없는 유저를 추가할 때 -> client publish
+        serverMqttClient.publish("server/check/user/exist",JSON.stringify(data))
+
     })
-
-
 }
 
 //추가 버튼을 클릭하면 on
@@ -212,9 +230,11 @@ function addFriendDB(){
         var data = {id: mirror_db.getId(), name: add_name, friend_id : add_id};
         mirror_db.createColumns('friend', data)
         .then(result => {
+            userImg.style.visibility="hidden";
+            addFriendBtn.style.visibility = "hidden";
             if (result) {
-                userImg.style.visibility="hidden";
-                addFriendBtn.style.visibility = "hidden";
+                // userImg.style.visibility="hidden";
+                // addFriendBtn.style.visibility = "hidden";
                 document.getElementById('find-result').innerHTML = "추가 되었습니다."
                 document.getElementById('find-result').style.marginTop = "-50px";
                 // getUserInfo();
@@ -230,6 +250,8 @@ function addFriendDB(){
         
     }
     else{
+        userImg.style.visibility="hidden";
+        addFriendBtn.style.visibility = "hidden";
         document.getElementById('find-result').innerHTML = "추가할 수 없습니다.";
         document.getElementById('find-result').style.marginTop = "-50px";
     }

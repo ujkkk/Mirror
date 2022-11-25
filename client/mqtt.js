@@ -3,14 +3,14 @@ const mqtt = require('mqtt');
 const message = require('./message_module/message')
 const message_storage = require('./message_module/message_storage')
 var mirrorDB = require('./mirror_db')
-const options = {
-    host: '192.168.0.2',
-    port: 1883
-  };
 // const options = {
-//   host: '127.0.0.1',
-//   port: 1883
-// };
+//     host: '192.168.0.2',
+//     port: 1883
+//   };
+const options = {
+  host: '127.0.0.1',
+  port: 1883
+};
 const client = mqtt.connect(options);
 client.on('connect', function () {
 
@@ -19,6 +19,10 @@ client.on('connect', function () {
   client.subscribe(`${mirrorDB.getId()}/connect_msg`);
   //non real time message 받는 토픽 
   client.subscribe(`${mirrorDB.getId()}/get/message`)
+  //연락처에서 서버 요청 - 친구 찾기(존재하는 사용자인지)
+  client.subscribe(`${mirrorDB.getId()}/check/user/exist`)
+
+  client.subscribe(`${mirrorDB.getId()}/get/connect/user`)
 
 })
 
