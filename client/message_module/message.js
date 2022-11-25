@@ -21,6 +21,7 @@ var prevBtn = document.getElementById('message-previous');
 const CMUsers = require('../CMUserInfo');
 const { rejects } = require('assert');
 //const socket = require('./message_socket');
+const client = require("../mqtt")
 
 
 var reply_btn = document.getElementById('reply_btn');
@@ -320,29 +321,22 @@ function reply_message() {
             // var content = document.getElementById('reply-text').getAttribute('value');
             // console.log('content',content)
             var time = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-            //상대가 접속 되어 있으면 소켓으로 전달
+            var buf = {
+                sender: mirror_db.getId(),
+                receiver: receiver_id,
+                content: content,
+                type: 'text',
+                send_time: time
+            }
+            //상대가 접속 되어 있으면 mqtt로 전달
             if(response.data.connect){
-                socket.emit('realTime/message', {
-                    sender: mirror_db.getId(),
-                    receiver: receiver_id,
-                    content: content,
-                    type: 'text',
-                    send_time: time
-                });
+               
+                client.publish(`${receiver_id}/connect_msg`, buf)
+               
             //그렇지 않다면 서버 DB에 해당 메시지를 저장
             }else{
                 //서버에 메시지를 저장하는 방법으로 메시지를 보냄
-                axios({
-                    url: 'http://113.198.84.128:80/send/text', // 통신할 웹문서
-                    method: 'post', // 통신할 방식
-                    data: { // 인자로 보낼 데이터
-                        sender: mirror_db.getId(),
-                        receiver: receiver_id,
-                        content: content,
-                        type: 'text',
-                        send_time: time
-                    }
-                }); // end of axios ...
+                client.publish('server/send/msg', buf)
             }
 
         }).then(()=>{document.getElementById('reply_text').value = '';})

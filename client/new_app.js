@@ -8,6 +8,7 @@ const fs = require('fs');
 const receivedData = location.href.split('?')[1]
 let mirrorDB = require('./mirror_db')
 var socket;
+var client;
 mirrorDB.setUser(receivedData)
     .then((user) => {          
         //const socket = require('./message_module/message_socket');
@@ -42,6 +43,9 @@ const { default: axios } = require('axios');
 const dbAccess = require('./mirror_db');
 const { contextIsolated } = require('process');
 var datas = [];
+//axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
+client = require('./mqtt')
+client.publish("server/user/connect", mirrorDB.getId())
 
 axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
     .then(response => {
