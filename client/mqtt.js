@@ -57,7 +57,7 @@ function connectMsg(contents) {
     case "image":
       new Promise((reslove, reject) => {
         var time = new Date().getTime();
-        var folder = './message/'
+        var folder = './message_module/images/'
         var filename = time;
         //base64(텍스트) 데이터
         var base64Url = contents.content;

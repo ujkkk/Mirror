@@ -89,7 +89,7 @@ client.on('message', function (topic, message) {
 
                                         }
                                     }
-                                    server_db.deleteColumns("message", `receiver = ${userId}`) // 사용자에게 보낸 메시지는 삭제
+                                    server_db.delete("message", `receiver = ${userId}`) // 사용자에게 보낸 메시지는 삭제
                                     server_db.update("state", "msg_update=0,msg_confirm=1", `receiver=${userId}`) // 새로온 메시지 없고, 확인했음 표시
                                 });
 
@@ -98,6 +98,7 @@ client.on('message', function (topic, message) {
                         else { // 새로 온 메시지 없음
                             // nothing to do
                             console.log("새로 온 메시지 없음")
+
                         }
                     }) // end of then..
                     .catch( // select 문에 아무것도 찾아지지 않을 때
@@ -131,13 +132,13 @@ client.on('message', function (topic, message) {
                     "content": data.content, 
                     "type":data.type,
                     "send_time":data.send_time }
-        console.log(dataJson);
+      //  console.log(dataJson);
         switch (contents.type){
             case "image":
                  //서버에 저장되는 시간
                 var url= contents.content;
                 var file_name =  new Date().getTime();
-                var file = './message/' + file_name + '.png';
+                var file = './message/' + file_name + '.txt';
                 contents.content = file_name
                 fs.writeFile(file, url, 'utf8', function (error) {});
                 break;
@@ -159,7 +160,7 @@ client.on('message', function (topic, message) {
                         // })
                     }
                     else {
-                        let data = { "receiver": req.body.receiver, "msg_update": 1, "msg_confirm": 0 }
+                        let data = { "receiver": contents.receiver, "msg_update": 1, "msg_confirm": 0 }
                         server_db.createColumns('state', data);
                     }
                 })
