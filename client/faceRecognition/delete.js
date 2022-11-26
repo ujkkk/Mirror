@@ -91,15 +91,14 @@ function deleteClick(user_id){
     console.log('delete.js | id : ' + id)
     client.publish('delete/camera', String(_db.getMirror_id()))
 }
-client.subscribe("delete/login/check") 
+client.subscribe(`${_db.getMirror_id()}/delete/login/check`) 
 
-client.subscribe('delete/folder/check')
+client.subscribe(`${_db.getMirror_id()}/delete/folder/check`)
 
 client.on('message', (topic, message, packet) => {
-    console.log("message is "+ message);
-    console.log("topic is "+ topic);
+
     
-    if(topic == 'delete/login/check'){
+    if(topic ==`${_db.getMirror_id()}/delete/login/check`){
       getId = String(message)
       console.log('delete/login/check | id : '+ id)
       console.log('delete/login/check | getId : '+ getId)
@@ -121,7 +120,7 @@ client.on('message', (topic, message, packet) => {
       }
     }
 
-    if(topic == 'delete/folder/check'){
+    if(topic ==`${_db.getMirror_id()}/delete/folder/check`){
         id = String(message)
         loading.loading();
         console.log('delete/folder/check | check : '+ id)

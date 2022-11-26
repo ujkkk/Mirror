@@ -38,8 +38,6 @@ def closeCam():
         cam.release()
         cam = None
 
-
-
 def face_extractor(img):
 
     if(img is None):

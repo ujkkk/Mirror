@@ -6,6 +6,7 @@ const axios = require('axios')
 const loading = require('./loading');
 var user_id = '';
 var name;
+
 const options = {
   host: '192.168.0.2',
   port: 1883
@@ -24,45 +25,45 @@ function getUserId() {
 }
 const client = mqtt.connect(options);
 
-client.subscribe("loginCheck")
-client.subscribe('createAccount/check')
-client.subscribe('exist/check')
-client.subscribe('reTrain/check')
+client.subscribe(`${_db.getMirror_id()}/loginCheck`)
+client.subscribe(`${_db.getMirror_id()}/createAccount/check`)
+client.subscribe(`${_db.getMirror_id()}/exist/check`)
+client.subscribe(`${_db.getMirror_id()}/reTrain/check`)
 
 //여기 mqtt는 모두 얼굴인식 서버로부터 온 결과를 미러에 보여주는 역할
 client.on('message', (topic, message, packet) => {
 
-  if (topic == 'reTrain/check') {
+  if (topic ==`${_db.getMirror_id()}/reTrain/check`) {
     msg = String(message)
     console.log(msg + '폴더로 재학습 되었습니다.')
     createLoginMessage.createMessage(String(msg) + '폴더로 재학습 되었습니다.')
     loading.stopLoading();
   }
 
-  if (topic == "exist/check") {
-    user_id = String(message)
-    setUserId(user_id)
-    if (user_id == 'NULL') {
-      //회원가입 하게 만들기
-      document.location.href = './faceRecognition/sign_up.html'
-    }
-    else {
-      _db.select('name', 'user', `id =${user_id}`)
-        .then(values => {
-          if (values.length <= 0) {
-            //회원가입 하게 만들기
-            document.location.href = './faceRecognition/sign_up.html'
-            return;
-          }
-          document.getElementById("loginMessage").innerHTML = (String(values[0].name)) + "님은 이미 가입된 유저입니다."
+  // if (topic == "exist/check") {
+  //   user_id = String(message)
+  //   setUserId(user_id)
+  //   if (user_id == 'NULL') {
+  //     //회원가입 하게 만들기
+  //     document.location.href = './faceRecognition/sign_up.html'
+  //   }
+  //   else {
+  //     _db.select('name', 'user', `id =${user_id}`)
+  //       .then(values => {
+  //         if (values.length <= 0) {
+  //           //회원가입 하게 만들기
+  //           document.location.href = './faceRecognition/sign_up.html'
+  //           return;
+  //         }
+  //         document.getElementById("loginMessage").innerHTML = (String(values[0].name)) + "님은 이미 가입된 유저입니다."
 
-          loading.stopLoading();
-        })
-    }
+  //         loading.stopLoading();
+  //       })
+  //   }
 
-  }
+  // }
   //서버에서 로그인을 하고 신호가 들어옴
-  if (topic == "loginCheck") {
+  if (topic == `${_db.getMirror_id()}/loginCheck`) {
     console.log("topic == loginCheck")
     document.getElementById("loading").style.display = "none";
     user_id = message
@@ -92,14 +93,20 @@ client.on('message', (topic, message, packet) => {
   }
 
   //서버에서 계정을 추가하고 신호가 올 때
-  if (topic == "createAccount/check") {
+  if (topic == `${_db.getMirror_id()}/createAccount/check`) {
     console.log("topic == createAccount/check")
     var createMessageDiv = document.createElement("div")
     createMessageDiv.setAttribute("id", "createMessageDiv")
     createMessageDiv.setAttribute("width", "500px")
     createMessageDiv.setAttribute("height", "100px")
     createMessageDiv.setAttribute("style", "text-align=center;")
+    var name = document.getElementById('name').value
+    var buf = {
+      id :  String(message),
+      name : name
+    }
 
+    client.publish("server/signUp", buf);
     document.location.href = '../home.html'
     // var name = document.getElementById('name').value;
     // var id = user_id;
