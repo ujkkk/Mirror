@@ -6,14 +6,16 @@ import json
 import camera
 import os
 from datetime import datetime
-global client
+
+# 미러 바뀔 때마다 수동으로 설정해줘야 한다
+mirror_id = 200
+
 new_account_flag = False
 login_flag = False
 loginCamera_flag = False
 createAccountCamera_flag = False
 exist_flag = False
 delete_login_flag = False
-mirror_id = 200
 close_flag = False
 stopFlag = False
 id = 0
@@ -26,80 +28,82 @@ os.chdir(curDir)
 
 def on_connect(client, userdata, flag, rc):
     print("Connect with result code:"+ str(rc))
-    client.subscribe('mirror_id')
-    client.subscribe('onCam')
-    client.subscribe('login/camera')
-    client.subscribe('createAccount/camera')
-    client.subscribe('exist/camera')
-    client.subscribe('closeCamera')
-    client.subscribe('delete/camera')
-    client.subscribe('re_login')
+    print(f"얼굴인식 camera_mqtt 연결 : {mirror_id}" )
+   # client.subscribe('${mirror_id}/mirror_id')
+    client.subscribe(f'{mirror_id}/onCam')
+    client.subscribe(f'{mirror_id}/login/camera')
+    client.subscribe(f'{mirror_id}/createAccount/camera')
+    client.subscribe(f'{mirror_id}/exist/camera')
+    client.subscribe(f'{mirror_id}/closeCamera')
+    client.subscribe(f'{mirror_id}/delete/camera')
+    client.subscribe(f'{mirror_id}/re_login')
     
-
+    
 
 
 
 def on_message(client, userdata, msg):
-    global mirror_id
+   # print(f"222얼굴인식 camera_mqtt 연결 : ${mirror_id}" )
+   # global mirror_id
     message = msg.payload.decode("utf-8")
     print('받은 topic : ' + msg.topic)
-    print("받은 payload : " + str(message))
+  #  print("받은 payload : " + str(message))
         #최초 미러 실행시 mirror_id 셋팅
-    if (msg.topic == 'mirror_id'):
-        mirror_id = str(message)
-        client.unsubscribe('mirror_id')
-        client.publish('onCam', mirror_id)
-        print('mirror_id: 토픽 끊음')
+    # if (msg.topic == '${mirror_id}/mirror_id'):
+    #     mirror_id = str(message)
+    #     client.unsubscribe('${mirror_id}/mirror_id')
+    #     if(str(mirror_id)== str(message)):
+    #         camera.onCam()
+        
     
-    elif(msg.topic == 'onCam'):
-        print('onCam:' +mirror_id)
-        print(message)
-        if(str(mirror_id)== str(message)):
-           camera.onCam()
+    if(msg.topic == f'{mirror_id}/onCam'):
+        
+        #if(str(mirror_id)== str(message)):
+        print('onCam:' +str(mirror_id))
+      #  print(message)
+        camera.onCam()
 
-    elif(msg.topic == 'closeCamera'):
-        print('closeCamera:' +mirror_id)
-        print(message)
-        if(str(mirror_id)== str(message)):
-            camera.closeCam()
-    elif(msg.topic == 're_login'):
-        mirror_id = str(message)
-        if(str(mirror_id)== str(message)):
-           client.publish('onCam', mirror_id)
+    elif(msg.topic == f'{mirror_id}/closeCamera'):
+        print('closeCamera:' +str(mirror_id))
+        # print(message)
+        # if(str(mirror_id)== str(message)):
+        camera.closeCam()
+    elif(msg.topic == f'{mirror_id}/re_login'):
+        #mirror_id = str(message)
+        #if(str(mirror_id)== str(message)):
+        client.publish(f'{mirror_id}/onCam', mirror_id)
 
-    elif(msg.topic == 'login/camera'):
-        if(str(message) == str(mirror_id)):
-            print("로그인 시작 : " + msg.topic)
-            global loginCamera_flag
-            loginCamera_flag = True
+    elif(msg.topic == f'{mirror_id}/login/camera'):
+        #if(str(message) == str(mirror_id)):
+           # print("로그인 시작 : " + msg.topic)
+        global loginCamera_flag
+        loginCamera_flag = True
             
-    elif(msg.topic == 'createAccount/camera'):
+    elif(msg.topic == f'{mirror_id}/createAccount/camera'):
         print("topic : " + msg.topic)
         m_id = (str)(message)[0:3]
         print('m_id:' +m_id)
-        if(str(m_id) == str(mirror_id)):
-            global id
-            id = str(message)
-            global createAccountCamera_flag
-            createAccountCamera_flag = True
+        #if(str(m_id) == str(mirror_id)):
+        global id
+        id = str(message)
+        global createAccountCamera_flag
+        createAccountCamera_flag = True
     #삭제 버튼 누른 유저가 삭제할 수 있는지 얼굴인식 서버에게
     #로그인 해서 id 가져오기
-    elif(msg.topic =='delete/camera'):
-        if(str(mirror_id )== str(message)):
-            client.publish('delete/login', mirror_id)
-            global delete_login_flag
-            delete_login_flag = True
+    elif(msg.topic ==f'{mirror_id}/delete/camera'):
+        #if(str(mirror_id )== str(message)):
+        client.publish('delete/login', mirror_id)
+        global delete_login_flag
+        delete_login_flag = True
 
-    elif(msg.topic == 'exist/camera'):
-        if(str(message) == str(mirror_id)):
+    elif(msg.topic == f'{mirror_id}/exist/camera'):
+       # if(str(message) == str(mirror_id)):
         #얼굴인식 서버에게 해당 토픽 이벤트 보냄
-            client.publish('exist', mirror_id)
-            global exist_flag
-            exist_flag = True
+        client.publish('exist', mirror_id)
+        global exist_flag
+        exist_flag = True
         
 
-            
-       
 broker_ip = "192.168.0.2" # 현재 이 컴퓨터를 브로커로 설정
 #broker_ip = "127.0.0.1"
 print('broker_ip : ' + broker_ip)
@@ -107,7 +111,9 @@ client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 client.connect(broker_ip, 1883)
-client.loop_start()
+client.loop_start()          
+       
+
 
 #client를 넘겨주는 함수
 def getClient():

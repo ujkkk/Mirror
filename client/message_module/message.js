@@ -21,7 +21,8 @@ var prevBtn = document.getElementById('message-previous');
 const CMUsers = require('../CMUserInfo');
 const { rejects } = require('assert');
 //const socket = require('./message_socket');
-const client = require("../mqtt")
+const client = require("../mqtt");
+const { resolve } = require('path');
 
 
 var reply_btn = document.getElementById('reply_btn');
@@ -134,7 +135,9 @@ function initMessages() {
     console.log('#####initMessages#####');
     message_list = Array()
     mirror_db.select('*', 'message', `receiver = ${mirror_db.getId()}`)
-        .then(messages => { insertMessageContent(messages, 'init') })
+        .then(messages => { 
+            if(messages.length <=0) return;
+            insertMessageContent(messages, 'init') })
 
 }
 
@@ -147,6 +150,7 @@ function insertMessageContent(messages, type) {
     //friend {id : name} 객체 생성
     mirror_db.select('*', 'friend', `id=${mirror_db.getId()}`)
         .then(friends => {
+            if(friends.length <=0) resolve();
             friends.forEach(element => {
                 freinds_obj[element.friend_id] = element.name;
             })
@@ -277,7 +281,7 @@ function insertMessageContent(messages, type) {
 function insertNewMessage() {
     mirror_db.select('*', 'message', `receiver = ${mirror_db.getId()}`)
         .then(messages => {
-           
+           if(messages.length <=0) return;
             insertMessageContent(messages, 'new');
         })
 }

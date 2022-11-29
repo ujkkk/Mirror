@@ -1,5 +1,6 @@
 client = require('./mqtt')
 _db = require('../mirror_db')
+const dbAccess = require('../mirror_db');
 const loading = require('./loading')
 var id
 var ids =[];
@@ -89,7 +90,7 @@ function deleteClick(user_id){
     //user_id = 5
     id = String(user_id)
     console.log('delete.js | id : ' + id)
-    client.publish('delete/camera', String(_db.getMirror_id()))
+    client.publish(`${_db.getMirror_id()}/delete/camera`, String(_db.getMirror_id()))
 }
 client.subscribe(`${_db.getMirror_id()}/delete/login/check`) 
 
@@ -155,4 +156,4 @@ function del_msg(msg){
     delete_msg.innerHTML = `<h3>${msg}</h3>`
   }
 }
-module.exports =  {deleteClick}
+module.exports =  {deleteUser}

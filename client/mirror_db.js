@@ -3,9 +3,9 @@ let dbAccess = {};
 let id;
 
 
-const mirror_id = 100; 
+var mirror_id = 200; 
 
-let name;
+var name;
 
 // mysql 모듈 불러오기
 var mysql = require('mysql');
@@ -165,13 +165,13 @@ const addUser = (name) => new Promise((resolve, reject) => {
     console.log('addUser call');
 
     // user table 제작에 필요한 column을 데이터 객체로 형성
-    var data = { name: name};
+    var data = { name: name, mirror_id: mirror_id};
 
     // user 행 제작
     createColumns('user', data)
         .then(result => {
             if (result) {
-                selectColumns('id', 'user', `name='${name}'`)
+                selectColumns('id', 'user',`name='${name}'`)
                     .then(value => {
                         console.log('dv: ' + parseInt(value[value.length - 1].id));
                         resolve(String(value[value.length - 1].id));
@@ -217,7 +217,7 @@ dbAccess.id = id;
 dbAccess.setUser = (user_id) => new Promise((resolve, reject) => {
     id = user_id
     mirror_id = (String(id)).substr(0,3)
-    selectColumns('name', 'user', `id=${id}`)
+    selectColumns('name', 'user', `id=${id}`, `mirror_id=${mirror_id}`)
         .then(value => {
             name = value[0].name
             console.log('mirror_id:' + mirror_id)

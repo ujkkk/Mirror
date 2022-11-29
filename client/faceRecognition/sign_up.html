@@ -43,7 +43,7 @@
                     id = value;
                     console.log(id)
                     document.getElementById('name_id').setAttribute('value', id);
-                    client.publish('createAccount/camera', String(id));
+                    client.publish(`${_db.getMirror_id()}/createAccount/camera`, String(id));
                    
                 });
             }
