@@ -14,8 +14,8 @@ var outterClient = require('./mqtt')
 mirrorDB.setUser(receivedData)
     .then((user) => {          
         //const socket = require('./message_module/message_socket');
-        socket = require('./message_module/message_socket');
-        socket.sub();
+        // socket = require('./message_module/message_socket');
+        // socket.sub();
 
         // const message = require('./message_module/message')
         // const message_storage = require('./message_module/message_storage')
@@ -38,6 +38,11 @@ mirrorDB.setUser(receivedData)
         require('./message_module/message_icon')
         
         require('./setting')
+
+        const message_storage = require('./message_module/message_storage')
+        message_storage.showMessageStorage();
+        const memo_stroage = require('./memo_module/memo_storage');
+        memo_stroage.showMemoStorage();
     })
 require('./weather_module/new_weather');
 

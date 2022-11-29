@@ -387,7 +387,7 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                     outerClient.publish(`${receiver}/connect_msg`, JSON.stringify(buf));
                 } else {
                     //서버에 메시지를 저장하는 방법으로 메시지를 보냄
-                    outerClient.publish(`${receiver}/send/msg`, JSON.stringify(buf));
+                    outerClient.publish(`server/send/msg`, JSON.stringify(buf));
                 }
                 break;
             case 'image':
