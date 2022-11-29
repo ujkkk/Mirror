@@ -9,7 +9,7 @@ var mirrorDB = require('./mirror_db')
 //     port: 1883
 //   };
 const options = {
-  host: '127.0.0.1',
+  host: '192.168.0.2',
   port: 1883
 };
 const client = mqtt.connect(options);
@@ -54,6 +54,8 @@ function connectMsg(contents) {
     case "text":
       mirrorDB.createColumns('message', contents)
         .then(() => {
+          var message_storage = require('./message_module/message_storage')
+          var message_obj = require('./message_module/message')
           message_obj.insertNewMessage();
           message_storage.showMessageStorage();
         })
@@ -126,8 +128,7 @@ function nonConnectMsg(contents) {
         break;
     }
   }).then(()=> {
-    var message_storage = require('./message_module/message_storage')
-    var message_obj = require('./message_module/message')
+    
     message_obj.initMessages()
     message_storage.showMessageStorage();
   })

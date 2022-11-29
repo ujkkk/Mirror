@@ -3,7 +3,7 @@ let dbAccess = {};
 let id;
 
 
-const mirror_id = 100; 
+let mirror_id = 400; 
 
 let name;
 
@@ -213,14 +213,13 @@ dbAccess.addMemo =  (id, content, store, type) => new Promise((resolve, reject) 
 dbAccess.id = id;
 
 /* user id 설정과 user id에 따른 name 설정 */
-
 dbAccess.setUser = (user_id) => new Promise((resolve, reject) => {
     id = user_id
     mirror_id = (String(id)).substr(0,3)
     selectColumns('name', 'user', `id=${id}`)
         .then(value => {
             name = value[0].name
-            console.log('mirror_id:' + mirror_id)
+            //console.log('mirror_id:' + mirror_id)
             // 모듈로 name도 사용 하기 위해 dbAccess에 추가
             dbAccess.name = name
             resolve({id: id, name: name})
