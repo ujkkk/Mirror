@@ -1,4 +1,5 @@
 const mirror_db = require('./mirror_db')
+const moment = require('moment');
 
 const bar_memo_button = document.querySelector("#bar_memo_button");
 const memo_container = document.querySelector("#memo_container");
@@ -26,6 +27,7 @@ const save_button = document.querySelectorAll('.save_button');
 
 const sttRefusalContainer = document.getElementById('stt-refusal-container')
 const sttAlert = document.getElementById('stt-alert')
+const memoText = document.getElementById("memo_storage_detail_context")
 
 // const axios = require('axios');
 const { write } = require("fs");
@@ -51,6 +53,48 @@ const options = { // 브로커 정보(ip, port)
     host: '127.0.0.1',
     port: 1883
 }
+
+
+/////////////////////////////pushAlarm/////////////////
+const memo_send_watch = document.getElementById('memo_send_watch')
+const progressbar = document.getElementById("progressbar-container")
+
+const admin = require("firebase-admin");
+
+let serviceAccount = require("./memo_module/comirror-watch-firebase.json");
+
+const fcm_admin = admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+});
+
+memo_send_watch.addEventListener('click', () => {
+
+    progressbar.style.display = "none"
+    
+
+    const registrationToken = 'fFO2P7mKTgK-TiGykNDtjk:APA91bEVpFFIc0TUC4vtbDY60j7LDnlKsQ7ahUicehqFzFAe2v074E4z4dh6H0-HAL68mYpzcQOAoZdMbvnMAwnobQz9YB9YDchoIJmnC24fVpJAM3tXD7b6iSwXqsotjCUiIH6-ozEo';
+    const message = {
+        notification: {
+            title: '메모 전송',
+            body: memoText.innerText
+        },
+        token: registrationToken
+    };
+    //////////////////////////////pushAlarm//////////////////
+
+    // Send a message to the device corresponding to the provided
+    // registration token.
+    fcm_admin.messaging().send(message)
+        .then((response) => {
+            // Response is a message ID string.
+            console.log('Successfully sent message:', response);
+        })
+        .catch((error) => {
+            console.log('Error sending message:', error);
+        });
+        progressbar.style.display = "block"
+})
+
 
 // const mqttClient = mqtt.connect(options) // mqtt broker 연결
 // mqttClient.subscribe('message_request')
@@ -133,6 +177,9 @@ const options = { // 브로커 정보(ip, port)
 // message display ON/OFF
 bar_memo_button.addEventListener('click', () => {
     console.log('bar_memo_button click!');
+    
+    progressbar.style.display = "none"
+    memo_send_watch.style.visibility = "hidden"
 
     document.querySelector("#memo_textArea").value = "";
     if (memo_container.style.display == "none") {
@@ -157,7 +204,7 @@ bar_memo_button.addEventListener('click', () => {
             customOption = false
         }
         memo_container.style.display = "none";
-        document.getElementById('memo_img').src= ''
+        document.getElementById('memo_img').src = ''
 
         // camera off
         client.publish('camera/close', 'ok')
@@ -167,7 +214,7 @@ bar_memo_button.addEventListener('click', () => {
 memo_write_button.addEventListener('click', showWrite);
 memo_back_button.addEventListener('click', showStore);
 for (let i = 0; i < save_button.length; i++) {
-    save_button[i].addEventListener('click', function(e){saveMemoContent(e)});
+    save_button[i].addEventListener('click', function (e) { saveMemoContent(e) });
 }
 
 shutter_button.addEventListener('click', () => {
@@ -176,53 +223,53 @@ shutter_button.addEventListener('click', () => {
 });
 
 
-function saveMemoContent(e){
-    
+function saveMemoContent(e) {
+
     var newDate = new Date();
     var time = moment(newDate).format('YYYY-MM-DD HH:mm:ss');
 
-        if(e.target.id == "save_text_button"){
-            hideKeyboard()
-            /*
-            let data = {
-                id:mirror_db.getId(),
-                content:memo_textArea.value,
-                store:0,
-                delete_time:"2026-04-04 4:44:44",
-                time: time,
-                type:"text"
-            }
-    
-            mirror_db.createColumns('memo',data)
-            */
+    if (e.target.id == "save_text_button") {
+        hideKeyboard()
+        /*
+        let data = {
+            id:mirror_db.getId(),
+            content:memo_textArea.value,
+            store:0,
+            delete_time:"2026-04-04 4:44:44",
+            time: time,
+            type:"text"
+        }
+ 
+        mirror_db.createColumns('memo',data)
+        */
 
-        
-            mirror_db.addMemo(mirror_db.getId(), memo_textArea.value , 0, "text")
-            .then(()=>{
+
+        mirror_db.addMemo(mirror_db.getId(), memo_textArea.value, 0, "text")
+            .then(() => {
                 memo_storage.showMemoStorage();
                 memo_textArea.value = "";
             })
-       }
-       else if (e.target.id == "save_image_button"){
-            let img = document.getElementById('memo_img')
-            let file_name = img.getAttribute('value');
-            console.log('file_name:',file_name)
+    }
+    else if (e.target.id == "save_image_button") {
+        let img = document.getElementById('memo_img')
+        let file_name = img.getAttribute('value');
+        console.log('file_name:', file_name)
 
-            data= { // 인자로 보낼 데이터
-                id: mirror_db.getId(),
-                type: 'image',
-                store:1,
-                delete_time:"2026-04-04 4:44:44",
-                content: file_name,
-                time: time
-            }
-            mirror_db.createColumns('memo',data)
-            .then(()=>{
+        data = { // 인자로 보낼 데이터
+            id: mirror_db.getId(),
+            type: 'image',
+            store: 1,
+            delete_time: "2026-04-04 4:44:44",
+            content: file_name,
+            time: time
+        }
+        mirror_db.createColumns('memo', data)
+            .then(() => {
                 memo_storage.showMemoStorage();
                 memo_textArea.value = "";
-            })  
-       }
-    
+            })
+    }
+
 
 }
 
@@ -248,7 +295,7 @@ function showRecordContent() {
 function showWrite() {
 
     // 처음 메모 창을 띄울 때 text content 부터 보여주기
-    if(memo_back_button.style.display == "none"){
+    if (memo_back_button.style.display == "none") {
         memo_text_label.style.display = "block";
         memo_image_label.style.display = "block";
         memo_record_label.style.display = "block";
