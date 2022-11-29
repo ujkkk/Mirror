@@ -40,7 +40,7 @@ client.on('message', (topic, message, packet) =>{
 function login(){
     loading.loading();
     loginBtnFlag = true;
-    client.publish('login/camera',String(_db.getMirror_id())); // 로그인 시작
+    client.publish(`${_db.getMirror_id()}/login/camera`,String(_db.getMirror_id())); // 로그인 시작
 }
 
 // Sign Up 버튼을 눌렀을 때
@@ -56,12 +56,12 @@ function signUp(){
 
 // Delete 버튼을 눌렀을 때
 function deleteUser(){
-   document.location.href = 'faceRecognition_module/delete.html'
+   document.location.href = 'faceRecognition/delete.html'
 }
 
 //재학습 시키기
 function model(){
-   client.publish('reTrain', String(_db.getMirror_id()))
+   client.publish(`reTrain`, String(_db.getMirror_id()))
 }
 
 

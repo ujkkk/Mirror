@@ -24,11 +24,17 @@ function getUserId() {
   return this.user_id;
 }
 const client = mqtt.connect(options);
+client.on('connect', function () {
 
-client.subscribe(`${_db.getMirror_id()}/loginCheck`)
-client.subscribe(`${_db.getMirror_id()}/createAccount/check`)
-client.subscribe(`${_db.getMirror_id()}/exist/check`)
-client.subscribe(`${_db.getMirror_id()}/reTrain/check`)
+  console.log("서버 mqtt와 연결");
+  
+  client.subscribe(`${_db.getMirror_id()}/loginCheck`)
+  client.subscribe(`${_db.getMirror_id()}/createAccount/check`)
+  client.subscribe(`${_db.getMirror_id()}/exist/check`)
+  client.subscribe(`${_db.getMirror_id()}/reTrain/check`)
+
+})
+
 
 //여기 mqtt는 모두 얼굴인식 서버로부터 온 결과를 미러에 보여주는 역할
 client.on('message', (topic, message, packet) => {
@@ -105,8 +111,8 @@ client.on('message', (topic, message, packet) => {
       id :  String(message),
       name : name
     }
-
-    client.publish("server/signUp", buf);
+    //회원가입
+    client.publish("server/signUp",  JSON.stringify(buf));
     document.location.href = '../home.html'
     // var name = document.getElementById('name').value;
     // var id = user_id;

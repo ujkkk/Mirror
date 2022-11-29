@@ -39,13 +39,17 @@
             const faceClient = require("./faceRecognition/mqtt")
             const _db = require('./mirror_db')
 
-            faceClient.publish('re_login', String(_db.getMirror_id()))
-            faceClient.publish('mirror_id', String(_db.getMirror_id()))
+            console.log(`${_db.getMirror_id()}/re_login`);
+          //  faceClient.publish(`${_db.getMirror_id()}/re_login`, String(_db.getMirror_id()))
+            faceClient.publish(`${_db.getMirror_id()}/onCam`, String(_db.getMirror_id()))
             function f() {
-                //_db.setUser(2002)
                // document.location.href=`./new_index.html`
-                
+
+              //  _db.setMirror(2004)
+              document.location.href =`./home.html`
+  
                 _db.setMirror(4004)
+
             }
             function f2() {
                // mirrorDB.setMirror(2002)

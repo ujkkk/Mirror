@@ -17,7 +17,8 @@ function create_storage(messages) {
     document.getElementById('message_storage_contents').replaceChildren();
     _db.select('*', 'friend', `id=${_db.getId()}`)
         //freinds_obj[sender] = name 객체 생성
-        .then(friends => {         
+        .then(friends => { 
+            if(friends.length <=0) return;        
             friends.forEach(element => {
                 freinds_obj[element.friend_id] = element.name;
                 freinds_obj_rep[element.friend_id] = element.name;
@@ -88,6 +89,7 @@ function message_storage_detail(e) {
     
     _db.select('*', 'message', `sender=${sender_id} and receiver=${_db.getId()}`)
         .then((messages) => {
+            if(messages.length <=0) return;
             messages.forEach(message => {
                 let content = document.createElement('div');
                 let context = document.createElement('div');
