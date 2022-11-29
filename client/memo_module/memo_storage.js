@@ -55,8 +55,14 @@ function create_storage(memos) {
 
 var currunt_sender = '';
 //메시지 함에서 오른쪽 메시지 클릭시 과거의 메시지 모두 출력
+
+const memo_send_watch = document.getElementById('memo_send_watch')
+const progressbar = document.getElementById("progressbar-container")
+
 function memo_storage_detail(seq) {
 
+    memo_send_watch.style.visibility = "visible"
+    progressbar.style.display = "none"
 
     //var contents = document.getElementById('memo_storage_detail_contents');
     //contents.replaceChildren();
