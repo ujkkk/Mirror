@@ -49,46 +49,8 @@ const sttRefusalContainer = document.getElementById('stt-refusal-container')
 const sttAlert = document.getElementById('stt-alert')
 const sttSendButton = document.getElementById('stt-sned-button')
 
-
-
-/////////////////////////////pushAlarm/////////////////
 const message_send_watch = document.getElementById('message_send_watch')
 const progressbar = document.getElementById("progressbar-container")
-
-const admin = require("firebase-admin");
-
-let serviceAccount = require("./memo_module/comirror-watch-firebase.json");
-
-const fcm_admin = admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-});
-
-message_send_watch.addEventListener('click', () => {
-
-    progressbar.style.display = "none"
-
-    const registrationToken = 'c40CtBbaRSSEl6LlP-0fiA:APA91bGwNjYXrwPNnPWV7Ij-fKbmY_SxCROGL4uZ_Am5j2PyFvT-9ZC46bKzAgqg-hULM9QJ8tMTGqnZk7ol1l5eTz6Nfx0ELqaHbO9TX4n7Q2BYzDpBVMd4eelb9eaL79wlft7Hoc15';
-    const message = {
-        notification: {
-            title: '메모 전송',
-            body: memoText.innerText
-        },
-        token: registrationToken
-    };
-    //////////////////////////////pushAlarm//////////////////
-        // Send a message to the device corresponding to the provided
-    // registration token.
-    fcm_admin.messaging().send(message)
-        .then((response) => {
-            // Response is a message ID string.
-            console.log('Successfully sent message:', response);
-        })
-        .catch((error) => {
-            console.log('Error sending message:', error);
-        });
-        progressbar.style.display = "block"
-})
-
 
 messageAccess.setCustomFriend = (new_customFriend) => {
     customFriend = new_customFriend
@@ -450,7 +412,7 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                             // });
                         } else {
                             axios({
-                                url: 'http://113.198.84.128:80/send/audio', // 통신할 웹문서
+                                url: 'http://localhost:9000/send/audio', // 통신할 웹문서
                                 method: 'post', // 통신할 방식
                                 data: { // 인자로 보낼 데이터
                                     receiver: receiver,

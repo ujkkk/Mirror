@@ -1,4 +1,4 @@
-#progressbar-container {
+#memo_storage_detail #memo-progressbar-container {
     display: none;
     width: 70%;
     text-align: center;
@@ -61,21 +61,27 @@
 }
 
 #message_send_watch {
-    visibility:hidden;
     background-color: rgba(255, 0, 0, 0);
     display: inline-block;
-    width: 18vw;
-    height: 4vw;
-    position: relative;
-    top: 20vw;
-    transform: translateX(1.5vw);
+    width: 2vw;
+    height: 2vw;
+    position:relative;
     border: 0px solid rgba(255, 0, 0, 0);
+    left: 13vw;
+    top: 2vw;
 }
 
 #message_send_watch img {
-    width: 2vw;
-    height: 2vw;
-    position: absolute;
-    right: 2vw;
-    top: 0.6vw;
+    width: 1.5vw;
+    height: 1.5vw;
+
+}
+
+#message_storage_view #progressbar-container {
+    display: none;
+    width: 50%;
+    text-align: center;
+    margin-top: 1.5vh;
+    transform: translateX(16vw);
+    margin-left: 3%;
 }

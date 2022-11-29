@@ -67,6 +67,7 @@ function create_storage(messages) {
                 message_div.appendChild(message_date);
                 message_div.appendChild(message_content);
 
+
                 message_content.addEventListener("click", (e) => { message_storage_detail(e.target) });
                 document.getElementById('message_storage_contents').appendChild(message_div);
                 freinds_obj[message.sender] = 2;
@@ -75,14 +76,48 @@ function create_storage(messages) {
         })
 }
 
-
 const message_send_watch = document.getElementById('message_send_watch')
 const progressbar = document.getElementById("progressbar-container")
+let progressbar_time
+// -------------------------------------------------------- message watch로 알림 보내기 ----------------------------------------------------------
+function messageSendWatch(sender_id, content ) {
+    clearTimeout(progressbar_time);
+    
+    _db.select('*', 'friend', `id=${_db.getId()} and friend_id=${sender_id}`)
+    //freinds_obj[sender] = name 객체 생성
+    .then(friends => { 
+        progressbar.style.display = "none"
+        const registrationToken = 'd9ntU96TQVeEFHThOjb3M_:APA91bEh-ZT8YfBY3uFdqHAV_xquKmEA--mKtkniMXQa18dFEDAuNDg95ggozekhAC0Qu8E-x3JbTkHR0Fel3JLcdJSbDqXTjF0aJnwldC_g985d5q-dlXN6giprYKA4ET-cQIkIUvDG';
+        const message = {
+            notification: {
+                title: friends[0].name,
+                body: content
+            },
+            token: registrationToken
+        };
+            // Send a message to the device corresponding to the provided
+        // registration token.
+        fcm_admin.messaging().send(message)
+            .then((response) => {
+                // Response is a message ID string.
+                console.log('Successfully sent message:', response);
+            })
+            .catch((error) => {
+                console.log('Error sending message:', error);
+            });
+            progressbar.style.display = "block"
+            progressbar_time = setTimeout(()=>{
+                progressbar.style.display = "none"
+            }, 3000)
+    })
+    
+}
+
 
 //메시지 함에서 오른쪽 메시지 클릭시 과거의 메시지 모두 출력
 function message_storage_detail(e) {
 
-    message_send_watch.style.visibility = "visible"
+    //message_send_watch.style.visibility = "visible"
     progressbar.style.display = "none"
 
     var sender_id = e.getAttribute('value');
@@ -103,6 +138,19 @@ function message_storage_detail(e) {
                 content.setAttribute('class', 'message_storage_detail_content');
                 context.setAttribute('class', 'message_storage_detail_context');
                 date.setAttribute('class', 'message_storage_detail_date');
+
+                /* <button id="message_send_watch"><img class="bar_icon"
+                            src="./image/index/watch_send_icon.png"></button> */
+                
+                let send_watch = document.createElement("button");
+                let send_img = document.createElement("img");
+                send_img.src ="./image/index/watch_send_icon.png";
+                send_watch.appendChild(send_img)
+                send_watch.setAttribute('id', 'message_send_watch');
+
+                content.appendChild(send_watch);
+
+                send_watch.addEventListener("click", (e) => { messageSendWatch(sender_id, message.content) });
 
                 //date, time
                 date.innerHTML = moment(message.send_time).format('MM-DD HH:mm');
