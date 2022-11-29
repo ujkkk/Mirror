@@ -76,9 +76,14 @@ function create_storage(messages) {
 }
 
 
+const message_send_watch = document.getElementById('message_send_watch')
+const progressbar = document.getElementById("progressbar-container")
 
 //메시지 함에서 오른쪽 메시지 클릭시 과거의 메시지 모두 출력
 function message_storage_detail(e) {
+
+    message_send_watch.style.visibility = "visible"
+    progressbar.style.display = "none"
 
     var sender_id = e.getAttribute('value');
     var contents = document.getElementById('message_storage_detail_contents');

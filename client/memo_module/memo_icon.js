@@ -71,8 +71,9 @@ memo_send_watch.addEventListener('click', () => {
 
     progressbar.style.display = "none"
     
+    
 
-    const registrationToken = 'fFO2P7mKTgK-TiGykNDtjk:APA91bEVpFFIc0TUC4vtbDY60j7LDnlKsQ7ahUicehqFzFAe2v074E4z4dh6H0-HAL68mYpzcQOAoZdMbvnMAwnobQz9YB9YDchoIJmnC24fVpJAM3tXD7b6iSwXqsotjCUiIH6-ozEo';
+    const registrationToken = 'c40CtBbaRSSEl6LlP-0fiA:APA91bGwNjYXrwPNnPWV7Ij-fKbmY_SxCROGL4uZ_Am5j2PyFvT-9ZC46bKzAgqg-hULM9QJ8tMTGqnZk7ol1l5eTz6Nfx0ELqaHbO9TX4n7Q2BYzDpBVMd4eelb9eaL79wlft7Hoc15';
     const message = {
         notification: {
             title: '메모 전송',
