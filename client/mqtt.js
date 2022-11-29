@@ -5,13 +5,10 @@ const message_obj = require('./message_module/message')
 const message_storage = require('./message_module/message_storage')
 var mirrorDB = require('./mirror_db')
 const options = {
-    host: '192.168.0.2',
-    port: 1883
-  };
-// const options = {
-//   host: '127.0.0.1',
-//   port: 1883
-// };
+  host: '192.168.0.2',
+  port: 1883
+};
+
 const client = mqtt.connect(options);
 client.on('connect', function () {
 
@@ -130,8 +127,7 @@ function nonConnectMsg(contents) {
         break;
     }
   }).then(()=> {
-    var message_storage = require('./message_module/message_storage')
-    var message_obj = require('./message_module/message')
+    
     message_obj.initMessages()
     message_storage.showMessageStorage();
   })
