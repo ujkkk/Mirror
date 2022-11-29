@@ -16,7 +16,7 @@ client.on('message', (topic, message, packet) =>{
 
        if(loginBtnFlag){ // Login 버튼을 눌렀는데 얼굴이 안 보일 경우
            btn = document.getElementById("loginBtn");
-           nbtText = "Login";
+           btnText = "Login";
            loginBtnFlag = false;
        }
        else if(signUpBtnFlag){ // Sign Up 버튼을 눌렀는데 얼굴이 안 보일 경우
@@ -47,10 +47,11 @@ function login(){
 function signUp(){
    loading.loading(); // 로딩 시작
    signUpBtnFlag = true;
-   document.getElementById("loginMessage").innerHTML = "등록된 사용자인지 확인하는 중입니다..."
+   document.location.href = './faceRecognition/sign_up.html'
+//   document.getElementById("loginMessage").innerHTML = "등록된 사용자인지 확인하는 중입니다..."
 
    //카메라에게 사진을 찍으라고 토픽보냄
-   client.publish('exist/camera', String(_db.getMirror_id())) // 이미 가입한 회원인지 확인
+ //  client.publish('exist/camera', String(_db.getMirror_id())) // 이미 가입한 회원인지 확인
 }
 
 // Delete 버튼을 눌렀을 때

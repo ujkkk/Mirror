@@ -64,7 +64,7 @@ function connectMsg(contents) {
     case "image":
       new Promise((reslove, reject) => {
         var time = new Date().getTime();
-        var folder = './message_module/image/images/'
+        var folder = './message_module/image/message/'
 
         var filename = time;
         //base64(텍스트) 데이터
@@ -85,6 +85,8 @@ function connectMsg(contents) {
         contents.content = filename
         mirrorDB.createColumns('message', contents)
           .then(() => {
+            var message_storage = require('./message_module/message_storage')
+            var message_obj = require('./message_module/message')
             message_obj.insertNewMessage();
             message_storage.showMessageStorage();
           })
@@ -124,6 +126,8 @@ function nonConnectMsg(contents) {
         break;
     }
   }).then(()=> {
+    var message_storage = require('./message_module/message_storage')
+    var message_obj = require('./message_module/message')
     message_obj.initMessages()
     message_storage.showMessageStorage();
   })

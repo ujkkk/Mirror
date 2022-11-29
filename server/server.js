@@ -36,8 +36,14 @@ client.on('message', function (topic, message) {
     var data;
     console.log(`message is ${message}`);
     console.log(`topic is ${topic}`);
+
+    //회원가입
     if(topic == 'server/signUp'){
-        data = JSON.parse(message);
+        user = JSON.parse(message);
+    
+        data = { id: user.id, name: user.name, connect: 1 }
+        server_db.createColumns('user', data);
+       
     }
     // TODO: CoMirror 사용자 로그인 시 초기 작업 
     if (topic == 'server/user/connect') {

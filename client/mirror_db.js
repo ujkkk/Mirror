@@ -3,7 +3,7 @@ let dbAccess = {};
 let id;
 
 
-let mirror_id = 100; 
+const mirror_id = 100; 
 
 let name;
 
