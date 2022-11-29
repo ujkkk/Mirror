@@ -33,6 +33,8 @@ client.on('connect', function () {
   client.subscribe(`${_db.getMirror_id()}/exist/check`)
   client.subscribe(`${_db.getMirror_id()}/reTrain/check`)
 
+ 
+
 })
 
 
@@ -90,7 +92,7 @@ client.on('message', (topic, message, packet) => {
           createLoginMessage.createLoginMessage(String(values[0].name))
           var mirror_id_ = _db.getMirror_id()
           //console.log(mirror_id_)
-          client.publish('closeCamera', (String)(mirror_id_))
+          client.publish(`${mirror_id_}/closeCamera`, (String)(mirror_id_))
           // user 디비에 회원 추가
           _db.setMirror(String(user_id))
 

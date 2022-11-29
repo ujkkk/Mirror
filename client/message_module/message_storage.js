@@ -109,7 +109,7 @@ function message_storage_detail(e) {
                         break;
                     case 'image':
                         let img = document.createElement('img');
-                        img.src = './memo_module/image/' + message.content + '.jpg';
+                        img.src = './image/message/' + message.content + '.png';
                         context.appendChild(img);
                         break;
                     case 'audio':

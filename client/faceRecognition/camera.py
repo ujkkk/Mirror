@@ -5,38 +5,62 @@ import cv2
 import sys
 import os
 import os.path
+import platform
 capture_on = False
 createImageFalg = False
 capture_type = ''
-cam = None
 
+osName = platform.system()
+if(osName == "Windows"):
+    cam = cv2.VideoCapture(0)
+else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
+print("os" + osName)
 
 face_classifier = cv2.CascadeClassifier(
     cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-cam = None
+
 
 
 def onCam():
     global cam
-    if (cam == None):
-        #리눅스
-        #cam = cv2.VideoCapture(cv2.CAP_V4L2)
-        #윈도우
-        cam = cv2.VideoCapture(0)
-        print(cam)
-        cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
-        cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-        print('onCam 얼굴인식 : 카메라 켜짐')
-        return True
+    if(osName == "Windows"):
+            cam = cv2.VideoCapture(0)
+    else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
+    cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
+    cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+        # #리눅스
+        # #cam = cv2.VideoCapture(cv2.CAP_V4L2)
+        # #윈도우
+        # cam = cv2.VideoCapture(0)
+        # print(cam)
+        # cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
+        # cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    print('onCam 얼굴인식 : 카메라 켜짐')
     return True
+
+    # if (cam == None):
+    #     if(osName == "Windows"):
+    #         cam = cv2.VideoCapture(0)
+    #     else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
+    #     cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
+    #     cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    #     # #리눅스
+    #     # #cam = cv2.VideoCapture(cv2.CAP_V4L2)
+    #     # #윈도우
+    #     # cam = cv2.VideoCapture(0)
+    #     # print(cam)
+    #     # cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
+    #     # cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    #     print('onCam 얼굴인식 : 카메라 켜짐')
+    #     return True
+    # return True
 
 
 def closeCam():
     global cam
-    if (cam != None):
-        print('카메라꺼짐')
-        cam.release()
-        cam = None
+    print('카메라꺼짐')
+    cam.release()
+    #cam = None
 
 def face_extractor(img):
 
@@ -66,7 +90,7 @@ def createCropImage(userName, dir_path, countN):
     #        onCam()
     # else:
     #     print("createImage")
-    onCam()
+    #onCam()
     global cam
 
     dir_path = os.path.join(dir_path, userName)

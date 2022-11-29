@@ -101,6 +101,7 @@ function showSlides(n) {
 function initMemo() {
     mirror_db.select('*', 'memo', `id = ${mirror_db.getId()}`)
     .then(memos => { 
+            if(memos.length <=0 ) return;
             create_memo_div(memos);
     })
    // message_list.forEach(message => { })
@@ -270,6 +271,7 @@ const setStore = function (seq) {
     console.log('setStore call: ' + seq);
     mirror_db.select('store', 'memo', `id=${mirror_db.getId()} and seq=${seq}`)
         .then(value => {
+            if(value.length <=0) return;
             // store가 0일 경우 1로, 1일 경우 0으로
             const store = (value[0].store + 1) % 2;
             /* delete time 설정 */

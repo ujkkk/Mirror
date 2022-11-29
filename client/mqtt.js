@@ -24,6 +24,7 @@ client.on('connect', function () {
   client.subscribe(`${mirrorDB.getId()}/check/user/exist`)
 
   client.subscribe(`${mirrorDB.getId()}/get/connect/user`)
+  client.subscribe(`${mirrorDB.getMirror_id()}/closeCamera`)
 
 })
 
@@ -34,6 +35,7 @@ client.on('message', async (topic, message, packet) => {
 
   //로그인시 서버로부터 받은 메시지 저장 
   if (topic == `${mirrorDB.getId()}/get/message`) {
+    console.log(`${mirrorDB.getId()}/get/messag 처리`)
     data = JSON.parse(message);
     nonConnectMsg(data.contents)
   }
@@ -54,6 +56,8 @@ function connectMsg(contents) {
     case "text":
       mirrorDB.createColumns('message', contents)
         .then(() => {
+          var message_storage = require('./message_module/message_storage')
+          var message_obj = require('./message_module/message')
           message_obj.insertNewMessage();
           message_storage.showMessageStorage();
         })
@@ -64,7 +68,7 @@ function connectMsg(contents) {
     case "image":
       new Promise((reslove, reject) => {
         var time = new Date().getTime();
-        var folder = './message_module/image/message/'
+        var folder = './image/message/'
 
         var filename = time;
         //base64(텍스트) 데이터
