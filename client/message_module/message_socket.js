@@ -8,7 +8,7 @@ const moment = require('moment');
 //const mirror_db = require('./mirror_db');
 //npm install @types/socket.io-client --save
 
-var socket = io('http://localhost:9000/', { transports : ['websocket'] });
+var socket = io('http://113.198.84.128:80/', { transports : ['websocket'] });
 
 socket.on("connect", () => {
     console.log("connection socket server", mirror_db.getId());

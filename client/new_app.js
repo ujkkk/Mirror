@@ -53,11 +53,11 @@ const { contextIsolated } = require('process');
 var datas = [];
 outterClient.publish("server/user/connect", mirrorDB.getId())
 
-//axios.get(`http://localhost:9000/check/${mirrorDB.getId()}`)
+//axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
 
 
 
-// axios.get(`http://localhost:9000/check/${mirrorDB.getId()}`)
+// axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
 //     .then(response => {
 
 //         for (let i = 0; i < response.data.contents.length; i++) {
@@ -101,7 +101,7 @@ outterClient.publish("server/user/connect", mirrorDB.getId())
 //             let data = datas[i];
 //             if (data.type == 'image') {
 //                 axios({
-//                     url: 'http://localhost:9000/get/image', // 통신할 웹문서
+//                     url: 'http://113.198.84.128:80/get/image', // 통신할 웹문서
 //                     method: 'post', // 통신할 방식
 //                     data: { fileName: data.content }
 //                 })//받아온 파일 저장
@@ -123,7 +123,7 @@ outterClient.publish("server/user/connect", mirrorDB.getId())
 
 //             } else if (data.type == 'audio') {
 //                 axios({
-//                     url: 'http://localhost:9000/get/audio', // 통신할 웹문서
+//                     url: 'http://113.198.84.128:80/get/audio', // 통신할 웹문서
 //                     method: 'post', // 통신할 방식
 //                     data: { fileName: data.content }
 //                 })//받아온 파일 저장
@@ -146,7 +146,7 @@ outterClient.publish("server/user/connect", mirrorDB.getId())
 
 
 
-// axios.get(`http://localhost:9000/check/${mirrorDB.getId()}`)
+// axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
 //     .then(response => {
 
 //         for (let i = 0; i < response.data.contents.length; i++) {
@@ -190,7 +190,7 @@ outterClient.publish("server/user/connect", mirrorDB.getId())
 //             let data = datas[i];
 //             if (data.type == 'image') {
 //                 axios({
-//                     url: 'http://localhost:9000/get/image', // 통신할 웹문서
+//                     url: 'http://113.198.84.128:80/get/image', // 통신할 웹문서
 //                     method: 'post', // 통신할 방식
 //                     data: { fileName: data.content }
 //                 })//받아온 파일 저장
@@ -212,7 +212,7 @@ outterClient.publish("server/user/connect", mirrorDB.getId())
 
 //             } else if (data.type == 'audio') {
 //                 axios({
-//                     url: 'http://localhost:9000/get/audio', // 통신할 웹문서
+//                     url: 'http://113.198.84.128:80/get/audio', // 통신할 웹문서
 //                     method: 'post', // 통신할 방식
 //                     data: { fileName: data.content }
 //                 })//받아온 파일 저장
@@ -246,7 +246,7 @@ outterClient.publish("server/user/connect", mirrorDB.getId())
 //     }).then(() => {
 //         //서버에게 메시지 잘 받았다고 보내기
 //         axios({
-//             url: 'http://localhost:9000/set/userState', // 통신할 웹문서
+//             url: 'http://113.198.84.128:80/set/userState', // 통신할 웹문서
 //             method: 'post', // 통신할 방식
 //             data: { id: mirrorDB.getId() }
 //         }).then(()=>{

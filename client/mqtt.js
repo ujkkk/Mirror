@@ -5,7 +5,7 @@ const message_obj = require('./message_module/message')
 const message_storage = require('./message_module/message_storage')
 var mirrorDB = require('./mirror_db')
 const options = {
-  host: 'localhost',
+  host: '192.168.0.2',
   port: 1883
 };
 

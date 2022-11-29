@@ -412,7 +412,7 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                             // });
                         } else {
                             axios({
-                                url: 'http://localhost:9000/send/audio', // 통신할 웹문서
+                                url: 'http://113.198.84.128:80/send/audio', // 통신할 웹문서
                                 method: 'post', // 통신할 방식
                                 data: { // 인자로 보낼 데이터
                                     receiver: receiver,

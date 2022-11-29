@@ -117,7 +117,7 @@ function submitMemo(){
                         console.log("여기가 먼저 불려야함");
                         axios({
                             method:'post',
-                            url:'http://localhost:9000/connect/user',
+                            url:'http://113.198.84.128:80/connect/user',
                             data: {
                                 userData:checkConnectedUser
                             }
@@ -267,7 +267,7 @@ function insertOtherUserDB(user){
     /* 다른 미러 내 사용자 */
     axios({
         method:'post',
-        url:'http://localhost:9000/send/text',
+        url:'http://113.198.84.128:80/send/text',
         data: {
             sender: mirrorDB.getId(),
             receiver: user.id,

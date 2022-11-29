@@ -120,7 +120,7 @@ client.on('message', (topic, message, packet) => {
     // var id = user_id;
     // console.log('서버에게 보낼 id:',id);
     // axios({
-    //   url: 'http://localhost:9000/signUp',
+    //   url: 'http://113.198.84.128:80/signUp',
     //   method: 'post',
     //   data: {
     //     id: user_id,
