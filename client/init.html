@@ -1,10 +1,12 @@
 <html>
-    <head>
-        <link href="css/call.css" rel="stylesheet">
-    </head>
-    <body onclick="f()">
-        <!-- <button onclick="f2()">button1</button> -->
-    
+
+<head>
+    <link href="css/call.css" rel="stylesheet">
+</head>
+
+<body onclick="f()">
+    <!-- <button onclick="f2()">button1</button> -->
+
     <!-- 전화 걸기위한 input과 button -> 눈에 보이진 않음 따로 대처방법 생각중 -->
     <div id="room-selection-container" style="display: none">
         <input id="room-input" type="text" />
@@ -14,7 +16,9 @@
     <!-- 누군가가 전화를 걸었을 때 수락창 -->
     <div id="caller-accept-container" style="display: none">
         <div id="caller-alert">경미님의 영상통화</div>
-        <button class="call_button" id="accept"><img class="call-accept-icon" id="accept-icon" src="./image/index/start_call_icon.png"></button><button class="call_button" id="dont-accept"><img class="call-accept-icon" id="dont-accept-icon" src="./image/index/end_call_icon.png"></button>
+        <button class="call_button" id="accept"><img class="call-accept-icon" id="accept-icon"
+                src="./image/index/start_call_icon.png"></button><button class="call_button" id="dont-accept"><img
+                class="call-accept-icon" id="dont-accept-icon" src="./image/index/end_call_icon.png"></button>
     </div>
 
     <!-- 음성 통화 창 -->
@@ -32,34 +36,35 @@
         </div>
         <button class="disconnect-button"><img class="disconnect-icon" src="./image/index/end_call_icon.png"></button>
     </div>
-        <script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
-        <script type="module" src="init_app.js"></script>
+    <script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
+    <script type="module" src="init_app.js"></script>
 
-        <script>
-            const faceClient = require("./faceRecognition/mqtt")
-            const _db = require('./mirror_db')
+    <script>
+        const faceClient = require("./faceRecognition/mqtt")
+        const _db = require('./mirror_db')
 
-            faceClient.publish('re_login', String(_db.getMirror_id()))
-            faceClient.publish('mirror_id', String(_db.getMirror_id()))
-            function f() {
-                //_db.setUser(2002)
-               // document.location.href=`./new_index.html`
+        faceClient.publish('re_login', String(_db.getMirror_id()))
+        faceClient.publish('mirror_id', String(_db.getMirror_id()))
+        function f() {
+            //_db.setUser(2002)
+            // document.location.href=`./new_index.html`
 
 
-              //  _db.setMirror(2004)
-              //얼굴인식부터
-             // document.location.href =`./home.html`
-                
-              //로그인된 이후부터
-             _db.setMirror(4004)
+            //  _db.setMirror(2004)
+            //얼굴인식부터
+            // document.location.href =`./home.html`
 
-            }
-            function f2() {
-               // mirrorDB.setMirror(2002)
+            //로그인된 이후부터
+            _db.setMirror(4002)
 
-             //   document.location.href=`./new_index.html`
-             //_db.setMirror(5005)
-            }
-        </script>
-    </body>
+        }
+        function f2() {
+            // mirrorDB.setMirror(2002)
+
+            //   document.location.href=`./new_index.html`
+            //_db.setMirror(5005)
+        }
+    </script>
+</body>
+
 </html>
