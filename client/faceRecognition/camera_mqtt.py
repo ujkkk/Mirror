@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 
 # 미러 바뀔 때마다 수동으로 설정해줘야 한다
-mirror_id = 200
+mirror_id = 500
 
 new_account_flag = False
 login_flag = False
