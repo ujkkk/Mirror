@@ -6,6 +6,7 @@ function showMemoStorage() {
     console.log('showMemoStorage');
     _db.select('*', 'memo', `id =${_db.getId()}`)
         .then(memos => {
+            if(memos.length<=0) return;
             create_storage(memos);
         })
 }
@@ -71,6 +72,7 @@ function memo_storage_detail(seq) {
     // else document.getElementById('memo_storage_detail_sender').innerHTML = sender;
     _db.select('*', 'memo', `id=${_db.getId()} and seq=${seq}`)
         .then((memo) => {
+            if(memo.length <=0) return;
             var memo = memo[0];
             console.log('memo-detail', memo);
             let content = document.getElementById('memo_storage_detail_content')

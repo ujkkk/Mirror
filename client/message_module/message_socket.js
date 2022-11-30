@@ -44,7 +44,7 @@ function sub(){
             case 'image':
                 new Promise((resolve, reject) =>{
                     var time = new Date().getTime();
-                    var folder = './image/message/'
+                    var folder = '../image/message/'
                     var filename = time ;
                     var url = req.content.split(',')[1];
                     var bstr = atob(url);

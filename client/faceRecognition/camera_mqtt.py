@@ -20,7 +20,6 @@ close_flag = False
 stopFlag = False
 id = 0
 
-camera.closeCam()
 curDir = os.path.dirname(os.path.realpath(__file__))
     #curDir = '.' + os.path.sep + 'faceRecognition'
 os.chdir(curDir)

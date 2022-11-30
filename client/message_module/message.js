@@ -71,7 +71,6 @@ function message_detail(msg_id) {
                 return;
             }
             selected_msg = selected_msg[0];
-            console.log('44444');
             //선택한 메시지 
             let message_detail_div = document.getElementById('message-detail-div')
             message_detail_div.setAttribute('value', msg_id)
@@ -110,7 +109,7 @@ function message_detail(msg_id) {
                     detail_content_div.innerHTML = '';
                     let img = document.createElement('img')
                     img.setAttribute('id', 'message-image')
-                    img.src = image_folder + selected_msg.content + '.jpg';
+                    img.src = image_folder + selected_msg.content + '.png';
                     detail_content_div.appendChild(img);
                     break;
                 case 'audio':

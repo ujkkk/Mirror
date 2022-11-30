@@ -4,10 +4,17 @@ import cv2
 import sys
 import paho.mqtt.client as mqtt
 from datetime import datetime
+import platform
+
+osName = platform.system()
+if(osName == "Windows"):
+    cam = cv2.VideoCapture(0)
+else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
+print("os" + osName)
+
 capture_on = False
 createImageFalg = False
 capture_type = None
-cam = None
 def on_connect(client, userdata, flag, rc):
     print("Connect with result code:"+ str(rc))
     client.subscribe('capture/camera')
@@ -50,11 +57,14 @@ client.loop_start()
 
 def onCam():
     global cam
-    if(cam is None):
+    if(cam == None):
+        if(osName == "Windows"):
+            cam = cv2.VideoCapture(0)
+        else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
         #리눅스
         #cam = cv2.VideoCapture(cv2.CAP_V4L2)
         #윈도우
-        cam = cv2.VideoCapture(0)
+        #cam = cv2.VideoCapture(0)
         print(cam)
         #cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
         #cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
@@ -64,7 +74,9 @@ def onCam():
         
 def closeCam():
     global cam
-    if(cam is not None):
+   
+    if(cam != None):
+        print('카메라꺼짐')
         cam.release()
         cam = None
 
@@ -98,7 +110,9 @@ def createImage():
         ret, frame= cam.read() # 카메라의 ret, frame 값 받아오기
 
         if not ret:             #ret이 False면 중지
-            print('break')
+            print("이미지가 없습니다.")
+            closeCam()
+            return
         #메모
         if(capture_type == 'memo'):
             now = datetime.now()

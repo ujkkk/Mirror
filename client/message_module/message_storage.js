@@ -1,6 +1,7 @@
 const _db = require('../mirror_db')
 const moment = require('moment')
-var freinds_obj={};
+const mqtt = require('mqtt')
+var freinds_obj = {};
 var freinds_obj_rep = {};
 var currunt_sender = '';
 
@@ -12,19 +13,27 @@ function showMessageStorage() {
         })
 }
 
+/* mqtt 브로커 연결 및 topic subscribe */
+const options = { // 브로커 정보(ip, port)
+    host: '127.0.0.1',
+    port: 1883
+}
+
+const mqttClient = mqtt.connect(options) // mqtt broker 연결
+
 function create_storage(messages) {
 
     document.getElementById('message_storage_contents').replaceChildren();
     _db.select('*', 'friend', `id=${_db.getId()}`)
         //freinds_obj[sender] = name 객체 생성
-        .then(friends => { 
-            if(friends.length <=0) return;        
+        .then(friends => {
+            if (friends.length <= 0) return;
             friends.forEach(element => {
                 freinds_obj[element.friend_id] = element.name;
                 freinds_obj_rep[element.friend_id] = element.name;
             })
         }).then(() => {
-            for (var i =  messages.length-1; i >=0; i--) {
+            for (var i = messages.length - 1; i >= 0; i--) {
                 var message = messages[i];
                 var sender = freinds_obj[message.sender];
                 if (sender == 2) continue;
@@ -50,7 +59,7 @@ function create_storage(messages) {
                 message_send.innerHTML = sender;
                 if (message_send.innerHTML == 'undefined')
                     message_send.innerHTML = '알 수 없음';
-                
+
                 //content
                 switch (message.type) {
                     case 'text':
@@ -67,6 +76,7 @@ function create_storage(messages) {
                 message_div.appendChild(message_date);
                 message_div.appendChild(message_content);
 
+
                 message_content.addEventListener("click", (e) => { message_storage_detail(e.target) });
                 document.getElementById('message_storage_contents').appendChild(message_div);
                 freinds_obj[message.sender] = 2;
@@ -75,10 +85,61 @@ function create_storage(messages) {
         })
 }
 
+const message_send_watch = document.getElementById('message_send_watch')
+const progressbar = document.getElementById("progressbar-container")
+let progressbar_time
+// -------------------------------------------------------- message watch로 알림 보내기 ----------------------------------------------------------
+function messageSendWatch(sender_id, content) {
+    clearTimeout(progressbar_time);
+
+    _db.select('*', 'friend', `id=${_db.getId()} and friend_id=${sender_id}`)
+        //freinds_obj[sender] = name 객체 생성
+        .then(friends => {
+
+            // ======================= mqtt 보내기 =======================
+            let testData = JSON.parse(JSON.stringify({ senderName: friends[0].name, content: content})); // json
+            let string = JSON.stringify(testData); // json -> string으로 변환
+            const toBytes = (string) => Array.from(Buffer.from(string, 'utf8')); // byte array로 변환하는 함수
+           
+
+            const bytes = toBytes(string); // string -> bytearray로 변환
+            //mqttClient.publish(`watch/4004`, bytes) // byte보내고 싶으면 이코드 하지만.. 에러남
+            mqttClient.publish(`watch/4004`, string)
+            
+            // ======================= 알림 보내기 =======================
+            progressbar.style.display = "none"
+            const registrationToken = 'd9ntU96TQVeEFHThOjb3M_:APA91bEh-ZT8YfBY3uFdqHAV_xquKmEA--mKtkniMXQa18dFEDAuNDg95ggozekhAC0Qu8E-x3JbTkHR0Fel3JLcdJSbDqXTjF0aJnwldC_g985d5q-dlXN6giprYKA4ET-cQIkIUvDG';
+            const message = {
+                notification: {
+                    title: friends[0].name,
+                    body: content
+                },
+                token: registrationToken
+            };
+
+            fcm_admin.messaging().send(message)
+                .then((response) => {
+                    // Response is a message ID string.
+                    console.log('Successfully sent message:', response);
+                })
+                .catch((error) => {
+                    console.log('Error sending message:', error);
+                });
+            // ======================= progressbar =======================
+            progressbar.style.display = "block"
+            progressbar_time = setTimeout(() => {
+                progressbar.style.display = "none"
+            }, 3000)
+        })
+
+}
 
 
 //메시지 함에서 오른쪽 메시지 클릭시 과거의 메시지 모두 출력
 function message_storage_detail(e) {
+
+    //message_send_watch.style.visibility = "visible"
+    progressbar.style.display = "none"
 
     var sender_id = e.getAttribute('value');
     var contents = document.getElementById('message_storage_detail_contents');
@@ -86,10 +147,10 @@ function message_storage_detail(e) {
 
     if (currunt_sender == sender_id) return;
     currunt_sender = sender_id;
-    
+
     _db.select('*', 'message', `sender=${sender_id} and receiver=${_db.getId()}`)
         .then((messages) => {
-            if(messages.length <=0) return;
+            if (messages.length <= 0) return;
             messages.forEach(message => {
                 let content = document.createElement('div');
                 let context = document.createElement('div');
@@ -98,6 +159,19 @@ function message_storage_detail(e) {
                 content.setAttribute('class', 'message_storage_detail_content');
                 context.setAttribute('class', 'message_storage_detail_context');
                 date.setAttribute('class', 'message_storage_detail_date');
+
+                /* <button id="message_send_watch"><img class="bar_icon"
+                            src="./image/index/watch_send_icon.png"></button> */
+
+                let send_watch = document.createElement("button");
+                let send_img = document.createElement("img");
+                send_img.src = "./image/index/watch_send_icon.png";
+                send_watch.appendChild(send_img)
+                send_watch.setAttribute('id', 'message_send_watch');
+
+                content.appendChild(send_watch);
+
+                send_watch.addEventListener("click", (e) => { messageSendWatch(sender_id, message.content) });
 
                 //date, time
                 date.innerHTML = moment(message.send_time).format('MM-DD HH:mm');
@@ -109,7 +183,7 @@ function message_storage_detail(e) {
                         break;
                     case 'image':
                         let img = document.createElement('img');
-                        img.src = './memo_module/image/' + message.content + '.jpg';
+                        img.src = './image/message/' + message.content + '.png';
                         context.appendChild(img);
                         break;
                     case 'audio':
@@ -128,5 +202,5 @@ function message_storage_detail(e) {
             })
 
         })
-    }
+}
 module.exports = { showMessageStorage }

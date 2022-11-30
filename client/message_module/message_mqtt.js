@@ -11,7 +11,6 @@ const options = {
 const innerClient = mqtt.connect(options);
 
 innerClient.publish('camera/close', 'ok')
-innerClient.publish('closeCamera', String(mirror_db.getMirror_id()))
 innerClient.subscribe("send/image");
 innerClient.subscribe("message/capture/done");
 innerClient.subscribe("memo/capture/done");
@@ -29,7 +28,7 @@ innerClient.on('message', async (topic, message, packet) => {
       var img = document.getElementById('memo_img');
       if(img != null){
         img.setAttribute('value', saved_filePath);
-        img.src ="memo_module/image/"+saved_filePath+'.jpg?time='+ time;
+        img.src ="../message/image/"+saved_filePath+'.jpg?time='+ time;
       }
     }
 

@@ -49,7 +49,8 @@ const sttRefusalContainer = document.getElementById('stt-refusal-container')
 const sttAlert = document.getElementById('stt-alert')
 const sttSendButton = document.getElementById('stt-sned-button')
 
-
+const message_send_watch = document.getElementById('message_send_watch')
+const progressbar = document.getElementById("progressbar-container")
 
 messageAccess.setCustomFriend = (new_customFriend) => {
     customFriend = new_customFriend
@@ -86,6 +87,10 @@ function friendAlertOff() {
 // message display ON/OFF
 bar_message_button.addEventListener('click', () => {
     console.log('bar_message_button click!');
+
+    progressbar.style.display = "none"
+    memo_send_watch.style.visibility = "hidden"
+
     document.querySelector("#textArea").value = "";
     customFriend = null
     customOption = false

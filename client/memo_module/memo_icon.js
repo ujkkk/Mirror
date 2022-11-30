@@ -57,11 +57,12 @@ const options = { // 브로커 정보(ip, port)
 
 /////////////////////////////pushAlarm/////////////////
 const memo_send_watch = document.getElementById('memo_send_watch')
-const progressbar = document.getElementById("progressbar-container")
+const progressbar = document.getElementById("memo-progressbar-container")
+let progressbar_time
 
 const admin = require("firebase-admin");
 
-let serviceAccount = require("./memo_module/comirror-watch-firebase.json");
+let serviceAccount = require("./comirror-watch-firebase.json");
 
 const fcm_admin = admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -69,10 +70,11 @@ const fcm_admin = admin.initializeApp({
 
 memo_send_watch.addEventListener('click', () => {
 
-    progressbar.style.display = "none"
-    
+    clearTimeout(progressbar_time);
 
-    const registrationToken = 'fFO2P7mKTgK-TiGykNDtjk:APA91bEVpFFIc0TUC4vtbDY60j7LDnlKsQ7ahUicehqFzFAe2v074E4z4dh6H0-HAL68mYpzcQOAoZdMbvnMAwnobQz9YB9YDchoIJmnC24fVpJAM3tXD7b6iSwXqsotjCUiIH6-ozEo';
+    progressbar.style.display = "none"
+
+    const registrationToken = 'd9ntU96TQVeEFHThOjb3M_:APA91bEh-ZT8YfBY3uFdqHAV_xquKmEA--mKtkniMXQa18dFEDAuNDg95ggozekhAC0Qu8E-x3JbTkHR0Fel3JLcdJSbDqXTjF0aJnwldC_g985d5q-dlXN6giprYKA4ET-cQIkIUvDG';
     const message = {
         notification: {
             title: '메모 전송',
@@ -93,6 +95,9 @@ memo_send_watch.addEventListener('click', () => {
             console.log('Error sending message:', error);
         });
         progressbar.style.display = "block"
+        progressbar_time = setTimeout(()=>{
+            progressbar.style.display = "none"
+        },3000)
 })
 
 
