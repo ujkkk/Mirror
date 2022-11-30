@@ -35,7 +35,7 @@ client.on('connect', function () {
 client.on('message', function (topic, message) {
     var contents;
     var data;
-    console.log(`message is ${message}`);
+   // console.log(`message is ${message}`);
     console.log(`topic is ${topic}`);
 
     //회원가입
@@ -73,7 +73,7 @@ client.on('message', function (topic, message) {
                                     for (let i = 0; i < value.length; i++) {
                                         // TODO: value[i].type에 따라 분기 처리
                                         if (value[i].type == "text") {
-                                            msgData[i] = { "sender": value[i].sender, "content": value[i].content, "type": value[i].type, "send_time": value[i].send_time }
+                                            msgData[i] = { "sender": value[i].sender,"receiver":value[i].receiver, "content": value[i].content, "type": value[i].type, "send_time": value[i].send_time }
                                             console.log(msgData[i]);
                                             let resData = {
                                                 "status": 1,

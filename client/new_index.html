@@ -169,59 +169,68 @@
                     <div id="message_storage_detail">
                         <div id="message_storage_detail_sender"></div>
                         <div id="message_storage_detail_contents"></div>
+                        <!-- progressbar -->
                     </div>
-                </div>
-                <div id="text_content" style="display: none;">
-                    <textarea id="textArea"></textarea>
-                    <button id="send_text_button" class="send_button"
-                        style=" position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 200px; font-size: 20px;">SEND</button>
-
-                </div>
-                <!-- start of record_content -->
-                <div id="record_content" style="position: absolute; display: none; width: 100%; height: 100%;">
-                    <div id="recordbars_div" style="display: none;">
-                        <div id="bars">
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
+                    <div id="progressbar-container">
+                        <div class="progress2 progress-moved">
+                            <div class="progress-bar2">
+                            </div>
                         </div>
                     </div>
-                    <!-- end of recordbars_div -->
-                    <div class="record_button_container">
-                        <input type="checkbox" id="record_button" />
-                        <label for="record_button" id="record_button_label"></label>
-                        <div class="record_time">
-                            <div class="h_m"></div>
-                            <div class="s_ms"></div>
-                        </div>
-                    </div>
-                    <!-- end of record_button_container -->
-                    <button id="send_record_button" class="send_button"
-                        style="display: none; position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 347px; font-size: 20px;">SEND</button>
-                    <audio id="player" controls
-                        style="position: absolute; display: none; left: 50%; top: 240px; transform: translate(-50%, -50%);"></audio>
-                </div>
-                <!-- end of record_content -->
-                <!-- start of image_content -->
-                <div id="image_content" style="position: absolute; display: none; width: 100%; height: 100%;">
-                    <img id='msg-img' src=''
-                        style="position: absolute; left: 50%; top: 250px; transform: translate(-50%, -50%); width: 550px;">
-                    <button id="send_image_button" class="send_button"
-                        style=" position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 200px; font-size: 20px;">SEND</button>
-                    <button id="shutter_button" style="background-color: transparent; border: none;"><img
-                            src="./image/index/shutter_icon.png"
-                            style="position: absolute; width: 70px; height: 70px; left: 50%; bottom: 50px; transform:translate(-50%, -50%);"></button>
+                    <!-- progressbar -->
                 </div>
             </div>
-            <!-- end of select_content... -->
+            <div id="text_content" style="display: none;">
+                <textarea id="textArea"></textarea>
+                <button id="send_text_button" class="send_button"
+                    style=" position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 200px; font-size: 20px;">SEND</button>
+
+            </div>
+            <!-- start of record_content -->
+            <div id="record_content" style="position: absolute; display: none; width: 100%; height: 100%;">
+                <div id="recordbars_div" style="display: none;">
+                    <div id="bars">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                <!-- end of recordbars_div -->
+                <div class="record_button_container">
+                    <input type="checkbox" id="record_button" />
+                    <label for="record_button" id="record_button_label"></label>
+                    <div class="record_time">
+                        <div class="h_m"></div>
+                        <div class="s_ms"></div>
+                    </div>
+                </div>
+                <!-- end of record_button_container -->
+                <button id="send_record_button" class="send_button"
+                    style="display: none; position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 347px; font-size: 20px;">SEND</button>
+                <audio id="player" controls
+                    style="position: absolute; display: none; left: 50%; top: 240px; transform: translate(-50%, -50%);"></audio>
+            </div>
+            <!-- end of record_content -->
+            <!-- start of image_content -->
+            <div id="image_content" style="position: absolute; display: none; width: 100%; height: 100%;">
+                <img id='msg-img' src=''
+                    style="position: absolute; left: 50%; top: 250px; transform: translate(-50%, -50%); width: 550px;">
+                <button id="send_image_button" class="send_button"
+                    style=" position: absolute; border: none; background: transparent; color: white; width: 100px; height: 20px; text-align: center; left: 295px; bottom: 200px; font-size: 20px;">SEND</button>
+                <button id="shutter_button" style="background-color: transparent; border: none;"><img
+                        src="./image/index/shutter_icon.png"
+                        style="position: absolute; width: 70px; height: 70px; left: 50%; bottom: 50px; transform:translate(-50%, -50%);"></button>
+            </div>
         </div>
+        <!-- end of select_content... -->
+    </div>
     </div>
 
     <!-- ===================================  memo container =================================== -->
@@ -258,9 +267,9 @@
                             <button id="memo_send_watch"><img class="bar_icon"
                                     src="./image/index/watch_send_icon.png"></button>
                             <!-- notification -->
-                        <!-- progressbar -->
+                            <!-- progressbar -->
                         </div>
-                        <div id="progressbar-container">
+                        <div id="memo-progressbar-container">
                             <div class="progress2 progress-moved">
                                 <div class="progress-bar2">
                                 </div>
