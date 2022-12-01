@@ -76,8 +76,8 @@ mqttClient.on('message', function (topic, message) { // 메시지 받았을 때 
 
 serverMqttClient.on('message', async (topic, message, packet) => {
     var contents = null;
-    console.log(`message is ${message}`);
-    console.log(`topic is ${topic}`);
+    // console.log(`message is ${message}`);
+    // console.log(`topic is ${topic}`);
   
     //서버로 요청한 값 subscribe - 검색한 사용자 정보
     if (topic == `${mirrorDB.getId()}/check/user/exist`) {

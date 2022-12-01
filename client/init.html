@@ -6,7 +6,7 @@
 
 <body onclick="f()">
     <!-- <button onclick="f2()">button1</button> -->
-
+    <div id="camera-check" style="color: yellow; font-size: 10px;">●</div>
     <!-- 전화 걸기위한 input과 button -> 눈에 보이진 않음 따로 대처방법 생각중 -->
     <div id="room-selection-container" style="display: none">
         <input id="room-input" type="text" />
@@ -43,8 +43,8 @@
         const faceClient = require("./faceRecognition/mqtt")
         const _db = require('./mirror_db')
 
-        faceClient.publish('re_login', String(_db.getMirror_id()))
-        faceClient.publish('mirror_id', String(_db.getMirror_id()))
+        faceClient.publish(`${_db.getMirror_id()}/re_login`, String(_db.getMirror_id()))
+        faceClient.publish(`${_db.getMirror_id()}/mirror_id`, String(_db.getMirror_id()))
         function f() {
             //_db.setUser(2002)
             // document.location.href=`./new_index.html`
@@ -55,10 +55,10 @@
 
 
             //로그인된 이후부터
-            //_db.setMirror(1001)
+            _db.setMirror(2000)
 
               //얼굴인식부터
-              document.location.href =`./home.html`
+             // document.location.href =`./home.html`
                 
               //로그인된 이후부터
 

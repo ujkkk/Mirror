@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 
 # 미러 바뀔 때마다 수동으로 설정해줘야 한다
-mirror_id = 500
+mirror_id = 200
 
 new_account_flag = False
 login_flag = False
@@ -68,17 +68,20 @@ def on_message(client, userdata, msg):
         # if(str(mirror_id)== str(message)):
         camera.closeCam()
     elif(msg.topic == f'{mirror_id}/re_login'):
-        #mirror_id = str(message)
+        print("클랙 해도 됨")
         #if(str(mirror_id)== str(message)):
-        client.publish(f'{mirror_id}/onCam', mirror_id)
+        client.publish(f'{mirror_id}/camera/check', mirror_id)
+        camera.onCam()
 
     elif(msg.topic == f'{mirror_id}/login/camera'):
         #if(str(message) == str(mirror_id)):
            # print("로그인 시작 : " + msg.topic)
+        #camera.onCam()
         global loginCamera_flag
         loginCamera_flag = True
             
     elif(msg.topic == f'{mirror_id}/createAccount/camera'):
+        camera.onCam()
         print("topic : " + msg.topic)
         m_id = (str)(message)[0:3]
         print('m_id:' +m_id)

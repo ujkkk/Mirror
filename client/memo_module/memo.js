@@ -9,7 +9,7 @@ var memo_slides = document.querySelectorAll('#memo-slider-wrap ul li');
 //number of slides
 var totalSlides ;
 //get the slide width
-var sliderWidth = slideWrapper.clientWidth;
+var sliderWidth = document.getElementById('memo-slider-wrap').clientWidth;
 var slider = document.querySelector('#memo-slider-wrap ul#memo-slider');
 var nextBtn = document.getElementById('memo_next');
 var prevBtn = document.getElementById('memo_previous');
@@ -32,6 +32,7 @@ function addEvent(length){
     sliderWidth = slideWrapper.clientWidth;
     //set width of items
     memo_slides.forEach(function (element) {
+       
         element.style.width = sliderWidth + 'px';
     })
     //set width to be 'x' times the number of slides
@@ -42,9 +43,11 @@ function addEvent(length){
     nextBtn = document.getElementById('memo_next');
     prevBtn = document.getElementById('memo_previous');
     nextBtn.addEventListener('click', function () {
+        console.log("+클릭");
         plusSlides(1);
     });
     prevBtn.addEventListener('click', function () {
+        console.log("-클릭");
         plusSlides(-1);
     });
 
@@ -74,7 +77,8 @@ function showSlides(n) {
     } else if (slideIndex === totalSlides) {
         slideIndex = 0;
     }
-
+    console.log(slider);
+   // console.log(slideIndex+".index");
     slider.style.left = -(sliderWidth * slideIndex) + 'px';
     //pagination();
 }
