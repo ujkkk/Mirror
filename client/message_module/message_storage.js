@@ -15,7 +15,7 @@ function showMessageStorage() {
 
 /* mqtt 브로커 연결 및 topic subscribe */
 const options = { // 브로커 정보(ip, port)
-    host: '127.0.0.1',
+    host: '192.168.0.2',
     port: 1883
 }
 
@@ -88,6 +88,15 @@ function create_storage(messages) {
 const message_send_watch = document.getElementById('message_send_watch')
 const progressbar = document.getElementById("progressbar-container")
 let progressbar_time
+
+// const admin = require("firebase-admin");
+
+// let serviceAccount = require("../comirror-watch-firebase.json");
+
+// const fcm_admin = admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount),
+// });
+
 // -------------------------------------------------------- message watch로 알림 보내기 ----------------------------------------------------------
 function messageSendWatch(sender_id, content) {
     clearTimeout(progressbar_time);
@@ -108,7 +117,7 @@ function messageSendWatch(sender_id, content) {
             
             // ======================= 알림 보내기 =======================
             progressbar.style.display = "none"
-            const registrationToken = 'd9ntU96TQVeEFHThOjb3M_:APA91bEh-ZT8YfBY3uFdqHAV_xquKmEA--mKtkniMXQa18dFEDAuNDg95ggozekhAC0Qu8E-x3JbTkHR0Fel3JLcdJSbDqXTjF0aJnwldC_g985d5q-dlXN6giprYKA4ET-cQIkIUvDG';
+            const registrationToken = 'eoseBGH-RUKEMbCZXoeC9u:APA91bHOgMlPnHy8LzH8Uv1hOGFo2Gz-egtFwz4HpSPZut-mYkFt2CWG0V60PkzEnCNUvg48oYlMpCcUIJ38n5H-qEQ5pMIUQy_2mEuyd_FSv8oCAZh3Na4mD-GDay360UHM-pZKIGHJ';
             const message = {
                 notification: {
                     title: friends[0].name,

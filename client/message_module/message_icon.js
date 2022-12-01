@@ -89,7 +89,7 @@ bar_message_button.addEventListener('click', () => {
     console.log('bar_message_button click!');
 
     progressbar.style.display = "none"
-    memo_send_watch.style.visibility = "hidden"
+   // message_send_watch.style.visibility = "hidden"
 
     document.querySelector("#textArea").value = "";
     customFriend = null

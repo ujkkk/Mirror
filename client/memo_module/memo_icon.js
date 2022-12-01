@@ -1,5 +1,6 @@
 const mirror_db = require('./mirror_db')
 const moment = require('moment');
+const mqtt = require('mqtt')
 
 const bar_memo_button = document.querySelector("#bar_memo_button");
 const memo_container = document.querySelector("#memo_container");
@@ -55,6 +56,16 @@ const options = { // 브로커 정보(ip, port)
 }
 
 
+/* mqtt 브로커 연결 및 topic subscribe */
+const mqttOptions = { // 브로커 정보(ip, port)
+    host: '192.168.0.2',
+    port: 1883
+}
+
+const mqttClient = mqtt.connect(mqttOptions) // mqtt broker 연결
+
+
+
 /////////////////////////////pushAlarm/////////////////
 const memo_send_watch = document.getElementById('memo_send_watch')
 const progressbar = document.getElementById("memo-progressbar-container")
@@ -74,7 +85,16 @@ memo_send_watch.addEventListener('click', () => {
 
     progressbar.style.display = "none"
 
-    const registrationToken = 'd9ntU96TQVeEFHThOjb3M_:APA91bEh-ZT8YfBY3uFdqHAV_xquKmEA--mKtkniMXQa18dFEDAuNDg95ggozekhAC0Qu8E-x3JbTkHR0Fel3JLcdJSbDqXTjF0aJnwldC_g985d5q-dlXN6giprYKA4ET-cQIkIUvDG';
+     // ======================= mqtt 보내기 =======================
+     let testData = JSON.parse(JSON.stringify({ senderName: "메모", content: memoText.innerText})); // json
+     let string = JSON.stringify(testData); // json -> string으로 변환
+     const toBytes = (string) => Array.from(Buffer.from(string, 'utf8')); // byte array로 변환하는 함수
+
+     const bytes = toBytes(string); // string -> bytearray로 변환
+    //mqttClient.publish(`watch/4004`, bytes) // byte보내고 싶으면 이코드 하지만.. 에러남
+    mqttClient.publish(`watch/4004`, string)
+
+    const registrationToken = 'eoseBGH-RUKEMbCZXoeC9u:APA91bHOgMlPnHy8LzH8Uv1hOGFo2Gz-egtFwz4HpSPZut-mYkFt2CWG0V60PkzEnCNUvg48oYlMpCcUIJ38n5H-qEQ5pMIUQy_2mEuyd_FSv8oCAZh3Na4mD-GDay360UHM-pZKIGHJ';
     const message = {
         notification: {
             title: '메모 전송',
