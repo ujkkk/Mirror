@@ -28,7 +28,7 @@ innerClient.on('message', async (topic, message, packet) => {
       var img = document.getElementById('memo_img');
       if(img != null){
         img.setAttribute('value', saved_filePath);
-        img.src ="../message/image/"+saved_filePath+'.jpg?time='+ time;
+        img.src ="./memo_module/image/"+saved_filePath+'.jpg?time='+ time;
       }
     }
 
