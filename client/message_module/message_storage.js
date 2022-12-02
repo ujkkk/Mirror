@@ -97,6 +97,7 @@ let progressbar_time
 //     credential: admin.credential.cert(serviceAccount),
 // });
 
+
 // -------------------------------------------------------- message watch로 알림 보내기 ----------------------------------------------------------
 function messageSendWatch(sender_id, content) {
     clearTimeout(progressbar_time);
@@ -108,11 +109,6 @@ function messageSendWatch(sender_id, content) {
             // ======================= mqtt 보내기 =======================
             let testData = JSON.parse(JSON.stringify({ senderName: friends[0].name, content: content})); // json
             let string = JSON.stringify(testData); // json -> string으로 변환
-            const toBytes = (string) => Array.from(Buffer.from(string, 'utf8')); // byte array로 변환하는 함수
-           
-
-            const bytes = toBytes(string); // string -> bytearray로 변환
-            //mqttClient.publish(`watch/4004`, bytes) // byte보내고 싶으면 이코드 하지만.. 에러남
             mqttClient.publish(`watch/4004`, string)
             
             // ======================= 알림 보내기 =======================
@@ -142,6 +138,9 @@ function messageSendWatch(sender_id, content) {
         })
 
 }
+
+const barButton = document.getElementById("bar_message_button")
+barButton.addEventListener("click", () => { currunt_sender = 0 });
 
 
 //메시지 함에서 오른쪽 메시지 클릭시 과거의 메시지 모두 출력
