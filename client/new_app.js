@@ -41,8 +41,8 @@ mirrorDB.setUser(receivedData)
 
         const message_storage = require('./message_module/message_storage')
         message_storage.showMessageStorage();
-        const memo_stroage = require('./memo_module/memo_storage');
-        memo_stroage.showMemoStorage();
+       // const memo_stroage = require('./memo_module/memo_storage');
+       // memo_stroage.showMemoStorage();
     })
 require('./weather_module/new_weather');
 
@@ -51,7 +51,7 @@ const { default: axios } = require('axios');
 const dbAccess = require('./mirror_db');
 const { contextIsolated } = require('process');
 var datas = [];
-outterClient.publish("server/user/connect", mirrorDB.getId())
+//outterClient.publish("server/user/connect", mirrorDB.getId())
 
 //axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
 

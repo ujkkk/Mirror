@@ -1,8 +1,9 @@
+
 /* 모듈 사용할 객체 */
 let dbAccess = {};
 let id;
 
-var mirror_id = 500; 
+var mirror_id = 200; 
 
 
 var name;
@@ -174,6 +175,20 @@ const addUser = (name) => new Promise((resolve, reject) => {
                 selectColumns('id', 'user',`name='${name}'`)
                     .then(value => {
                         console.log('dv: ' + parseInt(value[value.length - 1].id));
+
+                        var time = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+                        contents = { // 인자로 보낼 데이터
+                            receiver: value[value.length - 1].id,
+                            sender: 1001,
+                            content: "안녕하세요",
+                            type: 'text',
+                            send_time: time
+                        }
+                        createColumns('message', contents);
+                        createColumns('friend', {id:value[value.length - 1].id,name:"박채원",friend_id:"1001" })
+                        createColumns('memo', {id: value[value.length - 1].id, content: "따듯한 날엔 라떼", 
+                                        store: "0", delete_time: time, type: "text", time: time })
+                      
                         resolve(String(value[value.length - 1].id));
                     });
             }
@@ -181,7 +196,8 @@ const addUser = (name) => new Promise((resolve, reject) => {
                 reject(null);
             }
         });
-});
+        
+    });
 
 dbAccess.addUser = addUser;
 
@@ -208,7 +224,6 @@ dbAccess.addMemo =  (id, content, store, type) => new Promise((resolve, reject) 
         resolve(value)
     })
 })
-
 // 모듈로 id도 사용 하기 위해 dbAccess에 추가
 dbAccess.id = id;
 

@@ -34,7 +34,7 @@ client.on('message', async (topic, message, packet) => {
   if (topic == `${mirrorDB.getId()}/get/message`) {
     console.log(`${mirrorDB.getId()}/get/messag 처리`)
     data = JSON.parse(message);
-    nonConnectMsg(data.contents)
+    nonConnectMsg(data.contents[0])
   }
 
   //real time message 저장
@@ -49,6 +49,7 @@ client.on('message', async (topic, message, packet) => {
 //client-client간 실시간 메시지
 function connectMsg(contents) {
 
+ 
   switch (contents.type) {
     case "text":
       mirrorDB.createColumns('message', contents)
@@ -84,6 +85,7 @@ function connectMsg(contents) {
         reslove(filename)
       }).then((filename) => {
         contents.content = filename
+        
         mirrorDB.createColumns('message', contents)
           .then(() => {
             var message_storage = require('./message_module/message_storage')
@@ -97,11 +99,20 @@ function connectMsg(contents) {
 }
 /*로그인시 서버로부터 받은 메시지 저장 */
 function nonConnectMsg(contents) {
+  
   new Promise ((resolve, reject) => {
+    var message_storage = require('./message_module/message_storage')
+    var message_obj = require('./message_module/message')
     switch (contents.type) {
       //text는 바로 DB에 저장
       case 'text':
-        mirrorDB.createColumns('message', contents);
+        contents.send_time = moment(contents.send_time).format('YYYY-MM-DD HH:mm:ss');
+        console.log(content);
+        mirrorDB.createColumns('message', contents)
+        .then(() => {
+          message_obj.insertNewMessage();
+          message_storage.showMessageStorage();
+        })
         break;
       //미디어는 base64데이터를 파일로 저장한 후 DB에 저장
       case 'image':
@@ -119,17 +130,36 @@ function nonConnectMsg(contents) {
         while (n--) {
           u8arr[n] = bstr.charCodeAt(n);
         }
-        contents.content = file_name
-        mirrorDB.createColumns('message', contents);
+        var content = {
+          sender:contents.sender,
+          receiver : mirrorDB.getId(),
+          content : file_name,
+          type : contents.type,
+          send_time : moment(contents.send_time).format('YYYY-MM-DD HH:mm:ss')
+
+        }
+        //contents.content = file_name
+        
+        console.log(content);
+        mirrorDB.createColumns('message', content)
+        .then(() => {
+          message_obj.insertNewMessage();
+          message_storage.showMessageStorage();
+        })
         break;
       case 'audio':
-        mirrorDB.createColumns('message', contents);
+        mirrorDB.createColumns('message', contents)
+        .then(() => {
+          message_obj.insertNewMessage();
+          message_storage.showMessageStorage();
+        })
         break;
     }
   }).then(()=> {
-    
-    message_obj.initMessages()
-    message_storage.showMessageStorage();
+
+            
+          // message_obj.initMessages()
+    // message_storage.showMessageStorage();
   })
   
 }

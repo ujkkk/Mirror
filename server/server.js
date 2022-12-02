@@ -25,6 +25,7 @@ client.on('connect', function () {
     client.subscribe('server/user/connect');
     client.subscribe('server/send/msg');
     client.subscribe('server/signUp');
+    client.subscribe('server/user/logout');
     client.subscribe('server/check/user/exist');
 
 });
@@ -45,6 +46,13 @@ client.on('message', function (topic, message) {
         server_db.createColumns('user', data);
        
     }
+    //로그아웃
+    if(topic == 'server/user/logout'){
+        userId = String(message) 
+        console.log('server/user/logout | getId : ' + userId)
+        server_db.update("user", "connect=0", `id=${userId}`)
+    }
+
     // TODO: CoMirror 사용자 로그인 시 초기 작업 
     if (topic == 'server/user/connect') {
 

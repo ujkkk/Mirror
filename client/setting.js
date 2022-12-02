@@ -3,7 +3,7 @@ const setting_component = document.getElementById('setting-component')
 const logout = document.getElementById('logout')
 
 const dbAccess = require('./mirror_db')
-
+const outerMqtt = require('./mqtt')
 set_button.addEventListener("click", function () { viewSettingAlert() })
 logout.addEventListener("click", function () { mirrorLogout() })
 
@@ -30,6 +30,8 @@ function setSettingAlert() {
 setSettingAlert()
 
 function mirrorLogout() {
+
+    outerMqtt.publish('server/user/logout',String(dbAccess.getId()))
     document.location.href=`./init.html`
 
 }

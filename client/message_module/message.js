@@ -334,12 +334,12 @@ function reply_message() {
             //상대가 접속 되어 있으면 mqtt로 전달
             if(response.data.connect){
                
-                client.publish(`${receiver_id}/connect_msg`, buf)
+                client.publish(`${receiver_id}/connect_msg`, JSON.stringify(buf))
                
             //그렇지 않다면 서버 DB에 해당 메시지를 저장
             }else{
                 //서버에 메시지를 저장하는 방법으로 메시지를 보냄
-                client.publish('server/send/msg', buf)
+                client.publish('server/send/msg', JSON.stringify(buf))
             }
 
         }).then(()=>{document.getElementById('reply_text').value = '';})

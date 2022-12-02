@@ -32,7 +32,8 @@ client.on('connect', function () {
   client.subscribe(`${_db.getMirror_id()}/createAccount/check`)
   client.subscribe(`${_db.getMirror_id()}/exist/check`)
   client.subscribe(`${_db.getMirror_id()}/reTrain/check`)
-
+  client.subscribe(`${_db.getMirror_id()}/camera/check`)
+ 
  
 
 })
@@ -47,7 +48,12 @@ client.on('message', (topic, message, packet) => {
     createLoginMessage.createMessage(String(msg) + '폴더로 재학습 되었습니다.')
     loading.stopLoading();
   }
-
+  if (topic ==`${_db.getMirror_id()}/camera/check`){
+    
+    console.log("testest");
+    var camera_check = document.getElementById("camera-check")
+    camera_check.style.color = "yellow";
+  }
   // if (topic == "exist/check") {
   //   user_id = String(message)
   //   setUserId(user_id)
