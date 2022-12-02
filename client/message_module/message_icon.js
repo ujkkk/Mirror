@@ -380,29 +380,30 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                 }
                 break;
             case 'audio':
-                var reader = new FileReader();
-                // new_m_record.js에서 녹음한 blob 객체
-                var blob = record_obj.getBlob();
-                // 컨텐츠를 특정 Blob에서 읽어 옴
+                var reader = new FileReader(); // new_m_record.js에서 녹음한 blob 객체
+                var blob = record_obj.getBlob(); // 컨텐츠를 특정 Blob에서 읽어 옴
+                
                 reader.readAsDataURL(blob);
-
                 reader.onloadend = function () {
-                    // base64 인코딩 된 스트링 데이터가 result 속성에 담아지게 됩니다.
-                    var base64 = reader.result;
-                    console.log(`After Audio Base64 : ${base64}`)
+                    var base64 = reader.result; // base64 인코딩 된 스트링 데이터가 result 속성에 담아지게 됩니다.
+                    // console.log(`After Audio Base64 : ${base64}`)
                     // var base64Audio = base64.split(',').reverse()[0];
                     var base64Audio = base64.split(',')[1];
+
                     new Promise((resolve, reject) => {
                         var bstr = atob(base64Audio); // base64String 
-                        resolve(bstr);
-                    }).then((bstr) => {
+                        var buf = {
+                            receiver: receiver,
+                            sender: sender,
+                            type: 'audio',
+                            content: bstr,
+                            send_time: send_time
+                        }
+                        resolve(buf);
+                    }).then((buf) => {
                         if (connect) {
-                            var buf ={
-                                'file': bstr,
-                                'sender': sender,
-                                'type': 'audio',
-                            }
-                            outerClient.publish("3002/connect_msg", JSON.stringify(buf));
+                            console.log("실시간 오디오 전달 : audio");
+                            outerClient.publish(`${receiver}/connect_msg`, JSON.stringify(buf));
                             // socket.emit('realTime/message', {
                             //     sender: sender,
                             //     receiver: receiver,
@@ -411,17 +412,19 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                             //     send_time: send_time
                             // });
                         } else {
-                            axios({
-                                url: 'http://113.198.84.128:80/send/audio', // 통신할 웹문서
-                                method: 'post', // 통신할 방식
-                                data: { // 인자로 보낼 데이터
-                                    receiver: receiver,
-                                    sender: sender,
-                                    content: bstr,
-                                    type: 'audio',
-                                    send_time: send_time
-                                }
-                            }); // end of axios ...
+                            console.log("논실시간 메시지 전달");
+                            outerClient.publish("server/send/msg" , JSON.stringify(buf))
+                            // axios({
+                            //     url: 'http://113.198.84.128:80/send/audio', // 통신할 웹문서
+                            //     method: 'post', // 통신할 방식
+                            //     data: { // 인자로 보낼 데이터
+                            //         receiver: receiver,
+                            //         sender: sender,
+                            //         content: bstr,
+                            //         type: 'audio',
+                            //         send_time: send_time
+                            //     }
+                            // }); // end of axios ...
                         }
                     }).catch(() => "audio error")
                 }

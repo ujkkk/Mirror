@@ -48,8 +48,6 @@ client.on('message', async (topic, message, packet) => {
 
 //client-client간 실시간 메시지
 function connectMsg(contents) {
-
- 
   switch (contents.type) {
     case "text":
       mirrorDB.createColumns('message', contents)
@@ -61,6 +59,33 @@ function connectMsg(contents) {
         })
       break;
     case "audio":
+      new Promise((reslove, reject) => {
+        var save_time = new Date().getTime();
+        
+        var file_name = './message_module/audio/' + save_time + '.wav'; // Client 에 저장되는 파일명
+        var pure_file_name = String(save_time); // DB에 저장될 파일명
+
+        var bstr = contents.content; // base64String
+        var n = bstr.length;
+        var u8arr = new Uint8Array(n);
+
+        while (n--) {
+          //byte => unicode로 바꿔서 저장
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+        fs.writeFile(file_name, u8arr, 'utf8', (error) => {console.log(u8arr)});
+        reslove(pure_file_name)
+      }).then((filename) => {
+          contents.content = filename
+          
+          mirrorDB.createColumns('message', contents)
+            .then(() => {
+              var message_storage = require('./message_module/message_storage')
+              var message_obj = require('./message_module/message')
+              message_obj.insertNewMessage();
+              message_storage.showMessageStorage();
+            })
+        })
       break;
 
     case "image":
