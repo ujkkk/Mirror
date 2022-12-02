@@ -7,9 +7,10 @@ from datetime import datetime
 import platform
 
 osName = platform.system()
-if(osName == "Windows"):
-    cam = cv2.VideoCapture(0)
-else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
+# if(osName == "Windows"):
+#     cam = cv2.VideoCapture(0)
+# else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
+cam = cv2.VideoCapture(cv2.CAP_V4L2)
 print("os" + osName)
 
 capture_on = False
@@ -58,10 +59,11 @@ client.loop_start()
 def onCam():
     global cam
     if(cam == None):
-        if(osName == "Windows"):
-            cam = cv2.VideoCapture(0)
-        else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
-        #리눅스
+        # if(osName == "Windows"):
+        #     cam = cv2.VideoCapture(0)
+        # else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
+        cam = cv2.VideoCapture(cv2.CAP_V4L2)
+        # #리눅스
         #cam = cv2.VideoCapture(cv2.CAP_V4L2)
         #윈도우
         #cam = cv2.VideoCapture(0)

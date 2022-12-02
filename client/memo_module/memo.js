@@ -30,14 +30,16 @@ function addEvent(length){
     //totalSlides = memo_slides.length;
     //get the slide width
     sliderWidth = slideWrapper.clientWidth;
+    sliderHeight = slideWrapper.clientHeight
     //set width of items
     memo_slides.forEach(function (element) {
        
         element.style.width = sliderWidth + 'px';
+        element.style.height = sliderHeight + 'px';
     })
     //set width to be 'x' times the number of slides
     slider = document.querySelector('#memo-slider-wrap ul#memo-slider');
-    slider.style.width = sliderWidth * totalSlides + 'px';
+    slider.style.width = (sliderWidth * totalSlides)+ 'px';
 
     // next, prev
     nextBtn = document.getElementById('memo_next');

@@ -11,9 +11,11 @@ createImageFalg = False
 capture_type = ''
 
 osName = platform.system()
-if(osName == "Windows"):
-    cam = cv2.VideoCapture(0)
-else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
+# if(osName == "Windows"):
+#     cam = cv2.VideoCapture(0)
+# else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
+cam = cv2.VideoCapture(cv2.CAP_V4L)
+#cam = cv2.VideoCapture(cv2.CAP_V4L2)
 print("os" + osName)
 
 face_classifier = cv2.CascadeClassifier(
@@ -23,9 +25,10 @@ face_classifier = cv2.CascadeClassifier(
 
 def onCam():
     global cam
-    if(osName == "Windows"):
-        cam = cv2.VideoCapture(0)
-    else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
+    # if(osName == "Windows"):
+    #     cam = cv2.VideoCapture(0)
+    #else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
+    cam = cv2.VideoCapture(cv2.CAP_V4L)
     cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
     cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
             # #리눅스
