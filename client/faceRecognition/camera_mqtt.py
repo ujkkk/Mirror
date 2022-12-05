@@ -37,8 +37,6 @@ def on_connect(client, userdata, flag, rc):
     client.subscribe(f'{mirror_id}/delete/camera')
     client.subscribe(f'{mirror_id}/re_login')
     
-    
-
 
 
 def on_message(client, userdata, msg):
@@ -46,13 +44,6 @@ def on_message(client, userdata, msg):
    # global mirror_id
     message = msg.payload.decode("utf-8")
     print('받은 topic : ' + msg.topic)
-  #  print("받은 payload : " + str(message))
-        #최초 미러 실행시 mirror_id 셋팅
-    # if (msg.topic == '${mirror_id}/mirror_id'):
-    #     mirror_id = str(message)
-    #     client.unsubscribe('${mirror_id}/mirror_id')
-    #     if(str(mirror_id)== str(message)):
-    #         camera.onCam()
         
     
     if(msg.topic == f'{mirror_id}/onCam'):
@@ -68,9 +59,7 @@ def on_message(client, userdata, msg):
         # if(str(mirror_id)== str(message)):
         camera.closeCam()
     elif(msg.topic == f'{mirror_id}/re_login'):
-        print("클랙 해도 됨")
-        #if(str(mirror_id)== str(message)):
-        client.publish(f'{mirror_id}/camera/check', mirror_id)
+        print("클릭 해도 됨")
         camera.onCam()
 
     elif(msg.topic == f'{mirror_id}/login/camera'):

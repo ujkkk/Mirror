@@ -10,12 +10,15 @@ osName = platform.system()
 # if(osName == "Windows"):
 #     cam = cv2.VideoCapture(0)
 # else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
-cam = cv2.VideoCapture(cv2.CAP_V4L2)
+cam = None
+#cam = cv2.VideoCapture(cv2.CAP_ANY)
 print("os" + osName)
 
 capture_on = False
 createImageFalg = False
 capture_type = None
+buffersize = 4
+
 def on_connect(client, userdata, flag, rc):
     print("Connect with result code:"+ str(rc))
     client.subscribe('capture/camera')
@@ -58,11 +61,14 @@ client.loop_start()
 
 def onCam():
     global cam
+    global buffersize
     if(cam == None):
         # if(osName == "Windows"):
         #     cam = cv2.VideoCapture(0)
         # else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
-        cam = cv2.VideoCapture(cv2.CAP_V4L2)
+        cam =cv2.VideoCapture(0, cv2.CAP_V4L)
+        cam.set(cv2.CAP_PROP_BUFFERSIZE, 1) # 버퍼크기는 1~10까지 유효함
+        buffersize = cam.get(cv2.CAP_PROP_BUFFERSIZE)
         # #리눅스
         #cam = cv2.VideoCapture(cv2.CAP_V4L2)
         #윈도우
@@ -89,6 +95,7 @@ def createImage():
     global capture_type
     # 기본 카메라 객체 생성
     global cam
+    global buffersize
     # 열렸는지 확인
     if(cam is None):
         onCam()
@@ -108,9 +115,11 @@ def createImage():
         # fourcc 값 받아오기, *는 문자를 풀어쓰는 방식, *'DIVX' == 'D', 'I', 'V', 'X'
         fourcc = cv2.VideoWriter_fourcc(*'DIVX')
 
-        # 프레임을 받아와서 저장하기
-        ret, frame= cam.read() # 카메라의 ret, frame 값 받아오기
+# cv2의 버퍼에 저장된 프레임 제거하고 최신 프레임을 읽기 위한코드
+        for i in range(int(buffersize)+1):
+                ret, frame = cam.read() # 프레임 읽기
 
+        
         if not ret:             #ret이 False면 중지
             print("이미지가 없습니다.")
             closeCam()

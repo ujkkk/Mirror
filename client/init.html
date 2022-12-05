@@ -43,19 +43,19 @@
         const faceClient = require("./faceRecognition/mqtt")
         const _db = require('./mirror_db')
 
-        faceClient.publish(`${_db.getMirror_id()}/re_login`, String(_db.getMirror_id()))
-        faceClient.publish(`${_db.getMirror_id()}/mirror_id`, String(_db.getMirror_id()))
+        faceClient.publish(`${_db.getMirror_id()}/onCam`, String(_db.getMirror_id()))
+        //faceClient.publish(`${_db.getMirror_id()}/mirror_id`, String(_db.getMirror_id()))
         function f() {
             //_db.setUser(2002)
             // document.location.href=`./new_index.html`
 
             //  _db.setMirror(2004)
             //얼굴인식부터
-            // document.location.href =`./home.html`
+             document.location.href =`./home.html`
 
 
             //로그인된 이후부터
-            _db.setMirror(2000)
+            //_db.setMirror(2000)
 
               //얼굴인식부터
              // document.location.href =`./home.html`

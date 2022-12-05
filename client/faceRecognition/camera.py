@@ -6,15 +6,15 @@ import sys
 import os
 import os.path
 import platform
+import camera_mqtt
 capture_on = False
 createImageFalg = False
 capture_type = ''
 
 osName = platform.system()
-# if(osName == "Windows"):
-#     cam = cv2.VideoCapture(0)
-# else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
-cam = cv2.VideoCapture(cv2.CAP_V4L)
+cam = cv2.VideoCapture(cv2.CAP_ANY)
+cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
+cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 #cam = cv2.VideoCapture(cv2.CAP_V4L2)
 print("os" + osName)
 
@@ -25,44 +25,23 @@ face_classifier = cv2.CascadeClassifier(
 
 def onCam():
     global cam
-    # if(osName == "Windows"):
-    #     cam = cv2.VideoCapture(0)
-    #else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
-    cam = cv2.VideoCapture(cv2.CAP_V4L)
-    cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
-    cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    if (cam == None):
+        cam = cv2.VideoCapture(cv2.CAP_ANY)
+        cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
+        cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
             # #리눅스
             # #cam = cv2.VideoCapture(cv2.CAP_V4L2)
             # #윈도우
             # cam = cv2.VideoCapture(0)
-            # print(cam)
-            # cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
-            # cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-    print('onCam 얼굴인식 : 카메라 켜짐')
+        print('onCam 얼굴인식 : 카메라 켜짐')
     return True
-    # if (cam == None):
-    #     if(osName == "Windows"):
-    #         cam = cv2.VideoCapture(0)
-    #     else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
-    #     cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
-    #     cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-    #     # #리눅스
-    #     # #cam = cv2.VideoCapture(cv2.CAP_V4L2)
-    #     # #윈도우
-    #     # cam = cv2.VideoCapture(0)
-    #     # print(cam)
-    #     # cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
-    #     # cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-    #     print('onCam 얼굴인식 : 카메라 켜짐')
-    #     return True
-    # return True
 
 
 def closeCam():
     global cam
     print('카메라꺼짐')
     cam.release()
-    #cam = None
+    cam = None
 
 def face_extractor(img):
 
