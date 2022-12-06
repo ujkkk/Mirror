@@ -81,7 +81,7 @@ function memo_storage_detail(seq) {
             let date = document.getElementById('memo_storage_detail_date');
 
             //date, time
-            date.innerHTML = moment(memo.time).format('MM-DD HH:mm');
+            //date.innerHTML = moment(memo.time).format('MM-DD HH:mm');
 
             //context
             switch (memo.type) {

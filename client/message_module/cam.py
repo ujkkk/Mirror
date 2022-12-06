@@ -66,7 +66,7 @@ def onCam():
         # if(osName == "Windows"):
         #     cam = cv2.VideoCapture(0)
         # else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
-        cam =cv2.VideoCapture(0, cv2.CAP_V4L)
+        cam =cv2.VideoCapture(cv2.CAP_V4L2)
         cam.set(cv2.CAP_PROP_BUFFERSIZE, 1) # 버퍼크기는 1~10까지 유효함
         buffersize = cam.get(cv2.CAP_PROP_BUFFERSIZE)
         # #리눅스

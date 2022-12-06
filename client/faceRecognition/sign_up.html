@@ -1,12 +1,12 @@
 <html>
     <head>
         <link href="../css/signUp.css" rel="stylesheet">
+        <link rel="stylesheet" href="../new_keyboard_module/keyboard.css">
         <link rel="stylesheet" type="text/css" href="css/loading.css">
         <script src="loading.js"></script>
         <script>
             const client = require("./mqtt");
             const _db = require('../mirror_db');
-
             let signUpBtnFlag = false;
             let btn; // 눌린 버튼 정보 저장
             let btnText="";
@@ -51,6 +51,23 @@
             function returnToHome(){
                 window.history.back();
             }
+            
+            function showKeyboard(e){
+                console.log("안녕하시오오")
+                if (keyboardTarget.keyboard.style.display == "block"){
+                    hideKeyboard()
+                }
+                else {
+                    keyboardTarget.setCurrentTarget(e.target.id);
+                    keyboardTarget.keyboard.style.display="block";
+                }
+            }
+
+            function hideKeyboard(){
+                keyboardTarget.setCurrentTarget(null);
+                keyboardTarget.keyboard.style.display="none";
+            }
+
         </script>
     </head>
     <body>
@@ -61,11 +78,114 @@
         <div id="container">
             <div class="form__group field">
                 <div id="name_id" style="display: none;"></div>
-                <input type="input" class="form__field" placeholder="Name" name="name" id='name' required />
+                <input type="input" class="form__field" placeholder="Name" name="name" id='name' required onclick="showKeyboard(event)"/>
                 <label for="name" class="form__label">Name</label>
             </div>
             <button id="signUpBtn" onclick="singUp()">Sign Up</button>
             <button id="homeBtn" onclick="returnToHome()">Home</button>
         </div>
+        
+     <!-- KEYBOARD UI-->
+    <div id='keyboard-container'>
+        <!-- <div class="line" id="line0" style="display:block;">
+            
+        </div> -->
+        <div class='line' id="line1" style="display:block;">
+            <input type='button' class="key" value="1">
+            <input type='button' class="key" value="2">
+            <input type='button' class="key" value="3">
+            <input type='button' class="key" value="4">
+            <input type='button' class="key" value="5">
+            <input type='button' class="key" value="6">
+            <input type='button' class="key" value="7">
+            <input type='button' class="key" value="8">
+            <input type='button' class="key" value="9">
+            <input type='button' class="key" value="0">
+            <input type='button' class="key" value="←">
+            <input type="button" class="key" value="✕" id="close-keyboard">
+        </div>
+        <div id="keyboard-keys">
+            <div id="ko-keys">
+                <div class='line' id="line2">
+                    <input type='button' class="key ko_changable" value="ㅂ">
+                    <input type='button' class="key ko_changable" value="ㅈ">
+                    <input type='button' class="key ko_changable" value="ㄷ">
+                    <input type='button' class="key ko_changable" value="ㄱ">
+                    <input type='button' class="key ko_changable" value="ㅅ">
+                    <input type='button' class="key" value="ㅛ">
+                    <input type='button' class="key" value="ㅕ">
+                    <input type='button' class="key" value="ㅑ">
+                    <input type='button' class="key ko_changable" value="ㅐ">
+                    <input type='button' class="key ko_changable" value="ㅔ">
+                </div>
+                <div class='line' id="line3">
+                    <input type='button' class="key" value="ㅁ">
+                    <input type='button' class="key" value="ㄴ">
+                    <input type='button' class="key" value="ㅇ">
+                    <input type='button' class="key" value="ㄹ">
+                    <input type='button' class="key" value="ㅎ">
+                    <input type='button' class="key" value="ㅗ">
+                    <input type='button' class="key" value="ㅓ">
+                    <input type='button' class="key" value="ㅏ">
+                    <input type='button' class="key" value="ㅣ">
+                </div>
+                <div class='line' id="line4">
+                    <input type='button' class="key" value="ㅋ">
+                    <input type='button' class="key" value="ㅌ">
+                    <input type='button' class="key" value="ㅊ">
+                    <input type='button' class="key" value="ㅍ">
+                    <input type='button' class="key" value="ㅠ">
+                    <input type='button' class="key" value="ㅜ">
+                    <input type='button' class="key" value="ㅡ">
+                    <input type='button' class="key" value=",">
+                    <input type='button' class="key" value=".">
+                    <input type='button' class="key" value="/">
+                </div>
+            </div>
+            <div id="eng-keys">
+                <div class='line' id="line2">
+                    <input type='button' class="key eng" value="q">
+                    <input type='button' class="key eng" value="w">
+                    <input type='button' class="key eng" value="e">
+                    <input type='button' class="key eng" value="r">
+                    <input type='button' class="key eng" value="t">
+                    <input type='button' class="key eng" value="y">
+                    <input type='button' class="key eng" value="u">
+                    <input type='button' class="key eng" value="i">
+                    <input type='button' class="key eng" value="o">
+                    <input type='button' class="key eng" value="p">
+                </div>
+                <div class='line' id="line3">
+                    <input type='button' class="key eng" value="a">
+                    <input type='button' class="key eng" value="s">
+                    <input type='button' class="key eng" value="d">
+                    <input type='button' class="key eng" value="f">
+                    <input type='button' class="key eng" value="g">
+                    <input type='button' class="key eng" value="h">
+                    <input type='button' class="key eng" value="j">
+                    <input type='button' class="key eng" value="k">
+                    <input type='button' class="key eng" value="l">
+                </div>
+                <div class='line' id="line4">
+                    <input type='button' class="key eng" value="z">
+                    <input type='button' class="key eng" value="x">
+                    <input type='button' class="key eng" value="c">
+                    <input type='button' class="key eng" value="v">
+                    <input type='button' class="key eng" value="b">
+                    <input type='button' class="key eng" value="n">
+                    <input type='button' class="key eng" value="m">
+                    <input type='button' class="key" value=",">
+                    <input type='button' class="key" value=".">
+                    <input type='button' class="key" value="/">
+                </div>
+            </div>
+        </div>
+        <div id="line5">
+            <input type='button' class="key" value="shift" id="shift">
+            <input type='button' class="key" value=" space " id="space">
+            <input type='button' class="key" value="한/영" id="ko-eng">
+        </div>
+    </div>
+    <script src="../new_keyboard_module/keyboard.js"></script>
     </body>
 </html>
