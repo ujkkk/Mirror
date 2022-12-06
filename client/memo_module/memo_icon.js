@@ -269,7 +269,7 @@ function saveMemoContent(e) {
         */
 
 
-        mirror_db.addMemo(mirror_db.getId(), memo_textArea.value, 0, "text")
+        mirror_db.addMemo(mirror_db.getId(), memo_textArea.value, 1, "text")
             .then(() => {
                 memo_storage.showMemoStorage();
                 memo_textArea.value = "";

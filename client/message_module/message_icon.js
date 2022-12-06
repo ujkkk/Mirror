@@ -157,7 +157,7 @@ function MessageSenderView() {
     }
     else {
         inside_label.click()
-        messageAccess.showUserBook();
+        //messageAccess.showUserBook();
     }
 }
 

@@ -1,5 +1,6 @@
 
 const mqtt = require('mqtt');
+const mirrorDB = require("./mirror_db")
 
 const options = {
     host: '192.168.0.2',
@@ -13,7 +14,7 @@ client.on('connect', function () {
 
     console.log("서버 mqtt와 연결");
     //real time message 받는 토픽
-    client.subscribe(`heartRate/4004`);
+    client.subscribe(`heartRate/${mirrorDB.getId()}`);
 })
 
 client.on('message', async (topic, message, packet) => {
@@ -51,7 +52,7 @@ var config = {
 			borderColor: 'rgb(255, 236, 112)',
 			borderWidth: 2,
 			data: [], /* 각 레이블에 해당하는 데이터 */
-			fill : true, /* 그래프 아래가 채워진 상태로 그려집니다. 해보세요 */
+			fill : false, /* 그래프 아래가 채워진 상태로 그려집니다. 해보세요 */
 		}]
 	},
 
