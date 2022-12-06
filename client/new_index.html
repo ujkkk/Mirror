@@ -22,8 +22,11 @@
     <link href="css/call.css" rel="stylesheet">
     <link href="css/message-views.css" rel="stylesheet">
     <link href="css/memo_storage.css" rel="stylesheet">
+    <link href="css/chart.css" rel="stylesheet">
     <!-- <link href="css/touch.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="./new_keyboard_module/keyboard.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" type="text/javascript"></script>
+
     <script>
         function setMemoDeleteBtn(e) {
             let deleteBtns = document.getElementsByClassName("memoDeleteBtn");
@@ -50,6 +53,12 @@
 </head>
 
 <body>
+    <div id="heart-container">
+	<canvas id="canvasHeart" style="height: 2vw;"></canvas>
+    <div id="HeartRate">-- </div>
+    <div class="heart"></div>
+    </div>
+
     <!-- <div class="cursor"></div> -->
     <article id="container">
         <div class="weather_ui">
@@ -577,6 +586,7 @@
             <input type='button' class="key" value="한/영" id="ko-eng">
         </div>
     </div>
+    
 </body>
 <script src="new_clock.js"></script>
 <!-- <!—

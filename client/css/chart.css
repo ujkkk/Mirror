@@ -1,0 +1,66 @@
+#heart-container {
+    position: absolute;
+    top: 28vw;
+    right: 7.6vw;
+    width: 5vw;
+    height: 5vw;
+    text-align: right;
+}
+
+#canvasHeart {
+    position: absolute;
+    width: 7.5vw;
+    top: 2vh;
+}
+
+#HeartRate {
+    display: inline-block;
+    position: absolute;
+    font-size: 2.5vw;
+    line-height: 5vw;
+    right: 0vw;
+    top: -6vh;
+}
+
+  .heart {
+    position: absolute;
+    width: 1.1vh;
+    height: 1.1vh;
+    line-height: 5vw;
+    top: -4vh;
+    right: -1.5vw;
+    background: #f00;
+    transform: rotate(45deg) translate(10px, 10px);
+    animation: heartbeat 2s linear infinite;
+  }
+  .heart:before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f00;
+    border-radius: 50%;
+    
+  }
+  .heart:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -50%;
+    width: 100%;
+    height: 100%;
+    background: #f00;
+    border-radius: 50%;
+  }
+  
+@keyframes heartbeat {
+    0% { transform: rotate(45deg) translate(10px, 10px) scale(1); }
+    25% { transform: rotate(45deg) translate(10px, 10px) scale(1); }
+    30% { transform: rotate(45deg) translate(10px, 10px) scale(1.4); }
+    50% { transform: rotate(45deg) translate(10px, 10px) scale(1.2); }
+    70% { transform: rotate(45deg) translate(10px, 10px) scale(1.4); }
+    90% { transform: rotate(45deg) translate(10px, 10px) scale(1); }
+    100% { transform: rotate(45deg) translate(10px, 10px) scale(1); }
+}

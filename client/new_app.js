@@ -4,6 +4,7 @@ const callAccess = require('./call_module/call')
 var outerClient
 // 날씨 모듈 불러오기
 require('./weather_module/new_weather')
+require('./heartRateChart')
 
 const fs = require('fs');
 const receivedData = location.href.split('?')[1]
