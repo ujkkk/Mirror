@@ -1,19 +1,35 @@
 
 from formatter import NullWriter
 from venv import create
+import paho.mqtt.client as mqtt
 import cv2
 import sys
 import os
 import os.path
 import platform
+
+
+# 미러 바뀔 때마다 수동으로 설정해줘야 한다
+mirror_id = 200
+broker_ip = "192.168.0.2" # 현재 이 컴퓨터를 브로커로 설정
+
 capture_on = False
 createImageFalg = False
 capture_type = ''
 
+
+#broker_ip = "127.0.0.1"
+print('broker_ip : ' + broker_ip)
+client = mqtt.Client()
+client.connect(broker_ip, 1883)
+client.loop_start()   
+
 osName = platform.system()
-if(osName == "Windows"):
-    cam = cv2.VideoCapture(0)
-else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
+#cam = cv2.VideoCapture(cv2.CAP_V4L2)
+cam = cv2.VideoCapture(cv2.CAP_V4L)
+cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
+cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+#cam = cv2.VideoCapture(cv2.CAP_V4L2)
 print("os" + osName)
 
 face_classifier = cv2.CascadeClassifier(
@@ -23,43 +39,23 @@ face_classifier = cv2.CascadeClassifier(
 
 def onCam():
     global cam
-    if(osName == "Windows"):
-        cam = cv2.VideoCapture(0)
-    else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
-    cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
-    cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    if (cam == None):
+        cam = cv2.VideoCapture(cv2.CAP_V4L)
+        cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
+        cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
             # #리눅스
             # #cam = cv2.VideoCapture(cv2.CAP_V4L2)
             # #윈도우
             # cam = cv2.VideoCapture(0)
-            # print(cam)
-            # cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
-            # cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-    print('onCam 얼굴인식 : 카메라 켜짐')
+        print('onCam 얼굴인식 : 카메라 켜짐')
     return True
-    # if (cam == None):
-    #     if(osName == "Windows"):
-    #         cam = cv2.VideoCapture(0)
-    #     else: cam = cv2.VideoCapture(cv2.CAP_V4L2)
-    #     cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
-    #     cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-    #     # #리눅스
-    #     # #cam = cv2.VideoCapture(cv2.CAP_V4L2)
-    #     # #윈도우
-    #     # cam = cv2.VideoCapture(0)
-    #     # print(cam)
-    #     # cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
-    #     # cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-    #     print('onCam 얼굴인식 : 카메라 켜짐')
-    #     return True
-    # return True
 
 
 def closeCam():
     global cam
     print('카메라꺼짐')
     cam.release()
-    #cam = None
+    cam = None
 
 def face_extractor(img):
 
@@ -80,16 +76,6 @@ def face_extractor(img):
 
 
 def createCropImage(userName, dir_path, countN):
-    # global cam
-    # if(cam == None):
-    #     onCam()
-
-    # elif(cam != None):
-    #     if not cam.isOpened():
-    #        onCam()
-    # else:
-    #     print("createImage")
-    #onCam()
     global cam
 
     dir_path = os.path.join(dir_path, userName)
@@ -110,12 +96,13 @@ def createCropImage(userName, dir_path, countN):
                 #face/login/user
                 cv2.imwrite(dir_path + '/'+file_name_path, face)
             else:
+                client.publish(f'{mirror_id}/error', 'notFound')
                 print("Face not Found")
                 pass
 
             if cv2.waitKey(1) == 13 or count == countN:
                 break
-
+        client.publish(f'{mirror_id}/error', 'ok')
         cv2.destroyAllWindows()
         return dir_path
 

@@ -1,4 +1,4 @@
-*{
+/* *{
     list-style: none;
 }
 #memo-container{
@@ -15,7 +15,7 @@
    
 }
 #memo-img #memo-icon {
-    /* position: absolute; */
+   
     display: inline;
     height: 20px;
     width: 20px;
@@ -52,9 +52,9 @@
     height: 100%;
     
 }
-/* #memo-slider-wrap ul#memo-slider li>.memo  */
+
 .memo {
-    /* position: absolute; */
+
     margin-left: 10%;
     margin-bottom: 7%;
     width: 80%;
@@ -64,6 +64,7 @@
     position: relative;
 
 }
+
 #memo-slider-wrap ul#memo-slider li>.memo h3 {
     font-size: 18px;
     color:wheat;
@@ -110,10 +111,9 @@
    
 }
 
-/*ANIMATION*/
 #memo-slider-wrap ul,
 #memo-slider-pagination-wrap ul li {
     -webkit-transition: all 0.3s cubic-bezier(1, .01, .32, 1);
     -o-transition: all 0.3s cubic-bezier(1, .01, .32, 1);
     transition: all 0.3s cubic-bezier(1, .01, .32, 1);
-}
+} */

@@ -38,6 +38,7 @@
     height: 100%;
     position: relative;
     overflow: hidden;
+    
 }
 #memo-slider-wrap ul #memo-slider {
     height: 100%;
@@ -56,7 +57,7 @@
 }
 /* #memo-slider-wrap ul#memo-slider li>.memo  */
 .memo {
-    /* position: absolute; */
+    position: absolute;
     margin-left: 2vw;
     margin-bottom: 1vw;
     width: 20vh;

@@ -32,15 +32,17 @@ client.on('connect', function () {
   client.subscribe(`${_db.getMirror_id()}/createAccount/check`)
   client.subscribe(`${_db.getMirror_id()}/exist/check`)
   client.subscribe(`${_db.getMirror_id()}/reTrain/check`)
-  client.subscribe(`${_db.getMirror_id()}/camera/check`)
- 
- 
-
+  client.subscribe(`${_db.getMirror_id()}/error`);
 })
 
 
 //여기 mqtt는 모두 얼굴인식 서버로부터 온 결과를 미러에 보여주는 역할
 client.on('message', (topic, message, packet) => {
+  let loginBtnFlag = false;
+  let signUpBtnFlag = false;
+
+  let btn; // 눌린 버튼 정보 저장
+  let btnText="";
 
   if (topic ==`${_db.getMirror_id()}/reTrain/check`) {
     msg = String(message)
@@ -48,34 +50,7 @@ client.on('message', (topic, message, packet) => {
     createLoginMessage.createMessage(String(msg) + '폴더로 재학습 되었습니다.')
     loading.stopLoading();
   }
-  if (topic ==`${_db.getMirror_id()}/camera/check`){
-    
-    console.log("testest");
-    var camera_check = document.getElementById("camera-check")
-    camera_check.style.color = "yellow";
-  }
-  // if (topic == "exist/check") {
-  //   user_id = String(message)
-  //   setUserId(user_id)
-  //   if (user_id == 'NULL') {
-  //     //회원가입 하게 만들기
-  //     document.location.href = './faceRecognition/sign_up.html'
-  //   }
-  //   else {
-  //     _db.select('name', 'user', `id =${user_id}`)
-  //       .then(values => {
-  //         if (values.length <= 0) {
-  //           //회원가입 하게 만들기
-  //           document.location.href = './faceRecognition/sign_up.html'
-  //           return;
-  //         }
-  //         document.getElementById("loginMessage").innerHTML = (String(values[0].name)) + "님은 이미 가입된 유저입니다."
-
-  //         loading.stopLoading();
-  //       })
-  //   }
-
-  // }
+  
   //서버에서 로그인을 하고 신호가 들어옴
   if (topic == `${_db.getMirror_id()}/loginCheck`) {
     console.log("topic == loginCheck")
@@ -83,17 +58,19 @@ client.on('message', (topic, message, packet) => {
     user_id = message
     console.log('loginCheck : 디비에서 이름 받아오기')
     if (user_id == 'NULL') {
-      createLoginMessage.createLoginMessage(String('등록된 유저가 아닙니다.'))
+      createLoginMessage.createMessage(String('등록된 유저가 아닙니다.'))
       loading.stopLoading();
     }
     else {
 
       _db.select('name', 'user', `id =${user_id}`)
         .then(values => {
-          if (values.length <= 0) {
-            createLoginMessage.createLoginMessage(String('등록된 유저가 아닙니다.'))
-          }
           loading.stopLoading();
+          if (values.length <= 0) {
+            createLoginMessage.createMessage(String('등록된 유저가 아닙니다.'))
+            return;
+          }
+          
           // 'oo님 환영합니다' 문구 
           createLoginMessage.createLoginMessage(String(values[0].name))
           var mirror_id_ = _db.getMirror_id()
@@ -104,6 +81,7 @@ client.on('message', (topic, message, packet) => {
 
         })
     }
+
   }
 
   //서버에서 계정을 추가하고 신호가 올 때
@@ -136,6 +114,28 @@ client.on('message', (topic, message, packet) => {
      
     // })
   }
+    // if (topic == "exist/check") {
+  //   user_id = String(message)
+  //   setUserId(user_id)
+  //   if (user_id == 'NULL') {
+  //     //회원가입 하게 만들기
+  //     document.location.href = './faceRecognition/sign_up.html'
+  //   }
+  //   else {
+  //     _db.select('name', 'user', `id =${user_id}`)
+  //       .then(values => {
+  //         if (values.length <= 0) {
+  //           //회원가입 하게 만들기
+  //           document.location.href = './faceRecognition/sign_up.html'
+  //           return;
+  //         }
+  //         document.getElementById("loginMessage").innerHTML = (String(values[0].name)) + "님은 이미 가입된 유저입니다."
+
+  //         loading.stopLoading();
+  //       })
+  //   }
+
+  // }
 })
 
 

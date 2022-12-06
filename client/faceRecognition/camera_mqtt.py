@@ -9,6 +9,7 @@ from datetime import datetime
 
 # 미러 바뀔 때마다 수동으로 설정해줘야 한다
 mirror_id = 200
+broker_ip = "192.168.0.2" # 현재 이 컴퓨터를 브로커로 설정
 
 new_account_flag = False
 login_flag = False
@@ -39,20 +40,14 @@ def on_connect(client, userdata, flag, rc):
     
     
 
-
+def sendError():
+    client.publish(f'${mirror_id}/error')
 
 def on_message(client, userdata, msg):
    # print(f"222얼굴인식 camera_mqtt 연결 : ${mirror_id}" )
    # global mirror_id
     message = msg.payload.decode("utf-8")
     print('받은 topic : ' + msg.topic)
-  #  print("받은 payload : " + str(message))
-        #최초 미러 실행시 mirror_id 셋팅
-    # if (msg.topic == '${mirror_id}/mirror_id'):
-    #     mirror_id = str(message)
-    #     client.unsubscribe('${mirror_id}/mirror_id')
-    #     if(str(mirror_id)== str(message)):
-    #         camera.onCam()
         
     
     if(msg.topic == f'{mirror_id}/onCam'):
@@ -68,9 +63,7 @@ def on_message(client, userdata, msg):
         # if(str(mirror_id)== str(message)):
         camera.closeCam()
     elif(msg.topic == f'{mirror_id}/re_login'):
-        print("클랙 해도 됨")
-        #if(str(mirror_id)== str(message)):
-        client.publish(f'{mirror_id}/camera/check', mirror_id)
+        print("클릭 해도 됨")
         camera.onCam()
 
     elif(msg.topic == f'{mirror_id}/login/camera'):
@@ -106,9 +99,11 @@ def on_message(client, userdata, msg):
         exist_flag = True
         
 
-broker_ip = "192.168.0.2" # 현재 이 컴퓨터를 브로커로 설정
+
 #broker_ip = "127.0.0.1"
 print('broker_ip : ' + broker_ip)
+
+
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
@@ -161,8 +156,10 @@ while True :
             # 카메라로 사진 찍어서 얼굴부분만 크롭해서 저장
             dir_name = os.path.join('face','train')
             saved_folder = camera.createCropImage('user', dir_name, 20)
+           
             # 사진 넘겨주기
             imagelist = camera.load_image(saved_folder)
+            
             for i in range(20) :
                 imageByte = imagelist.pop()        
                 # 서버에 보냄   
