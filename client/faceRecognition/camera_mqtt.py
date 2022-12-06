@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 
 # 미러 바뀔 때마다 수동으로 설정해줘야 한다
-mirror_id = 400
+mirror_id = 200
 
 new_account_flag = False
 login_flag = False
@@ -37,7 +37,10 @@ def on_connect(client, userdata, flag, rc):
     client.subscribe(f'{mirror_id}/delete/camera')
     client.subscribe(f'{mirror_id}/re_login')
     
+    
 
+def sendError():
+    client.publish(f'${mirror_id}/error')
 
 def on_message(client, userdata, msg):
    # print(f"222얼굴인식 camera_mqtt 연결 : ${mirror_id}" )

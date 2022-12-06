@@ -40,7 +40,7 @@ function addEvent(length){
     //set width to be 'x' times the number of slides
     slider = document.querySelector('#memo-slider-wrap ul#memo-slider');
     slider.style.width = (sliderWidth * totalSlides)+ 'px';
-
+   // slider.style.height = 500+ 'px';
     // next, prev
     nextBtn = document.getElementById('memo_next');
     prevBtn = document.getElementById('memo_previous');

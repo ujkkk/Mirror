@@ -41,8 +41,8 @@ mirrorDB.setUser(receivedData)
 
         const message_storage = require('./message_module/message_storage')
         message_storage.showMessageStorage();
-       // const memo_stroage = require('./memo_module/memo_storage');
-       // memo_stroage.showMemoStorage();
+        const memo_stroage = require('./memo_module/memo_storage');
+        memo_stroage.showMemoStorage();
     })
 require('./weather_module/new_weather');
 

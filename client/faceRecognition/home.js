@@ -10,7 +10,7 @@ let btnText="";
 
 client.subscribe(`${mirrorDB.getId()}/error`); // face not found를 위한 토픽 : "error"
 client.on('message', (topic, message, packet) =>{
-   if(topic == "${mirrorDB.getId()}/error"){
+   if(topic == `${mirrorDB.getId()}/error`){
        var msg = String(message);
        const warningText = "Face Not Found";
         console.log("error 도착")

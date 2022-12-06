@@ -1,18 +1,27 @@
 
 from formatter import NullWriter
 from venv import create
+import paho.mqtt.client as mqtt
 import cv2
 import sys
 import os
 import os.path
 import platform
-import camera_mqtt
+
 capture_on = False
 createImageFalg = False
 capture_type = ''
 
+broker_ip = "192.168.0.2" # 현재 이 컴퓨터를 브로커로 설정
+#broker_ip = "127.0.0.1"
+print('broker_ip : ' + broker_ip)
+client = mqtt.Client()
+client.connect(broker_ip, 1883)
+client.loop_start()   
+
 osName = platform.system()
-cam = cv2.VideoCapture(cv2.CAP_ANY)
+#cam = cv2.VideoCapture(cv2.CAP_V4L2)
+cam = cv2.VideoCapture(0)
 cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
 cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 #cam = cv2.VideoCapture(cv2.CAP_V4L2)
@@ -26,7 +35,7 @@ face_classifier = cv2.CascadeClassifier(
 def onCam():
     global cam
     if (cam == None):
-        cam = cv2.VideoCapture(cv2.CAP_ANY)
+        cam = cv2.VideoCapture(0)
         cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
         cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
             # #리눅스
