@@ -195,7 +195,7 @@ function message_storage_detail(e) {
                         context.appendChild(img);
                         break;
                     case 'audio':
-                        var audio_folder = './message_module/record/audio/client/';
+                        var audio_folder = './message_module/audio/';
                         var audio = document.createElement('audio');
                         audio.setAttribute('id', 'storage-audio');
                         audio.controls = 'controls';

@@ -388,7 +388,8 @@ const liClickEvent = (value, send_option) => new Promise((resolve, reject) => {
                     var base64 = reader.result; // base64 인코딩 된 스트링 데이터가 result 속성에 담아지게 됩니다.
                     // console.log(`After Audio Base64 : ${base64}`)
                     // var base64Audio = base64.split(',').reverse()[0];
-                    var base64Audio = base64.split(',')[1];
+                    var base64Audio = base64.split(',').reverse()[0];
+                    console.log(`base64Audio : ${base64Audio}`)
 
                     new Promise((resolve, reject) => {
                         var bstr = atob(base64Audio); // base64String 

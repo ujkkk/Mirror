@@ -113,7 +113,7 @@ function message_detail(msg_id) {
                     detail_content_div.appendChild(img);
                     break;
                 case 'audio':
-                    var audio_folder = './message_module/record/audio/client/';
+                    var audio_folder = './message_module/audio/';
                     var audio = document.createElement('audio');
                     detail_content_div.innerHTML = '';
                     audio.setAttribute('id', 'message-audio');
