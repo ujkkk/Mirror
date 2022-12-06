@@ -16,6 +16,7 @@
     "@google-cloud/speech": "^4.10.2",
     "@types/socket.io-client": "^3.0.0",
     "axios": "^0.27.2",
+    "chart.js": "^4.0.1",
     "cucumber": "^6.0.7",
     "electron": "^19.0.8",
     "errorhandler": "^1.5.1",

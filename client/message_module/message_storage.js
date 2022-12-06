@@ -5,6 +5,10 @@ var freinds_obj = {};
 var freinds_obj_rep = {};
 var currunt_sender = '';
 
+const message_send_watch = document.getElementById('message_send_watch')
+const progressbar = document.getElementById("progressbar-container")
+let progressbar_time
+
 //message storage 생성
 function showMessageStorage() {
     _db.select('*', 'message', `receiver =${_db.getId()}`)
@@ -85,9 +89,7 @@ function create_storage(messages) {
         })
 }
 
-const message_send_watch = document.getElementById('message_send_watch')
-const progressbar = document.getElementById("progressbar-container")
-let progressbar_time
+
 
 // const admin = require("firebase-admin");
 
@@ -100,23 +102,29 @@ let progressbar_time
 
 // -------------------------------------------------------- message watch로 알림 보내기 ----------------------------------------------------------
 function messageSendWatch(sender_id, content) {
-    clearTimeout(progressbar_time);
+    clearTimeout(progressbar_time)
+    progressbar.style.display = "none"
 
     _db.select('*', 'friend', `id=${_db.getId()} and friend_id=${sender_id}`)
         //freinds_obj[sender] = name 객체 생성
         .then(friends => {
 
             // ======================= mqtt 보내기 =======================
-            let testData = JSON.parse(JSON.stringify({ senderName: friends[0].name, content: content})); // json
-            let string = JSON.stringify(testData); // json -> string으로 변환
-            mqttClient.publish(`watch/4004`, string)
-            
+            let name
+            if (friends[0] == undefined) {
+                name = sender_id
+            }
+            else {
+                name = friends[0].name
+            }
+                let testData = JSON.parse(JSON.stringify({ senderName: name, content: content})); // json
+                let string = JSON.stringify(testData); // json -> string으로 변환
+                mqttClient.publish(`watch/4004`, string)
             // ======================= 알림 보내기 =======================
-            progressbar.style.display = "none"
             const registrationToken = 'eoseBGH-RUKEMbCZXoeC9u:APA91bHOgMlPnHy8LzH8Uv1hOGFo2Gz-egtFwz4HpSPZut-mYkFt2CWG0V60PkzEnCNUvg48oYlMpCcUIJ38n5H-qEQ5pMIUQy_2mEuyd_FSv8oCAZh3Na4mD-GDay360UHM-pZKIGHJ';
             const message = {
                 notification: {
-                    title: friends[0].name,
+                    title: name,
                     body: content
                 },
                 token: registrationToken
