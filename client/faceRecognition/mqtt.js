@@ -32,11 +32,17 @@ client.on('connect', function () {
   client.subscribe(`${_db.getMirror_id()}/createAccount/check`)
   client.subscribe(`${_db.getMirror_id()}/exist/check`)
   client.subscribe(`${_db.getMirror_id()}/reTrain/check`)
+  client.subscribe(`${_db.getMirror_id()}/error`);
 })
 
 
 //여기 mqtt는 모두 얼굴인식 서버로부터 온 결과를 미러에 보여주는 역할
 client.on('message', (topic, message, packet) => {
+  let loginBtnFlag = false;
+  let signUpBtnFlag = false;
+
+  let btn; // 눌린 버튼 정보 저장
+  let btnText="";
 
   if (topic ==`${_db.getMirror_id()}/reTrain/check`) {
     msg = String(message)
@@ -44,7 +50,36 @@ client.on('message', (topic, message, packet) => {
     createLoginMessage.createMessage(String(msg) + '폴더로 재학습 되었습니다.')
     loading.stopLoading();
   }
+  if(topic == `${_db.getMirror_id()}/error`){
+    var msg = String(message);
+    const warningText = "Face Not Found";
+     console.log("error 도착")
+    return
 
+    if(loginBtnFlag){ // Login 버튼을 눌렀는데 얼굴이 안 보일 경우
+        btn = document.getElementById("loginBtn");
+        btnText = "Login";
+        loginBtnFlag = false;
+        console.log("1도착")
+    }
+    else if(signUpBtnFlag){ // Sign Up 버튼을 눌렀는데 얼굴이 안 보일 경우
+        btn = document.getElementById("signUpBtn");
+        btnText = "Sign Up";
+        signUpBtnFlag = false;
+        console.log("2 도착")
+    }
+
+    if(msg == "notFound"){ // 그 버튼에 Error 문구 띄우기
+        btn.textContent  = warningText;
+        console.log("3 도착")
+        btn.setAttribute("style", "color: red; border: solid 3px red; box-shadow: 0 0 25px red;");
+    }
+    else { // 얼굴을 찾았을 경우 버튼 복구
+        btn.textContent = btnText;
+        console.log("4 도착")
+        btn.setAttribute("style", "color: white; border: solid 2px white;");
+    }
+}
   // if (topic == "exist/check") {
   //   user_id = String(message)
   //   setUserId(user_id)

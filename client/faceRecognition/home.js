@@ -2,43 +2,12 @@ const client = require("./faceRecognition/mqtt");
 const _db = require('./mirror_db');
 const loading = require("./faceRecognition/loading");
 
-let loginBtnFlag = false;
-let signUpBtnFlag = false;
 
-let btn; // 눌린 버튼 정보 저장
-let btnText="";
 
-client.subscribe(`${mirrorDB.getId()}/error`); // face not found를 위한 토픽 : "error"
-client.on('message', (topic, message, packet) =>{
-   if(topic == `${mirrorDB.getId()}/error`){
-       var msg = String(message);
-       const warningText = "Face Not Found";
-        console.log("error 도착")
-       if(loginBtnFlag){ // Login 버튼을 눌렀는데 얼굴이 안 보일 경우
-           btn = document.getElementById("loginBtn");
-           btnText = "Login";
-           loginBtnFlag = false;
-           console.log("1도착")
-       }
-       else if(signUpBtnFlag){ // Sign Up 버튼을 눌렀는데 얼굴이 안 보일 경우
-           btn = document.getElementById("signUpBtn");
-           btnText = "Sign Up";
-           signUpBtnFlag = false;
-           console.log("2 도착")
-       }
-
-       if(msg == "notFound"){ // 그 버튼에 Error 문구 띄우기
-           btn.textContent  = warningText;
-           console.log("3 도착")
-           btn.setAttribute("style", "color: red; border: solid 3px red; box-shadow: 0 0 25px red;");
-       }
-       else { // 얼굴을 찾았을 경우 버튼 복구
-           btn.textContent = btnText;
-           console.log("4 도착")
-           btn.setAttribute("style", "color: white; border: solid 2px white;");
-       }
-   }
-})
+ // face not found를 위한 토픽 : "error"
+// client.on('message', (topic, message, packet) =>{
+   
+// })
 
 // Login 버튼을 눌렀을 때
 function login(){

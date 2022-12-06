@@ -9,6 +9,7 @@ from datetime import datetime
 
 # 미러 바뀔 때마다 수동으로 설정해줘야 한다
 mirror_id = 200
+broker_ip = "192.168.0.2" # 현재 이 컴퓨터를 브로커로 설정
 
 new_account_flag = False
 login_flag = False
@@ -98,9 +99,11 @@ def on_message(client, userdata, msg):
         exist_flag = True
         
 
-broker_ip = "192.168.0.2" # 현재 이 컴퓨터를 브로커로 설정
+
 #broker_ip = "127.0.0.1"
 print('broker_ip : ' + broker_ip)
+
+
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message

@@ -8,11 +8,16 @@ import os
 import os.path
 import platform
 
+
+# 미러 바뀔 때마다 수동으로 설정해줘야 한다
+mirror_id = 200
+broker_ip = "192.168.0.2" # 현재 이 컴퓨터를 브로커로 설정
+
 capture_on = False
 createImageFalg = False
 capture_type = ''
 
-broker_ip = "192.168.0.2" # 현재 이 컴퓨터를 브로커로 설정
+
 #broker_ip = "127.0.0.1"
 print('broker_ip : ' + broker_ip)
 client = mqtt.Client()
@@ -71,16 +76,6 @@ def face_extractor(img):
 
 
 def createCropImage(userName, dir_path, countN):
-    # global cam
-    # if(cam == None):
-    #     onCam()
-
-    # elif(cam != None):
-    #     if not cam.isOpened():
-    #        onCam()
-    # else:
-    #     print("createImage")
-    #onCam()
     global cam
 
     dir_path = os.path.join(dir_path, userName)
@@ -101,6 +96,7 @@ def createCropImage(userName, dir_path, countN):
                 #face/login/user
                 cv2.imwrite(dir_path + '/'+file_name_path, face)
             else:
+                client.publish(f'{mirror_id}/error', 'error')
                 print("Face not Found")
                 pass
 
