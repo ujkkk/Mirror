@@ -156,8 +156,10 @@ while True :
             # 카메라로 사진 찍어서 얼굴부분만 크롭해서 저장
             dir_name = os.path.join('face','train')
             saved_folder = camera.createCropImage('user', dir_name, 20)
+           
             # 사진 넘겨주기
             imagelist = camera.load_image(saved_folder)
+            
             for i in range(20) :
                 imageByte = imagelist.pop()        
                 # 서버에 보냄   

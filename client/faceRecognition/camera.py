@@ -26,7 +26,7 @@ client.loop_start()
 
 osName = platform.system()
 #cam = cv2.VideoCapture(cv2.CAP_V4L2)
-cam = cv2.VideoCapture(0)
+cam = cv2.VideoCapture(cv2.CAP_V4L)
 cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
 cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 #cam = cv2.VideoCapture(cv2.CAP_V4L2)
@@ -40,7 +40,7 @@ face_classifier = cv2.CascadeClassifier(
 def onCam():
     global cam
     if (cam == None):
-        cam = cv2.VideoCapture(0)
+        cam = cv2.VideoCapture(cv2.CAP_V4L)
         cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
         cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
             # #리눅스
@@ -96,13 +96,13 @@ def createCropImage(userName, dir_path, countN):
                 #face/login/user
                 cv2.imwrite(dir_path + '/'+file_name_path, face)
             else:
-                client.publish(f'{mirror_id}/error', 'error')
+                client.publish(f'{mirror_id}/error', 'notFound')
                 print("Face not Found")
                 pass
 
             if cv2.waitKey(1) == 13 or count == countN:
                 break
-
+        client.publish(f'{mirror_id}/error', 'ok')
         cv2.destroyAllWindows()
         return dir_path
 
