@@ -309,7 +309,7 @@ function reply_message() {
         }
         //reciever의 접속 여부 알아내기
         console.log('답장 받을 유저의 이름 ',(value[0].name));
-        axios({method:'post',url:'http://113.198.84.128:80/get/connect', data:{id:receiver_id}})
+        axios({method:'post',url:'http://192.168.0.2:9000/get/connect', data:{id:receiver_id}})
         .then((response) =>{
            // console.log(response);
            if(response.data.connect == 'fail'){

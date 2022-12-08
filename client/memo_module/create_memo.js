@@ -28,7 +28,7 @@ send_record_button.addEventListener("click", submitMemo);
 
 const options = { // 브로커 정보(ip, port)
     host: '127.0.0.1',
-    port: 1883
+    port: ssssss
 };
 
 let isClicked = false; // 전송버튼 누름
@@ -117,7 +117,7 @@ function submitMemo(){
                         console.log("여기가 먼저 불려야함");
                         axios({
                             method:'post',
-                            url:'http://113.198.84.128:80/connect/user',
+                            url:'http://192.168.0.1:9000/connect/user',
                             data: {
                                 userData:checkConnectedUser
                             }
@@ -267,7 +267,7 @@ function insertOtherUserDB(user){
     /* 다른 미러 내 사용자 */
     axios({
         method:'post',
-        url:'http://113.198.84.128:80/send/text',
+        url:'http://192.168.0.1:9000/send/text',
         data: {
             sender: mirrorDB.getId(),
             receiver: user.id,

@@ -6,7 +6,7 @@ const options = {
     host: '192.168.0.2',
     port: 1883
 };
-
+console.log("#######################");
 const HeartRate = document.getElementById("HeartRate")
 
 const client = mqtt.connect(options);
@@ -14,7 +14,8 @@ client.on('connect', function () {
 
     console.log("서버 mqtt와 연결");
     //real time message 받는 토픽
-    client.subscribe(`heartRate/${mirrorDB.getId()}`);
+    //client.subscribe(`heartRate/${mirrorDB.getId()}`);
+	client.subscribe(`heartRate/${mirrorDB.getId()}`);
 })
 
 client.on('message', async (topic, message, packet) => {
@@ -22,7 +23,7 @@ client.on('message', async (topic, message, packet) => {
     console.log(`topic is ${topic}`);
 
     //로그인시 서버로부터 받은 메시지 저장 
-    if (topic == `heartRate/4004`) {
+    if (topic == `heartRate/${mirrorDB.getId()}`) {
         const bytesString = String.fromCharCode(...message) // byte -> string으로 변환
 
         console.log("type: string - "+bytesString);

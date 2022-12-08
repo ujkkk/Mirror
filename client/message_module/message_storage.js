@@ -119,7 +119,7 @@ function messageSendWatch(sender_id, content) {
             }
                 let testData = JSON.parse(JSON.stringify({ senderName: name, content: content})); // json
                 let string = JSON.stringify(testData); // json -> string으로 변환
-                mqttClient.publish(`watch/4004`, string)
+                mqttClient.publish(`watch/${_db.getId()}`, string)
             // ======================= 알림 보내기 =======================
             const registrationToken = 'eoseBGH-RUKEMbCZXoeC9u:APA91bHOgMlPnHy8LzH8Uv1hOGFo2Gz-egtFwz4HpSPZut-mYkFt2CWG0V60PkzEnCNUvg48oYlMpCcUIJ38n5H-qEQ5pMIUQy_2mEuyd_FSv8oCAZh3Na4mD-GDay360UHM-pZKIGHJ';
             const message = {

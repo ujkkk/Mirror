@@ -5,13 +5,13 @@ var outerClient
 // 날씨 모듈 불러오기
 require('./weather_module/new_weather')
 require('./heartRateChart')
-
+require('./mqtt')
 const fs = require('fs');
 const receivedData = location.href.split('?')[1]
 let mirrorDB = require('./mirror_db')
 var socket;
 
-var outterClient = require('./mqtt')
+//var outterClient = require('./mqtt')
 mirrorDB.setUser(receivedData)
     .then((user) => {          
         //const socket = require('./message_module/message_socket');
@@ -54,11 +54,11 @@ const { contextIsolated } = require('process');
 var datas = [];
 //outterClient.publish("server/user/connect", mirrorDB.getId())
 
-//axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
+//axios.get(`http://192.168.0.2:9000/check/${mirrorDB.getId()}`)
 
 
 
-// axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
+// axios.get(`http://192.168.0.2:9000/check/${mirrorDB.getId()}`)
 //     .then(response => {
 
 //         for (let i = 0; i < response.data.contents.length; i++) {
@@ -102,7 +102,7 @@ var datas = [];
 //             let data = datas[i];
 //             if (data.type == 'image') {
 //                 axios({
-//                     url: 'http://113.198.84.128:80/get/image', // 통신할 웹문서
+//                     url: 'http://192.168.0.2:9000/get/image', // 통신할 웹문서
 //                     method: 'post', // 통신할 방식
 //                     data: { fileName: data.content }
 //                 })//받아온 파일 저장
@@ -124,7 +124,7 @@ var datas = [];
 
 //             } else if (data.type == 'audio') {
 //                 axios({
-//                     url: 'http://113.198.84.128:80/get/audio', // 통신할 웹문서
+//                     url: 'http://192.168.0.2:9000/get/audio', // 통신할 웹문서
 //                     method: 'post', // 통신할 방식
 //                     data: { fileName: data.content }
 //                 })//받아온 파일 저장
@@ -147,7 +147,7 @@ var datas = [];
 
 
 
-// axios.get(`http://113.198.84.128:80/check/${mirrorDB.getId()}`)
+// axios.get(`http://192.168.0.2:9000/check/${mirrorDB.getId()}`)
 //     .then(response => {
 
 //         for (let i = 0; i < response.data.contents.length; i++) {
@@ -191,7 +191,7 @@ var datas = [];
 //             let data = datas[i];
 //             if (data.type == 'image') {
 //                 axios({
-//                     url: 'http://113.198.84.128:80/get/image', // 통신할 웹문서
+//                     url: 'http://192.168.0.2:9000/get/image', // 통신할 웹문서
 //                     method: 'post', // 통신할 방식
 //                     data: { fileName: data.content }
 //                 })//받아온 파일 저장
@@ -213,7 +213,7 @@ var datas = [];
 
 //             } else if (data.type == 'audio') {
 //                 axios({
-//                     url: 'http://113.198.84.128:80/get/audio', // 통신할 웹문서
+//                     url: 'http://192.168.0.2:9000/get/audio', // 통신할 웹문서
 //                     method: 'post', // 통신할 방식
 //                     data: { fileName: data.content }
 //                 })//받아온 파일 저장
@@ -247,7 +247,7 @@ var datas = [];
 //     }).then(() => {
 //         //서버에게 메시지 잘 받았다고 보내기
 //         axios({
-//             url: 'http://113.198.84.128:80/set/userState', // 통신할 웹문서
+//             url: 'http://192.168.0.2:9000/set/userState', // 통신할 웹문서
 //             method: 'post', // 통신할 방식
 //             data: { id: mirrorDB.getId() }
 //         }).then(()=>{

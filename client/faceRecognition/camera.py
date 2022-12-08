@@ -10,8 +10,8 @@ import platform
 
 
 # 미러 바뀔 때마다 수동으로 설정해줘야 한다
-mirror_id = 200
-broker_ip = "192.168.0.2" # 현재 이 컴퓨터를 브로커로 설정
+mirror_id = 400
+broker_ip = "192.168.0.1" # 현재 이 컴퓨터를 브로커로 설정
 
 capture_on = False
 createImageFalg = False

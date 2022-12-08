@@ -92,7 +92,7 @@ memo_send_watch.addEventListener('click', () => {
 
      const bytes = toBytes(string); // string -> bytearray로 변환
     //mqttClient.publish(`watch/4004`, bytes) // byte보내고 싶으면 이코드 하지만.. 에러남
-    mqttClient.publish(`watch/4004`, string)
+    mqttClient.publish(`watch/${_db.getId()}`, string)
 
     const registrationToken = 'eoseBGH-RUKEMbCZXoeC9u:APA91bHOgMlPnHy8LzH8Uv1hOGFo2Gz-egtFwz4HpSPZut-mYkFt2CWG0V60PkzEnCNUvg48oYlMpCcUIJ38n5H-qEQ5pMIUQy_2mEuyd_FSv8oCAZh3Na4mD-GDay360UHM-pZKIGHJ';
     const message = {
