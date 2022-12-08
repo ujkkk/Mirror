@@ -11,6 +11,7 @@ from datetime import datetime
 mirror_id = 400
 broker_ip = "192.168.0.1" # 현재 이 컴퓨터를 브로커로 설정
 
+
 new_account_flag = False
 login_flag = False
 loginCamera_flag = False

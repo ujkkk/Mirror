@@ -6,6 +6,7 @@ let id;
 var mirror_id = 400; 
 
 
+
 var name;
 
 // mysql 모듈 불러오기
