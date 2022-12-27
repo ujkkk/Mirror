@@ -25,8 +25,11 @@ client.connect(broker_ip, 1883)
 client.loop_start()   
 
 osName = platform.system()
-#cam = cv2.VideoCapture(cv2.CAP_V4L2)
+#windows
+#cam = cv2.VideoCapture(0)
+#Linux
 cam = cv2.VideoCapture(cv2.CAP_V4L)
+
 cam.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
 cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 #cam = cv2.VideoCapture(cv2.CAP_V4L2)
